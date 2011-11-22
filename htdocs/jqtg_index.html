@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>jQuery treeTable Plugin Documentation</title>
+  <link href="css/mp.css" rel="stylesheet" type="text/css" />
+  <link href="css/jquery.treeTable.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="js/jquery-1.6.2.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.js"></script>
+  <script type="text/javascript" src="js/jquery.treeTable.js"></script>
+  <script type="text/javascript" src="js/mp-tree.js"></script>
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+        var metaTree = new MetaTree($(".example"));
+    });
+  </script>
+
+  <!-- END Plugin Code -->
+</head>
+<body>
+
+<table id="mp-meta-tree" class="example">
+  <caption>Meta tree</caption>
+  <thead>
+    <tr>
+      <th>Name/Title</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="mp-meta-tree-1">
+      <td>Node 1: Click on the icon in front of me to expand this branch.</td>
+      <td></td>
+    </tr>
+    <tr id="mp-meta-tree-2" class="mp-child-of-mp-meta-tree-1">
+      <td>Node 1.1: Look, I am a table row <em>and</em> I am part of a tree!</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+</body>
+</html>
