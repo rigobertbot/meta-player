@@ -6,10 +6,14 @@
 	<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="css/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="css/demo.css">
-	<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
-	<script>
-		$(function(){
+	<script type="text/javascript" src="js/jquery-1.6.2.js"></script>
+	<script type="text/javascript" src="js/easyloader.js"></script>
+    <script type="text/javascript" src="js/jquery.json-2.3.js"></script>
+	<script type="text/javascript" src="js/model.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript">
+        easyloader.load('treegrid', function(){
+            alert($({className: 'Node', id: 123}).deserializeJSON());
 			$('#test').treegrid({
 				title:'TreeGrid',
 				iconCls:'icon-save',
@@ -19,28 +23,40 @@
 				rownumbers: true,
 				animate:true,
 				collapsible:true,
-				url:'treegrid_data.json',
-				idField:'code',
-				treeField:'code',
+				url: 'meta/band/list', // 'treegrid_data.json', 
+				idField: 'id',
+				treeField: 'name',
 				frozenColumns:[[
-	                {title:'Code',field:'code',width:200,
+	                {
+                        field:'name',
+                        title:'Name',
+                        width:200,
 		                formatter:function(value){
 		                	return '<span style="color:red">'+value+'</span>';
 		                }
 	                }
 				]],
 				columns:[[
-					{field:'name',title:'Name',width:150},
-					{field:'addr',title:'Address',width:220,rowspan:2},
-					{field:'col4',title:'Col41',width:150,rowspan:2}
+					{field:'duration',title:'Duration',width:60},
+					{field:'date',title:'Date',width:100}
 				]],
-				onBeforeLoad:function(row,param){
-					if (row){
-						$(this).treegrid('options').url = 'treegrid_subdata.json';
-					} else {
-						$(this).treegrid('options').url = 'treegrid_data.json';
-					}
+				onBeforeLoad:function(row, param){
+                    dump(row, 'row before load');
+                    dump(param, 'param before load');
+                    return true;
 				},
+                onLoadSuccess: function(row, data) {
+                    dump(row, 'row loaded');
+                    dump(data, 'data loaded');
+                    
+                    var result = [];
+                    for (var i in data) {
+                        var jsonItem = data[i];
+                        result.push(new Node(jsonItem));
+                    }
+                    data = result;
+                    dump(data, 'new dada replaced');
+                },
 				onContextMenu: function(e,row){
 					e.preventDefault();
 					$(this).treegrid('unselectAll');
@@ -133,6 +149,12 @@
 				$('#test').treegrid('remove', node.code);
 			}
 		}
+        function dump(object, caption) {
+            if (caption) {
+                $('#output').append('<b>' + caption + '</b>');
+            }
+            $('#output').append('<pre>' + $.toJSON(object) + '</pre>');
+        }
 	</script>
 </head>
 <body>

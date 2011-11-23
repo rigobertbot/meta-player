@@ -1,0 +1,15 @@
+[{	
+    "id": 1,
+	"name": "test",
+	"foundDate": "9/30/2011",
+	"endDate": "10/2/2011",
+	"children":[],
+    "state":"closed"
+}, { 
+    "id": 2,
+	"name": "test 2",
+	"foundDate": "9/30/2010",
+	"endDate": "10/2/2010",
+	"children":[],
+    "state":"closed"
+}]
