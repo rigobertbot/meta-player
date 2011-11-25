@@ -47,19 +47,21 @@
 		}
 
 		var type = typeof o;
+        var strType = '/* ' + type + ' */';
 
 		if ( type === 'undefined' ) {
 			return undefined;
 		}
 		if ( type === 'number' || type === 'boolean' ) {
-			return '' + o;
+			return strType + o;
 		}
 		if ( type === 'string') {
-			return $.quoteString( o );
+			return strType + $.quoteString( o );
 		}
 		if ( type === 'object' ) {
+            var strClass = '/* ' + $.getClassName(o) + ' */';
 			if ( typeof o.toJSON === 'function' ) {
-				return $.toJSON( o.toJSON() );
+				return strClass + $.toJSON( o.toJSON() );
 			}
 			if ( o.constructor === Date ) {
 				var	month = o.getUTCMonth() + 1,
@@ -91,7 +93,7 @@
 				if ( milli < 10 ) {
 					milli = '0' + milli;
 				}
-				return '"' + year + '-' + month + '-' + day + 'T' +
+				return '/* Date */ "' + year + '-' + month + '-' + day + 'T' +
 					hours + ':' + minutes + ':' + seconds +
 					'.' + milli + 'Z"';
 			}
@@ -100,7 +102,7 @@
 				for ( var i = 0; i < o.length; i++ ) {
 					ret.push( $.toJSON( o[i] ) || 'null' );
 				}
-				return '[' + ret.join(',') + ']';
+				return '/* Array */ [' + ret.join(',') + ']';
 			}
 			var	name,
 				val,

@@ -13,7 +13,6 @@
     <script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript">
         easyloader.load('treegrid', function(){
-            alert($({className: 'Node', id: 123}).deserializeJSON());
 			$('#test').treegrid({
 				title:'TreeGrid',
 				iconCls:'icon-save',
@@ -32,7 +31,7 @@
                         title:'Name',
                         width:200,
 		                formatter:function(value){
-		                	return '<span style="color:red">'+value+'</span>';
+		                	return '<input type="checkbox" id="mp_checkbox_' + this.id + '" /><label for="mp_checkbox_' + this.id + '">' + value + '</label>';
 		                }
 	                }
 				]],
@@ -41,21 +40,14 @@
 					{field:'date',title:'Date',width:100}
 				]],
 				onBeforeLoad:function(row, param){
-                    dump(row, 'row before load');
-                    dump(param, 'param before load');
-                    return true;
+                new BandRepository().list(function (data, textStatus, jqXHR) {
+                        $('#test').treegrid('loadData', $.parseJSON(data));
+                    })
+                    $.get('meta/band/list', , "json");
+                    return false;
 				},
                 onLoadSuccess: function(row, data) {
-                    dump(row, 'row loaded');
-                    dump(data, 'data loaded');
-                    
-                    var result = [];
-                    for (var i in data) {
-                        var jsonItem = data[i];
-                        result.push(new Node(jsonItem));
-                    }
-                    data = result;
-                    dump(data, 'new dada replaced');
+                    console.log('data loaded ' + data);
                 },
 				onContextMenu: function(e,row){
 					e.preventDefault();
