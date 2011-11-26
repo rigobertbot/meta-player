@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/jquery.json-2.3.js"></script>
 	<script type="text/javascript" src="js/model.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/repository.js"></script>
 	<script type="text/javascript">
         easyloader.load('treegrid', function(){
 			$('#test').treegrid({
@@ -43,7 +44,6 @@
                 new BandRepository().list(function (data, textStatus, jqXHR) {
                         $('#test').treegrid('loadData', $.parseJSON(data));
                     })
-                    $.get('meta/band/list', , "json");
                     return false;
 				},
                 onLoadSuccess: function(row, data) {

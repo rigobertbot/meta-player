@@ -9,6 +9,9 @@ Node.prototype.constructor = Node;
 
 Node.prototype._wakeup = function () {
 }
+Node.protorype.getChildren = function (callback) {
+    
+}
 
 function BandNode() {
     this.parent();
