@@ -23,7 +23,7 @@
 				rownumbers: true,
 				animate:true,
 				collapsible:true,
-				url: 'meta/band/list', // 'treegrid_data.json', 
+				url: 'null', // 'treegrid_data.json', 
 				idField: 'id',
 				treeField: 'name',
 				frozenColumns:[[
@@ -41,13 +41,20 @@
 					{field:'date',title:'Date',width:100}
 				]],
 				onBeforeLoad:function(row, param){
-                new BandRepository().list(function (data, textStatus, jqXHR) {
-                        $('#test').treegrid('loadData', $.parseJSON(data));
-                    })
-                    return false;
+                    console.log("before load, row " + $.toJSON(row));
+                    if (row === null) {
+                        new BandRepository().list(function (data) {
+                                $('#test').treegrid('loadData', data);
+                            });
+                    } else {
+                        row.loadChildren(function (data) {
+                            $('#test').treegrid('loadData', data);
+                        });
+                    }
+                   return false;
 				},
                 onLoadSuccess: function(row, data) {
-                    console.log('data loaded ' + data);
+                    console.log('data loaded ' + $.toJSON(data));
                 },
 				onContextMenu: function(e,row){
 					e.preventDefault();

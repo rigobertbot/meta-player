@@ -6,9 +6,9 @@ function BaseRepository() {
 }
 
 BaseRepository.prototype = BaseRepository;
-BaseRepository.prototype.list = function (success) {
+BaseRepository.prototype.list = function (success, params) {
     var url = this.url + 'list';
-    $.getJSON(url, undefined, function (data, textStatus, jqXHR) {
+    $.getJSON(url, params, function (data, textStatus, jqXHR) {
             var parsedData = $.parseJSON(data);
             success(parsedData);
     });
@@ -32,3 +32,14 @@ function BandRepository() {
 
 BandRepository.prototype = new BaseRepository();
 BandRepository.prototype.parent = BaseRepository;
+
+/***************************************
+ *********** AlbumRepository ***********
+ ***************************************/
+function AlbumRepository() {
+    this.parent();
+    this.url = '/meta/album/';
+}
+
+AlbumRepository.prototype = new BaseRepository();
+AlbumRepository.prototype.parent = BaseRepository();

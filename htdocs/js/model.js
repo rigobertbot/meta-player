@@ -1,3 +1,6 @@
+/***************************************
+ ***************** Node ****************
+ ***************************************/
 function Node() {
     this.id = null;
     this.name = null;
@@ -7,12 +10,12 @@ function Node() {
 
 Node.prototype.constructor = Node;
 
-Node.prototype._wakeup = function () {
-}
-Node.protorype.getChildren = function (callback) {
-    
-}
+Node.prototype._wakeup = function () {};
+Node.prototype.loadChildren = function (callback) {};
 
+/***************************************
+ *************** BandNode **************
+ ***************************************/
 function BandNode() {
     this.parent();
 
@@ -26,4 +29,21 @@ BandNode.prototype.parent = Node;
 BandNode.prototype._wakeup = function () {
     this.date = this.foundDate;
     this.parent.prototype._wakeup.call(this);
+};
+
+BandNode.prototype.loadChildren = function (callback) {
+    new AlbumRepository().list(callback, {"bandId": this.id});
+};
+
+/***************************************
+ ************** AlbumNode **************
+ ***************************************/
+function AlbumNode() {
+    this.parent();
+    
+    this.bandId = null;
+    this.title = null     
 }
+
+AlbumNode.prototype = new Node();
+AlbumNode.prototype.parent = Node;
