@@ -1,0 +1,3 @@
+[submodule "Zend"]
+	path = Zend
+	url = git://github.com/zendframework/zf2.git
