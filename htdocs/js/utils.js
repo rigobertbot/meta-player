@@ -1,3 +1,12 @@
+/**
+ * MetaPlayer 1.0
+ * 
+ * Licensed under the GPL terms
+ * To use it on other terms please contact us
+ *
+ * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
+ * 
+ */
 (function($) {
     /**
      * Recource traverse the object and replace all objects with className to instance of className's objects.
