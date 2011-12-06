@@ -1,0 +1,21 @@
+diff --git "a/C:\\Users\\V1DF1~1.DUB\\AppData\\Local\\Temp\\RefC193.tmp\\ReflectionFactory-HEAD-left.php" "b/D:\\projects\\MetaPlayer\\meta-player\\library\\Ding\\src\\mg\\Ding\\Reflection\\ReflectionFactory.php"
+index fc9e21f..835b40d 100644
+--- "a/C:\\Users\\V1DF1~1.DUB\\AppData\\Local\\Temp\\RefC193.tmp\\ReflectionFactory-HEAD-left.php"
++++ "b/D:\\projects\\MetaPlayer\\meta-player\\library\\Ding\\src\\mg\\Ding\\Reflection\\ReflectionFactory.php"
+@@ -122,6 +122,7 @@ class ReflectionFactory
+         $ret = array();
+         if (preg_match_all('/@[\{\}\-\/a-zA-Z0-9=_\?,\\\\\(\+\.\$\^\*\)\ ]+/', $text, $matches) > 0) {
+             foreach ($matches[0] as $annotation) {
++                $annotation = trim($annotation);
+                 $argsStart = strpos($annotation, '(');
+                 $arguments = array();
+                 if ($argsStart !== false) {
+@@ -149,7 +150,7 @@ class ReflectionFactory
+                 } else {
+                     $stuff = explode(' ', $annotation);
+                     $name = substr($stuff[0], 1);
+-                    $arguments[] = $stuff;
++                    $arguments[] = $name;
+                 }
+                 $ret[] = new BeanAnnotationDefinition($name, $arguments);
+             }
