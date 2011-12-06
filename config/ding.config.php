@@ -8,7 +8,7 @@
   * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
   *  
  */
-use Wheeld\Common\Env;
+use Oak\Common\Env;
 
 $CACHE_IMPL = Env::isDebug() ? array() : array('impl' => 'file', 'directory' => realpath(__DIR__ . '/../data/cache'));
 

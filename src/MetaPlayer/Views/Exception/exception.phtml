@@ -1,0 +1,32 @@
+<!--
+ MetaPlayer 1.0
+  
+ Licensed under the GPL terms
+ To use it on other terms please contact us
+ 
+ Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
+  
+-->
+<?php
+/* @var $exception \Exception */
+$exception = $objects['exception'];
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>MetaPlayer - Exception</title>
+    </head>
+    <body>
+        <h3>Exception</h3>
+        <p>
+<?= $exception->getMessage(); ?>            
+        </p>
+        <p>
+<?= $exception->getFile() . ': ' . $exception->getLine() ?>
+        </p>
+        <pre>
+<?= $exception->getTraceAsString(); ?>
+        </pre>
+    </body>
+</html>

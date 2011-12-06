@@ -11,7 +11,8 @@
  */
 namespace MetaPlayer\Controller;
 
-use Ding\Logger\ILoggerAware;
+use \Ding\Logger\ILoggerAware;
+use \Ding\MVC\ModelAndView;
 /**
  * Description of ExceptionController
  *
@@ -29,9 +30,9 @@ class ExceptionController implements ILoggerAware
      */
     private $logger;
     
-    public function _exceptionAction()
+    public function _exceptionAction($exception)
     {
-        $this->logger->debug("Exception handled.");
+        return new ModelAndView("Exception\exception", array('exception' => $exception));
     }
 
     public function setLogger(\Logger $logger) {
