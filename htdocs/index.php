@@ -1,26 +1,19 @@
 <?php
-
-// Define path to application directory
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(__DIR__ . '/../application'));
-
-// Define application environment
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../library'),
-    get_include_path(),
+set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, array(
+    '../library', // for namespaced direct libraries
+    '../library/log4php', // log4php
+    '../library/Ding/src/mg', // Ding
+    '../src',
 )));
 
-/** Zend_Application */
-require_once 'Zend/Application/Application.php';
+//require_once 'Logger.php';
+//Logger::configure('../config/log4php.xml');
 
-// Create application, bootstrap, and run
-$application = new Zend\Application\Application (
-    APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
-);
-$application->bootstrap()
-            ->run();
+require_once 'Ding/Autoloader/Autoloader.php';
+\Ding\Autoloader\Autoloader::register();
+
+$config = include '../config/ding.config.php';
+
+$container = \Ding\Container\Impl\ContainerImpl::getInstance($config );
+
+\Ding\MVC\Http\HttpFrontController::handle($config);
