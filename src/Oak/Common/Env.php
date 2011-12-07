@@ -15,6 +15,11 @@ namespace Oak\Common;
  */
 class Env
 {
+    const APPLICATION_ENV_KEY = 'APPLICATION_ENV';
+    const DEV_ENV_VALUE = 'development';
+    const TEST_ENV_VALUE = 'test';
+
+
     /**
      * The flal debug means that it is debug invitoment.
      *
@@ -22,9 +27,20 @@ class Env
      */
     public static function isDebug() 
     {
-        if (array_key_exists('APPLICATION_ENV', $_SERVER))
+        if (array_key_exists(self::APPLICATION_ENV_KEY, $_SERVER))
         {
-            return strtolower($_SERVER['APPLICATION_ENV']) == 'development';
+            return strtolower($_SERVER[self::APPLICATION_ENV_KEY]) == self::DEV_ENV_VALUE;
         }
     }
+
+    public static function isTest() {
+        if (array_key_exists(self::APPLICATION_ENV_KEY, $_SERVER)) {
+            return strtolower($_SERVER[self::APPLICATION_ENV_KEY]) == self::TEST_ENV_VALUE;
+        }
+    }
+
+    public static function setTestEnv() {
+        $_SERVER[self::APPLICATION_ENV_KEY] = self::TEST_ENV_VALUE;
+    }
+
 }

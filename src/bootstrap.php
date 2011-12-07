@@ -29,6 +29,7 @@ require_once 'Ding/Autoloader/Autoloader.php';
 $config = include $projectRoot . '/config/ding.config.php';
 
 $container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
+$container->setBean("container", $container);
 
 $doctrineConfig = new \Doctrine\ORM\Configuration();
 $doctrineConfig->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());

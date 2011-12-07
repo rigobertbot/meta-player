@@ -1,5 +1,5 @@
 <?php
-require_once '../src/MetaPlayer/bootstrap.php';
+require_once '../src/bootstrap.php';
 
 global $config;
 

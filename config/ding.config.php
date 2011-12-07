@@ -11,6 +11,11 @@
 use Oak\Common\Env;
 
 $CACHE_IMPL = Env::isDebug() ? array() : array('impl' => 'file', 'directory' => realpath(__DIR__ . '/../data/cache'));
+$SCAN_DIRS = array();
+$SCAN_DIRS[] = realpath(__DIR__ . '/../src');
+if (Env::isTest()) {
+    $SCAN_DIRS[] = realpath(__DIR__ . '/../tests/src');
+}
 
 return array(
     'ding' => array(
@@ -18,7 +23,7 @@ return array(
         'factory' => array(
             'bdef' => array (
                 'annotation' => array(
-                    'scanDir' => array(realpath(__DIR__ . '/../src')),
+                    'scanDir' => $SCAN_DIRS,
                 ),
                 'xml' => array(
                     'filename' => 'beans.xml',
