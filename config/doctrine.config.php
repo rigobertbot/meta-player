@@ -12,9 +12,9 @@
 $connectionOptions = array(
     'driver' => 'pdo_mysql',
     'server' => 'localhost',
-    'username' => 'metaplayer',
+    'user' => 'metaplayer',
     'password' => 'metaplayer',
-    'database' => 'metaplayer',
+    'dbname' => 'metaplayer',
 );
 
 return $connectionOptions;

@@ -1,189 +1,95 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>TreeGrid - jQuery EasyUI Demo</title>
-	<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="css/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="css/demo.css">
-	<script type="text/javascript" src="js/jquery-1.6.2.js"></script>
-	<script type="text/javascript" src="js/easyloader.js"></script>
-    <script type="text/javascript" src="js/jquery.json-2.3.js"></script>
-	<script type="text/javascript" src="js/model.js"></script>
-    <script type="text/javascript" src="js/utils.js"></script>
-    <script type="text/javascript" src="js/repository.js"></script>
-	<script type="text/javascript">
-        easyloader.load('treegrid', function(){
-			$('#test').treegrid({
-				title:'TreeGrid',
-				iconCls:'icon-save',
-				width:700,
-				height:350,
-				nowrap: false,
-				rownumbers: true,
-				animate:true,
-				collapsible:true,
-				url: 'null', // 'treegrid_data.json', 
-				idField: 'id',
-				treeField: 'name',
-				frozenColumns:[[
-	                {
-                        field:'name',
-                        title:'Name',
-                        width:200,
-		                formatter:function(value){
-		                	return '<input type="checkbox" id="mp_checkbox_' + this.id + '" /><label for="mp_checkbox_' + this.id + '">' + value + '</label>';
-		                }
-	                }
-				]],
-				columns:[[
-					{field:'duration',title:'Duration',width:60},
-					{field:'date',title:'Date',width:100}
-				]],
-				onBeforeLoad:function(row, param){
-                    console.log("before load, row " + $.toJSON(row));
-                    if (row === null) {
-                        new BandRepository().list(function (data) {
-                                $('#test').treegrid('loadData', data);
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>MetaPlayer - Demo Version</title>
+        <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
+        <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="css/mp.css">
+        <script type="text/javascript" src="js/jquery-1.6.2.js"></script>
+        <script type="text/javascript" src="js/easyloader.js"></script>
+        <script type="text/javascript" src="js/jquery.json-2.3.js"></script>
+        <script type="text/javascript" src="js/model.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/repository.js"></script>
+        <script type="text/javascript">
+            easyloader.load('treegrid', function(){
+                $('#metaTree').treegrid({
+                    title:'MetaTree',
+                    iconCls:'icon-save',
+                    width: 365,
+                    height:400,
+                    nowrap: true,
+                    rownumbers: false,
+                    animate:true,
+                    collapsible:true,
+                    url: null, // 'treegrid_data.json', 
+                    idField: 'id',
+                    treeField: 'name',
+                    frozenColumns:[[
+                            {
+                                field:'name',
+                                title:'Название',
+                                width:250,
+                                formatter:function(value, node){
+                                    return '<input type="checkbox" id="mt_checkbox_' + node.getId() + '" /><label for="mt_checkbox_' + node.getId() + '">' + value + '</label>';
+                                }
+                            }
+                        ]],
+                    columns:[[
+                            //{checkbox: true, field: 'test_c'},
+                            {field:'duration',title:'Длит.',width:30},
+                            {field:'date',title:'Дата',width:80}
+                        ]],
+                    onBeforeLoad:function(row, node){
+                        console.log("before load, row " + $.toJSON(row));
+                        if (row === null) {
+                            new BandRepository().list(function (resultData) {
+                                $('#metaTree').treegrid('loadData', resultData);
                             });
-                    } else {
-                        row.loadChildren(function (data) {
-                            $('#test').treegrid('loadData', data);
+                        } else {
+                            $('#metaTree').treegrid('collapse', row.getId());
+                            row.loadChildren(function (resultData) {
+                                $('#metaTree').treegrid('append', {parent: row.getId(), data: resultData});
+                                $('#metaTree').treegrid('expand', row.getId());
+                            });
+                        }
+                        return false;
+                    },
+                    onLoadSuccess: function(row, data) {
+                        console.log('data loaded ' + $.toJSON(data));
+                    },
+                    onContextMenu: function(e,row){
+                        e.preventDefault();
+                        $(this).treegrid('unselectAll');
+                        $(this).treegrid('select', row.code);
+                        $('#mm').menu('show', {
+                            left: e.pageX,
+                            top: e.pageY
                         });
                     }
-                   return false;
-				},
-                onLoadSuccess: function(row, data) {
-                    console.log('data loaded ' + $.toJSON(data));
-                },
-				onContextMenu: function(e,row){
-					e.preventDefault();
-					$(this).treegrid('unselectAll');
-					$(this).treegrid('select', row.code);
-					$('#mm').menu('show', {
-						left: e.pageX,
-						top: e.pageY
-					});
-				}
-			});
-		});
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="mainHeader">
+        </div>
+        <div id="mainBody">
+            <div id="bodyTree" style="float: left;">
+                <table id="metaTree"></table>
 
-		function reload(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				$('#test').treegrid('reload', node.code);
-			} else {
-				$('#test').treegrid('reload');
-			}
-		}
-		function getChildren(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				var nodes = $('#test').treegrid('getChildren', node.code);
-			} else {
-				var nodes = $('#test').treegrid('getChildren');
-			}
-			var s = '';
-			for(var i=0; i<nodes.length; i++){
-				s += nodes[i].code + ',';
-			}
-			alert(s);
-		}
-		function getSelected(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				alert(node.code+":"+node.name);
-			}
-		}
-		function collapse(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				$('#test').treegrid('collapse', node.code);
-			}
-		}
-		function expand(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				$('#test').treegrid('expand', node.code);
-			}
-		}
-		function collapseAll(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				$('#test').treegrid('collapseAll', node.code);
-			} else {
-				$('#test').treegrid('collapseAll');
-			}
-		}
-		function expandAll(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				$('#test').treegrid('expandAll', node.code);
-			} else {
-				$('#test').treegrid('expandAll');
-			}
-		}
-		function expandTo(){
-			$('#test').treegrid('expandTo', '02013');
-			$('#test').treegrid('select', '02013');
-		}
-		var codeIndex = 1000;
-		function append(){
-			codeIndex++;
-			var data = [{
-				code: 'code'+codeIndex,
-				name: 'name'+codeIndex,
-				addr: 'address'+codeIndex,
-				col4: 'col4 data'
-			}];
-			var node = $('#test').treegrid('getSelected');
-			$('#test').treegrid('append', {
-				parent: (node?node.code:null),
-				data: data
-			});
-		}
-		function remove(){
-			var node = $('#test').treegrid('getSelected');
-			if (node){
-				$('#test').treegrid('remove', node.code);
-			}
-		}
-        function dump(object, caption) {
-            if (caption) {
-                $('#output').append('<b>' + caption + '</b>');
-            }
-            $('#output').append('<pre>' + $.toJSON(object) + '</pre>');
-        }
-	</script>
-</head>
-<body>
-	<h2>TreeGrid</h2>
-	<div class="demo-info">
-		<div class="demo-tip icon-tip"></div>
-		<div>Combines treeview and datagrid to represent hierarchical data.</div>
-	</div>
-	
-	<div style="margin:10px 0;">
-		<a href="#" onclick="reload()">Reload</a>
-		<a href="#" onclick="getChildren()">GetChildren</a>
-		<a href="#" onclick="getSelected()">GetSelected</a>
-		<a href="#" onclick="collapse()">Collapse</a>
-		<a href="#" onclick="expand()">Expand</a>
-		<a href="#" onclick="collapseAll()">CollapseAll</a>
-		<a href="#" onclick="expandAll()">ExpandAll</a>
-		<a href="#" onclick="expandTo()">ExpandTo</a>
-		<a href="#" onclick="append()">Append</a>
-	</div>
-	
-	<table id="test"></table>
-	
-	<div id="mm" class="easyui-menu" style="width:120px;">
-		<div onclick="append()">Append</div>
-		<div onclick="remove()">Remove</div>
-	</div>
-
-	<div id="output" style="height: 200px">
-
-	</div>
-</body>
+                <div id="mm" class="easyui-menu" style="width:120px;">
+                    <div onclick="play()">Play</div>
+                </div>
+            </div>
+            
+            <div id="bodyPlayer"  style="float: left;">
+                Player
+            </div>
+        </div>
+        <div id="mainFooter" style="float: left; width: 800px;">
+            тут благодарности
+        </div>
+    </body>
 </html>

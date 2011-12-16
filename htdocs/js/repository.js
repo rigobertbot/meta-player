@@ -36,7 +36,7 @@ BaseRepository.prototype.get = function (id, success) {
  ***************************************/
 function BandRepository() {
     this.parent();
-    this.url = '/meta/band/';
+    this.url = '/band/';
 }
 
 BandRepository.prototype = new BaseRepository();
@@ -47,8 +47,19 @@ BandRepository.prototype.parent = BaseRepository;
  ***************************************/
 function AlbumRepository() {
     this.parent();
-    this.url = '/meta/album/';
+    this.url = '/album/';
 }
 
 AlbumRepository.prototype = new BaseRepository();
 AlbumRepository.prototype.parent = BaseRepository;
+
+/***************************************
+ *********** TrackRepository ***********
+ ***************************************/
+function TrackRepository() {
+    this.parent();
+    this.url = '/track/';
+}
+
+TrackRepository.prototype = new BaseRepository();
+TrackRepository.prototype.parent = BaseRepository;

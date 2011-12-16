@@ -12,9 +12,15 @@
 
 namespace MetaPlayer\Model;
 
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\ManyToOne;
+
 /**
  * Description of Album
- * @Entity
+ * @Entity(repositoryClass="MetaPlayer\Repository\AlbumRepository")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 class Album 
@@ -36,15 +42,48 @@ class Album
      */
     protected $title;
     /**
-     * @Column(type="date")
-     * @var date
+     * @Column(type="date", name="release_date")
+     * @var \DateTime
      */
     protected $releaseDate;
-    
-    function __construct($band, $title, $releaseDate) {
+
+    /**
+     *
+     * @param type $band
+     * @param type $title
+     * @param type $releaseDate
+     */
+    public function __construct($band, $title, \DateTime $releaseDate) {
         $this->band = $band;
         $this->title = $title;
         $this->releaseDate = $releaseDate;
     }
+
+    public function getId() {
+        return $this->id;
+    }
+    
+    /**
+     * @return Band
+     */
+    public function getBand() {
+        return $this->band;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getTitle() {
+        return $this->title;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getReleaseDate() {
+        return $this->releaseDate;
+    }
+
 
 }

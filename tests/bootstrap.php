@@ -8,9 +8,9 @@
   * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
   *  
  */
-require_once __DIR__ . '/../../src/Oak/Common/Env.php';
+require_once __DIR__ . '/../src/Oak/Common/Env.php';
 use Oak\Common\Env;
 Env::setTestEnv();
 
-require_once __DIR__ . '/../../src/bootstrap.php';
-
+require_once __DIR__ . '/../src/bootstrap.php';
+require_once 'BaseTest.php';

@@ -10,12 +10,12 @@
  */
 use Oak\Common\Env;
 
-$CACHE_IMPL = Env::isDebug() ? array() : array('impl' => 'file', 'directory' => realpath(__DIR__ . '/../data/cache'));
+$CACHE_IMPL = Env::isDebug() || Env::isTest() ? array() : array('impl' => 'file', 'directory' => realpath(__DIR__ . '/../data/cache'));
 $SCAN_DIRS = array();
 $SCAN_DIRS[] = realpath(__DIR__ . '/../src');
-if (Env::isTest()) {
-    $SCAN_DIRS[] = realpath(__DIR__ . '/../tests/src');
-}
+//if (Env::isTest()) {
+//    $SCAN_DIRS[] = realpath(__DIR__ . '/../tests/src');
+//}
 
 return array(
     'ding' => array(

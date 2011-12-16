@@ -13,6 +13,10 @@
 namespace MetaPlayer\Controller;
 
 use Oak\MVC\JsonViewModel;
+use MetaPlayer\Model\Band;
+use MetaPlayer\Repository\BandRepository;
+use MetaPlayer\ViewHelper;
+
 /**
  * Description of BandController
  *
@@ -22,12 +26,32 @@ use Oak\MVC\JsonViewModel;
  */
 class BandController {
     
+    /**
+     * @Resource
+     * @var BandRepository
+     */
+    private $bandRepository;
+    
     public function indexAction() {
         return $this->listAction();
     }
     
     public function listAction() {
-        $data = array('some' => 123, 'other' => 345);
+        $bands = $this->bandRepository->findAll();
+        $data = array();
+        
+        foreach ($bands as $band) {
+            /* @var $band Band */
+            $bandDto = array(
+                'className' => 'BandNode',
+                'id' => $band->getId(), 
+                'name' => $band->getName(),
+                'foundDate' => ViewHelper::formatDate($band->getFoundDate()),
+                'endDate' => ViewHelper::formatDate($band->getEndDate()),
+                );
+            $data[] = $bandDto;
+        }
+        
         return new JsonViewModel($data);
     }
 }

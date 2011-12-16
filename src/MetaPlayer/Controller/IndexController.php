@@ -19,7 +19,7 @@ use \Ding\MVC\ModelAndView;
  */
 class IndexController 
 {
-    public function indexAction() 
+    public function indexAction($api_id, $viewer_id, $auth_key) 
     {
         $view = new ModelAndView("index/index", array('result' => 'index action handled successfull'));
         return $view;

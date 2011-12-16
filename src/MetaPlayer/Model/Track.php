@@ -12,9 +12,15 @@
 
 namespace MetaPlayer\Model;
 
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\ManyToOne;
+
 /**
  * Description of Track
- * @Entity
+ * @Entity(repositoryClass="MetaPlayer\Repository\TrackRepository")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 class Track 
@@ -45,4 +51,38 @@ class Track
      * @var int
      */
     protected $serial;
+    
+    public function __construct($album, $title, $duration, $serial) {
+        $this->album = $album;
+        $this->title = $title;
+        $this->duration = $duration;
+        $this->serial = $serial;
+    }
+    
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     *
+     * @return Album
+     */
+    public function getAlbum() {
+        return $this->album;
+    }
+
+    public function getTitle() {
+        return $this->title;
+    }
+
+    public function getDuration() {
+        return $this->duration;
+    }
+
+    public function getSerial() {
+        return $this->serial;
+    }
+
+
+
 }

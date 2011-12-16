@@ -20,28 +20,72 @@ set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, a
             $projectRoot . '/src',
         )));
 
-//require_once 'Logger.php';
-//Logger::configure('../config/log4php.xml');
-
 require_once 'Ding/Autoloader/Autoloader.php';
 \Ding\Autoloader\Autoloader::register();
 
+$logger = \Logger::getLogger("bootstrap");
 $config = include $projectRoot . '/config/ding.config.php';
 
 $container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
-$container->setBean("container", $container);
+$logger->debug("container initialized");
+$checkContainer = $container->getBean("container");
+if ($container != $checkContainer) {
+    $logger->error("container was not successfully self registered");
+}
+
+set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext) {
+    global $logger;
+    $logger->fatal("Unhandled Error: $errstr\n $errfile ($errline) [$errno]");
+}, E_ALL);
+
+register_shutdown_function(function () {
+    global $logger;
+            
+    $last = error_get_last();
+    if ($last != null) {
+        $logger->fatal("Fatal error: $last");
+    }
+});
+
+
+$logger->debug("initialize doctrine");
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Oak\ORM\FileCacheProvider;
+
+AnnotationRegistry::registerFile($projectRoot . "/library/Doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php");
 
 $doctrineConfig = new \Doctrine\ORM\Configuration();
-$doctrineConfig->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
+$doctrineConfig->setMetadataCacheImpl(new FileCacheProvider(realpath(__DIR__ . '/../data/cache')));
+
+$annotationReader = new AnnotationReader();
+
 $doctrineConfig->setMetadataDriverImpl(
-        new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
-                new \Doctrine\Common\Annotations\AnnotationReader())
+        new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($annotationReader)
 );
 $doctrineConfig->setProxyDir($projectRoot . '/src/MetaPlayer/Proxies');
-$doctrineConfig->setProxyNamespace('\\MetaPlayer\\Proxies');
+$doctrineConfig->setProxyNamespace('MetaPlayer\\Proxies');
+
+$sqlLogger = null;
+
+if (\Oak\Common\Env::isDebug()) {
+    $sqlLogger = $container->getBean("sqlLogger");
+}
+if (\Oak\Common\Env::isTest()) {
+    $sqlLogger = new \Doctrine\DBAL\Logging\EchoSQLLogger();
+}
+if (isset($sqlLogger)) {
+    $doctrineConfig->setSQLLogger($sqlLogger);
+}
 
 $connectionOptions = include $projectRoot . '/config/doctrine.config.php';
 
 $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $doctrineConfig);
 
-$container->setBean("em", $em);
+\MetaPlayer\GlobalFactory::setEntityManager($em);
+$checkEm = $container->getBean("entityManager");
+if ($checkEm != $em) {
+    $logger->error("entity manager was not successfull register");
+}
+
+$logger->debug("MetaPlayer was successfull bootstrapped");
