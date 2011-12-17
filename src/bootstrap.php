@@ -20,6 +20,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, a
             $projectRoot . '/src',
         )));
 
+require_once $projectRoot . '/config/app.config.php';
+
 require_once 'Ding/Autoloader/Autoloader.php';
 \Ding\Autoloader\Autoloader::register();
 
@@ -87,5 +89,8 @@ $checkEm = $container->getBean("entityManager");
 if ($checkEm != $em) {
     $logger->error("entity manager was not successfull register");
 }
+
+// init session
+$session = $container->getBean("securityManager");
 
 $logger->debug("MetaPlayer was successfull bootstrapped");

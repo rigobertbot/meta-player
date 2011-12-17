@@ -24,7 +24,7 @@ use MetaPlayer\Model\Track;
  * @Controller
  * @RequestMapping(url={/track/})
  */
-class TrackController 
+class TrackController extends BaseSecurityController
 {
     /**
      * @Resource
@@ -47,6 +47,7 @@ class TrackController
                 'serial' => $track->getSerial(),
                 'albumId' => $albumId,
                 'title' => $track->getTitle(),
+                'queries' => $track->getQueries(),
             );
             $data[] = $trackDto;
         }

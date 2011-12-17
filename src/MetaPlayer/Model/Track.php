@@ -83,6 +83,20 @@ class Track
         return $this->serial;
     }
 
+    /**
+     * @return string[]
+     */
+    public function getQueries() {
+        $result = array();
+        
+        $band = $this->album->getBand();
+        
+        $result[] = implode(" ", array($band->getName(), $this->album->getTitle(), $this->getTitle()));
+        $result[] = implode(" ", array($band->getName(), $this->getTitle()));
+        $result[] = $this->getTitle();
+        
+        return $result;
+    }
 
 
 }

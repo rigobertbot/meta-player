@@ -3,93 +3,84 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>MetaPlayer - Demo Version</title>
+        <link rel="stylesheet" type="text/css" href="css/mp.css">
         <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
-        <link rel="stylesheet" type="text/css" href="css/mp.css">
+        <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>        
         <script type="text/javascript" src="js/jquery-1.6.2.js"></script>
         <script type="text/javascript" src="js/easyloader.js"></script>
         <script type="text/javascript" src="js/jquery.json-2.3.js"></script>
         <script type="text/javascript" src="js/model.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/repository.js"></script>
+        <script type="text/javascript" src="js/playlist.js"></script>
+        <script type="text/javascript" src="js/search.js"></script>
+        <script type="text/javascript" src="js/tree.js"></script>
         <script type="text/javascript">
-            easyloader.load('treegrid', function(){
-                $('#metaTree').treegrid({
-                    title:'MetaTree',
-                    iconCls:'icon-save',
-                    width: 365,
-                    height:400,
-                    nowrap: true,
-                    rownumbers: false,
-                    animate:true,
-                    collapsible:true,
-                    url: null, // 'treegrid_data.json', 
-                    idField: 'id',
-                    treeField: 'name',
-                    frozenColumns:[[
-                            {
-                                field:'name',
-                                title:'Название',
-                                width:250,
-                                formatter:function(value, node){
-                                    return '<input type="checkbox" id="mt_checkbox_' + node.getId() + '" /><label for="mt_checkbox_' + node.getId() + '">' + value + '</label>';
-                                }
-                            }
-                        ]],
-                    columns:[[
-                            //{checkbox: true, field: 'test_c'},
-                            {field:'duration',title:'Длит.',width:30},
-                            {field:'date',title:'Дата',width:80}
-                        ]],
-                    onBeforeLoad:function(row, node){
-                        console.log("before load, row " + $.toJSON(row));
-                        if (row === null) {
-                            new BandRepository().list(function (resultData) {
-                                $('#metaTree').treegrid('loadData', resultData);
-                            });
-                        } else {
-                            $('#metaTree').treegrid('collapse', row.getId());
-                            row.loadChildren(function (resultData) {
-                                $('#metaTree').treegrid('append', {parent: row.getId(), data: resultData});
-                                $('#metaTree').treegrid('expand', row.getId());
-                            });
-                        }
-                        return false;
-                    },
-                    onLoadSuccess: function(row, data) {
-                        console.log('data loaded ' + $.toJSON(data));
-                    },
-                    onContextMenu: function(e,row){
-                        e.preventDefault();
-                        $(this).treegrid('unselectAll');
-                        $(this).treegrid('select', row.code);
-                        $('#mm').menu('show', {
-                            left: e.pageX,
-                            top: e.pageY
-                        });
+            VK.init(function() {
+                console.log("VK init done.");
+                VK.api('getUserSettings', {test_mode: 1}, function(data) {
+                    console.log(data.response);
+                    if (data.response & 8 !== 8) {
+                        VK.callMethod('showSettingsBox', 8);
                     }
                 });
             });
+            initMetaTree();
         </script>
     </head>
     <body>
         <div id="mainHeader">
         </div>
-        <div id="mainBody">
-            <div id="bodyTree" style="float: left;">
-                <table id="metaTree"></table>
-
+        
+        
+        
+        <div id="mainBody" class="easyui-layout" style="width: 800px; height: 500px;">
+            <div id="bodyTree" region="west" title="Каталог" split="true" style="width: 400px;">
+                <div id="bodyAccordion" class="easyui-accordion" style="height: 470px">
+                    <div id="treeAccordion" selected="true" title="MetaTree">
+                        <table id="metaTree" style="height: 400px;"
+                               class="easyui-treegrid" url="/band/list"
+                               nowrap="true" rownumbers="false" animate="true" singleSelect="false"
+                               idField="id" treeField="name">
+                            <thead>
+                                <tr>
+                                    <th field="name" width="250">Название</th>
+                                    <th field="checked" checkbox="true"></th>
+                                    <th field="duration" width="30">Длит.</th>
+                                    <th field="date" width="80">Дата</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="playlistAccordion" title="Плейлист">
+                        <table id="playlist" class="easyui-datagrid" singleSelect="true" animate="true" rownumbers="true" idField="id">
+                            <thead>
+                                <tr>
+                                    <th field="name" width="250">Название</th>
+                                    <th field="duration" width="30">Длит.</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
                 <div id="mm" class="easyui-menu" style="width:120px;">
                     <div onclick="play()">Play</div>
                 </div>
             </div>
             
-            <div id="bodyPlayer"  style="float: left;">
-                Player
+            <div id="bodyPlayer" region="center" title="Плеер"  style="float: left;">
+                <input type="button" onclick="play()" value="Play!">
             </div>
         </div>
-        <div id="mainFooter" style="float: left; width: 800px;">
-            тут благодарности
+        
+        
+        
+        
+        <div id="mainFooter" style="float: left; width: 800px; font-size: 11px; font-family: tahoma, arial, verdana, sans-serif, 'Lucida Sans';text-align: center;">
+            Для реализации MetaPlayer были использованы:<br />
+            <a href="http://marcelog.github.com/Ding/">Ding Framework</a>, special thanks to <a href="mailto://marcelog@gmail.com">Marcelo Gornstein</a>; <a href="http://www.doctrine-project.org/">doctrine</a>; <a href="http://www.jeasyui.com/">jQuery EasyUI</a><br />
+            MetaPlayer (c) by Oak Software 2011<br />
         </div>
     </body>
 </html>

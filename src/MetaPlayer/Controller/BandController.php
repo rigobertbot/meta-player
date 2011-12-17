@@ -24,7 +24,8 @@ use MetaPlayer\ViewHelper;
  * @RequestMapping(url={/band/})
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class BandController {
+class BandController extends BaseSecurityController
+{
     
     /**
      * @Resource

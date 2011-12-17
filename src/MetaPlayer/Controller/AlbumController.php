@@ -24,7 +24,7 @@ use MetaPlayer\ViewHelper;
  * @Controller
  * @RequestMapping(url={/album/})
  */
-class AlbumController 
+class AlbumController extends BaseSecurityController
 {
     /**
      * @Resource

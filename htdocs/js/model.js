@@ -17,6 +17,8 @@ function Node() {
     this.date = null;
     this.duration = null;
     this.state = "closed";
+    this.checked = false;
+    this.traverseToken = null;
 }
 
 Node.prototype.constructor = Node;
@@ -85,10 +87,29 @@ function TrackNode() {
     this.title = null;
     this.serial = null;
     this.durationMs = null;
+    this.queries = null;
+    this.url = null;
 }
 
 TrackNode.prototype = new Node();
 TrackNode.prototype.parent = Node;
+
+TrackNode.prototype.setDuration = function (durationMs) {
+    this.duration = Math.floor(durationMs / 60) + ":" + durationMs % 60;
+}
+
+TrackNode.prototype.getDurationMs = function () {return this.durationMs;}
+
+TrackNode.prototype.setUrl = function (url) {this.url = url;}
+TrackNode.prototype.getUrl = function () { return this.url; }
+
+
+TrackNode.prototype.getQuery = function (strictLevel) {
+    if (!this.queries || this.queries.length <= strictLevel) {
+        return false;
+    }
+    return this.queries[strictLevel];
+}
 
 TrackNode.prototype._wakeup = function () {
     this.parent.prototype._wakeup.call(this);
@@ -96,5 +117,6 @@ TrackNode.prototype._wakeup = function () {
     this.name = this.title;
     this.state = null;
     this.durationMs = this.duration;
-    this.duration = Math.floor(this.durationMs / 60) + ":" + this.durationMs % 60;
-}
+    this.setDuration(this.durationMs);
+};
+
