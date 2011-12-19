@@ -13,7 +13,7 @@ $projectRoot = realpath(__DIR__ . '../../');
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, array(
             $projectRoot . '/library', // for namespaced direct libraries
             $projectRoot . '/library/log4php', // log4php
-            $projectRoot . '/library/Ding/src/mg', // Ding
+            $projectRoot . '/library/Ding1.3.0/src/mg', // Ding
             $projectRoot . '/library/Doctrine/lib',
             $projectRoot . '/library/Doctrine/lib/vendor/doctrine-common/lib',
             $projectRoot . '/library/Doctrine/lib/vendor/doctrine-dbal/lib',

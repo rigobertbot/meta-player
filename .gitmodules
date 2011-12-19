@@ -1,6 +1,6 @@
-[submodule "library/Ding"]
-	path = library/Ding
-	url = git://github.com/marcelog/Ding.git
 [submodule "library/Doctrine"]
 	path = library/Doctrine
 	url = git://github.com/doctrine/doctrine2.git
+[submodule "library/Ding1.3.0"]
+	path = library/Ding1.3.0
+	url = git://github.com/marcelog/Ding.git

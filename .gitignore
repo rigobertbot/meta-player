@@ -2,3 +2,4 @@
 /library/log4php/*
 !/library/log4php/readme.txt
 /config/private.config.php
+/data/cache/*
