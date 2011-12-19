@@ -87,8 +87,13 @@ class FileCacheImpl implements ICache
      */
     public function store($name, $value)
     {
+        $path = $this->_directory. $name;
+        $dir = pathinfo($path, PATHINFO_DIRNAME);
+        if (!file_exists($dir)) {
+            mkdir($dir, null, true);
+        }
         $value = serialize($value);
-        return @file_put_contents($this->_directory . $name, $value);
+        return @file_put_contents($path, $value);
     }
 
     /**

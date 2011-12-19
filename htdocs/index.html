@@ -6,8 +6,10 @@
         <link rel="stylesheet" type="text/css" href="css/mp.css">
         <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="css/blue.monday/jplayer.blue.monday.css" />        
         <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>        
         <script type="text/javascript" src="js/jquery-1.6.2.js"></script>
+        <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
         <script type="text/javascript" src="js/easyloader.js"></script>
         <script type="text/javascript" src="js/jquery.json-2.3.js"></script>
         <script type="text/javascript" src="js/model.js"></script>
@@ -16,17 +18,20 @@
         <script type="text/javascript" src="js/playlist.js"></script>
         <script type="text/javascript" src="js/search.js"></script>
         <script type="text/javascript" src="js/tree.js"></script>
+        <script type="text/javascript" src="js/player.js"></script>
         <script type="text/javascript">
             VK.init(function() {
-                console.log("VK init done.");
                 VK.api('getUserSettings', {test_mode: 1}, function(data) {
-                    console.log(data.response);
                     if (data.response & 8 !== 8) {
                         VK.callMethod('showSettingsBox', 8);
                     }
                 });
             });
-            initMetaTree();
+            $(document).ready(function () {
+                initMetaTree();
+                mainPlayer.init();
+                mainPlaylist.init();
+            });
         </script>
     </head>
     <body>
@@ -54,7 +59,9 @@
                         </table>
                     </div>
                     <div id="playlistAccordion" title="Плейлист">
-                        <table id="playlist" class="easyui-datagrid" singleSelect="true" animate="true" rownumbers="true" idField="id">
+                        <table id="playlist" class="easyui-datagrid" 
+                               singleSelect="true" animate="true" rownumbers="true" 
+                               idField="id">
                             <thead>
                                 <tr>
                                     <th field="name" width="250">Название</th>
@@ -64,13 +71,53 @@
                         </table>
                     </div>
                 </div>
-                <div id="mm" class="easyui-menu" style="width:120px;">
-                    <div onclick="play()">Play</div>
+                <div id="treeMenu" class="easyui-menu" style="width:120px;">
+                    <div onclick="play()">Проигрывать</div>
+                    <div onclick="addToPlaylist()">Добавить</div>
                 </div>
             </div>
             
             <div id="bodyPlayer" region="center" title="Плеер"  style="float: left;">
-                <input type="button" onclick="play()" value="Play!">
+                <div id="mainPlayer" class="jp-jplayer"></div>
+                <div id="jp_container_1" class="jp-audio">
+                    <div class="jp-type-single">
+                        <div class="jp-gui jp-interface">
+                            <ul class="jp-controls">
+                                <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+                                <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+                                <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+                                <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+                                <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+                                <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+                            </ul>
+                            <div class="jp-progress">
+                                <div class="jp-seek-bar">
+                                    <div class="jp-play-bar"></div>
+                                </div>
+                            </div>
+                            <div class="jp-volume-bar">
+                                <div class="jp-volume-bar-value"></div>
+                            </div>
+                            <div class="jp-time-holder">
+                                <div class="jp-current-time"></div>
+                                <div class="jp-duration"></div>
+                                <ul class="jp-toggles">
+                                    <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+                                    <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="jp-title">
+                            <ul>
+                                <li>Bubble</li>
+                            </ul>
+                        </div>
+                        <div class="jp-no-solution">
+                            <span>Update Required</span>
+                            To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+                        </div>
+                    </div>
+                </div>                
             </div>
         </div>
         

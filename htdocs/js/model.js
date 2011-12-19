@@ -100,8 +100,14 @@ TrackNode.prototype.setDuration = function (durationMs) {
 
 TrackNode.prototype.getDurationMs = function () {return this.durationMs;}
 
-TrackNode.prototype.setUrl = function (url) {this.url = url;}
-TrackNode.prototype.getUrl = function () { return this.url; }
+TrackNode.prototype.setUrl = function (url) {
+    this.url = url;
+    if (url && this.urlSetted && typeof this.urlSetted == 'function') {
+        this.urlSetted.call(this);
+    }
+}
+TrackNode.prototype.getUrl = function () {return this.url;}
+TrackNode.prototype.urlSetted = function () {};
 
 
 TrackNode.prototype.getQuery = function (strictLevel) {

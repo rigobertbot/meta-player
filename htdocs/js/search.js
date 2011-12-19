@@ -45,8 +45,8 @@ function search(track, it, callback) {
             track.setDuration(nearestResult.duration);
             //track.setResult(nearestResult);
             
-            console.log(data);
-            console.log(nearestResult);
+            //console.log(data);
+            //console.log(nearestResult);
             if (callback && typeof callback === 'function') {
                 callback.call(this, track, it);
             }

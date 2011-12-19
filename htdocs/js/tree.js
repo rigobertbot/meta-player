@@ -15,7 +15,7 @@ function initMetaTree() {
                 e.preventDefault();
                 // $(this).treegrid('unselectAll');
                 // $(this).treegrid('select', row.code);
-                $('#mm').menu('show', {
+                $('#treeMenu').menu('show', {
                     left: e.pageX,
                     top: e.pageY
                 });
@@ -26,17 +26,21 @@ function initMetaTree() {
 
 function beforeLoad(row, node){
     if (row === null) {
+        $(this).treegrid('loading');
         new BandRepository().list(function (resultData) {
-            $('#metaTree').treegrid('loadData', resultData);
+            $('#metaTree').treegrid('loaded')
+                .treegrid('loadData', resultData);
         });
     } else {
         $('#metaTree').treegrid('collapse', row.getId());
+        $(this).treegrid('loading');
         row.loadChildren(function (resultData) {
-            $('#metaTree').treegrid('append', {
-                parent: row.getId(), 
-                data: resultData
-            });
-            $('#metaTree').treegrid('expand', row.getId());
+            $('#metaTree').treegrid('loaded')
+                .treegrid('append', {
+                    parent: row.getId(), 
+                    data: resultData
+                })
+                .treegrid('expand', row.getId());
         });
     }
     return false;
@@ -75,13 +79,12 @@ function recursePlaylist(node, selected, playlist, traverseToken) {
     return $.inArray(node, selected) === -1; // it means no selected = true
 }
 
-function getPlaylist() {
-    var playlist = mainPlaylist;
-    
+function fillPlaylist(playlist) {
     var selected = $('#metaTree').treegrid('getSelections');
     var traverseToken = new Date().getTime();
     for (var index in selected) {
         var node = selected[index];
+        $('#metaTree').treegrid('expandAll', node.getId());
         if (node instanceof TrackNode) {
             node.traverseToken = traverseToken;
             playlist.push(node);
@@ -89,12 +92,15 @@ function getPlaylist() {
         }
         recursePlaylist(node, selected, playlist, traverseToken);
     }
-    return playlist;
+}
+
+function checkLoaded() {
+    
 }
             
 function play() {
-    var playlist = getPlaylist();
-    playlist.play();
-    console.log(playlist);
-    // search(playlist[0], 0);
+    mainPlaylist.clean();
+    fillPlaylist(mainPlaylist);
+    mainPlaylist.play();
+    $('#bodyAccordion').accordion('select', 'Плейлист');
 }
