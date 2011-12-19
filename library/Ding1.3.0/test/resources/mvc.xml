@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+  <bean id="HttpDispatcher" class="Ding\Mvc\Http\HttpDispatcher" scope="singleton"/>
+  <bean id="HttpUrlMapper" class="Ding\Mvc\Http\HttpUrlMapper" scope="singleton">
+    <property name="map">
+      <array>
+        <entry key="0">
+          <array>
+            <entry key="0"><value>/MyController</value></entry>
+            <entry key="1"><ref bean="myController"/></entry>
+          </array>
+        </entry>
+        <entry key="1">
+          <array>
+            <entry key="0"><value>MyControllerNoSlash</value></entry>
+            <entry key="1"><ref bean="myController"/></entry>
+          </array>
+        </entry>
+      </array>
+    </property>
+  </bean>
+    <bean id="messageSource" class="Ding\MessageSource\Impl\MessageSourceImpl" scope="singleton">
+       <property name="basenames">
+           <array>
+               <entry key="0"><value>abundle</value></entry>
+           </array>
+       </property>
+    </bean>
+  <bean id="myController" class="AController" scope="singleton"/>
+  <bean id="HttpViewRender" class="Ding\Mvc\Http\HttpViewRender" scope="singleton"/>
+  <bean id="HttpViewResolver" class="Ding\Mvc\Http\HttpViewResolver" scope="singleton">
+    <property name="viewPrefix"><value>view.</value></property>
+    <property name="viewSuffix"><value>.html</value></property>
+    <property name="viewPath"><value>./views</value></property>
+  </bean>
+  <bean id="HttpViewResolver2" class="Ding\Mvc\Http\HttpViewResolver" scope="singleton">
+    <property name="viewPrefix"><value>view.</value></property>
+    <property name="viewSuffix"><value>.html</value></property>
+    <property name="viewPath"><value>./views/</value></property>
+    </bean>
+  <bean id="HttpViewResolver3" class="Ding\Mvc\Http\HttpViewResolver" scope="singleton">
+    <property name="viewPrefix"><value>view.</value></property>
+    <property name="viewSuffix"><value>.html</value></property>
+    <property name="viewPath"><value>${prefix}/views</value></property>
+  </bean>
+</beans>

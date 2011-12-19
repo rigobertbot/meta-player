@@ -1,0 +1,207 @@
+beans: !!map
+  aSimpleSingletonBean:
+    class: ClassSimpleYAML
+    scope: singleton
+
+  aSimpleInitMethodBean:
+    class: ClassSimpleYAML4
+    scope: singleton
+    init-method: initMethod
+  
+  aSimpleDestroyMethodBean:
+    class: ClassSimpleYAML4
+    scope: singleton
+    destroy-method: destroyMethod
+
+  aSimplePrototypeBean:
+    class: ClassSimpleYAML
+    scope: prototype
+
+  aSimpleSetArgBean:
+    class: ClassSimpleYAML3
+    scope: singleton
+    properties: !!map
+      value:
+        value: 1a$
+      "true":
+        value: true
+      "false":
+        value: false
+      "null":
+        value: null
+      "evaledCode":
+        eval: return "evaled code";
+      "ref":
+        ref: aSimpleSingletonBean
+      "innerBean":
+        bean:
+          class: ClassSimpleYAML
+          scope: singleton
+      "array": 
+        value: !!map
+          key1:
+            value: 1a$
+          key2:
+            value: true
+          key3:
+            value: false
+          key4:
+            value: null
+          key5:
+            eval: return "evaled code";
+          key6:
+            ref: aSimpleSingletonBean
+          key7:
+            bean:
+              class: ClassSimpleYAML
+              scope: singleton
+          key8:
+            value: !!map
+              key:
+                value: e
+  
+  aSimpleConstArgBean:
+    class: ClassSimpleYAML2
+    scope: singleton
+    constructor-args:
+      - 1a$
+      - true
+      - false
+      - null
+      - eval: return "evaled code";
+      - ref: aSimpleSingletonBean
+      - bean:
+          class: ClassSimpleYAML
+          scope: singleton
+      - !!map
+          key1: 1a$
+          key2: true
+          key3: false
+          key4: null
+          key5: !!map
+            eval: return "evaled code";
+          key6: !!map
+            ref: aSimpleSingletonBean
+          key7:
+            bean:
+              class: ClassSimpleYAML
+              scope: singleton
+          key8: !!map
+            d: e
+  aSimpleDependsOn:
+    depends-on: aSimpleDependency, anotherSimpleDependency
+    class: ClassSimpleYAML6
+    scope: singleton
+
+  aSimpleDependency:
+    class: ClassSimpleYAML7
+    scope: singleton
+
+  anotherSimpleDependency:
+    class: ClassSimpleYAML8
+    scope: singleton
+
+  aSimpleMethodLookupBean:
+    class: ClassSimpleYAML10
+    scope: singleton
+    lookup-methods: !!map
+      createAnotherBean: aSimpleSingletonBean
+
+  aSimpleBeanFactoryNoArgs:
+    class: ClassSimpleYAML11
+    scope: singleton
+    factory-method: getInstanceNoArgs
+
+  aSimpleBeanFactory:
+    class: ClassSimpleYAML11
+    scope: singleton
+    factory-method: getInstance
+    constructor-args:
+      - value1
+      - value2
+      - value3
+
+  aSimpleBeanFactoryFromOtherBeanNoArgs:
+    class: ClassSimpleYAML11
+    scope: singleton
+    factory-method: factoryMethodNoArgs
+    factory-bean: aSimpleBeanFactory
+
+  aSimpleBeanFactoryFromOtherBean:
+    class: ClassSimpleYAML11
+    scope: singleton
+    factory-method: factoryMethod
+    factory-bean: aSimpleBeanFactory
+    constructor-args:
+      - value1
+      - value2
+      - value3
+  aSimpleSetArgBean2:
+    class: ClassSimpleYAML12
+    scope: singleton
+    name: someAliasedName
+    properties: !!map
+      value:
+        value: 1a$
+      "true":
+        value: true
+      "false":
+        value: false
+      "null":
+        value: null
+      "evaledCode":
+        eval: return "evaled code";
+      "ref":
+        ref: aSimpleSingletonBean
+      "innerBean":
+        bean:
+          class: ClassSimpleYAML
+          scope: singleton
+      "array": 
+        value: !!map
+          key1:
+            value: 1a$
+          key2:
+            value: true
+          key3:
+            value: false
+          key4:
+            value: null
+          key5:
+            eval: return "evaled code";
+          key6:
+            ref: aSimpleSingletonBean
+          key7:
+            bean:
+              class: ClassSimpleYAML
+              scope: singleton
+          key8:
+            value: !!map
+              key:
+                value: e
+  invalidScopeBean:
+    scope: blah
+    class: ClassSimpleYAML
+  aDependencyBean:
+    class: DependencyBean
+    scope: singleton
+  globalAliasedBean:
+    scope: singleton
+    class: ChildBeanYaml
+  aspectBean:
+    class: AspectBean
+    scope: singleton
+  parentBean:
+    abstract: true
+    properties: !!map
+      someProperty:
+        value: inheritedValue
+  childBean:
+    parent: parentBean
+    class: ChildBeanYaml
+    scope: singleton
+import:
+  - someOtherFile.yaml
+
+alias: !!map
+  childBean: globalAliasedBean
