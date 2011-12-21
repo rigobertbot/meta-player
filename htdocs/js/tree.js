@@ -7,6 +7,12 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
+function Tree() {
+    this.loadSuccessEvent =  "loadSuccess";//$.Event("loadSuccess");
+}
+
+mainTree = new Tree();
+
 function initMetaTree() {
     easyloader.load('treegrid', function(){
         $.extend($.fn.treegrid.defaults, {
@@ -19,6 +25,9 @@ function initMetaTree() {
                     left: e.pageX,
                     top: e.pageY
                 });
+            },
+            onLoadSuccess: function (row, data) {
+                $(mainTree).trigger(mainTree.loadSuccessEvent, [row, data]);
             }
         });
     });
@@ -94,13 +103,33 @@ function fillPlaylist(playlist) {
     }
 }
 
-function checkLoaded() {
+function recurseExpand(index, node) {
+    if (node.state == "open") {
+        if (node.children && $.isArray(node.children)) {
+            $(node.children).each(recurseExpand);
+        }
+    } else {
+        console.log("bind ", ".recurseExpand" + node.getId())
+        $(mainTree).bind(mainTree.loadSuccessEvent + ".recurseExpand" + node.getId(), function (event, parent, data) {
+            recurseExpand(-1, parent);
+            console.log("unbind ", ".recurseExpand" + parent.getId())
+            $(mainTree).unbind(mainTree.loadSuccessEvent + ".recurseExpand" + parent.getId());
+        });
+        $('#metaTree').treegrid('expand', node.getId());
+    }
     
+    
+}
+
+function expandSelected() {
+    var selected = $('#metaTree').treegrid('getSelections');
+    $(selected).each(recurseExpand);
 }
             
 function play() {
+    expandSelected();
     mainPlaylist.clean();
     fillPlaylist(mainPlaylist);
     mainPlaylist.play();
-    $('#bodyAccordion').accordion('select', 'Плейлист');
+    //$('#bodyAccordion').accordion('select', 'Плейлист');
 }
