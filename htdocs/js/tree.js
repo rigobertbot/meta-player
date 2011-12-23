@@ -9,6 +9,7 @@
  */
 function Tree() {
     this.loadSuccessEvent =  "loadSuccess";//$.Event("loadSuccess");
+    this.expandedEvent = "expanded";
 }
 
 mainTree = new Tree();
@@ -27,7 +28,11 @@ function initMetaTree() {
                 });
             },
             onLoadSuccess: function (row, data) {
-                $(mainTree).trigger(mainTree.loadSuccessEvent, [row, data]);
+                // load is ovverided in the beforLoad method, and it has own 'loadSuccess' event.
+                // $(mainTree).trigger(mainTree.loadSuccessEvent, [row, data]);
+            },
+            onExpand: function (row) {
+                $(mainTree).trigger(mainTree.expandedEvent, [row]);
             }
         });
     });
@@ -37,19 +42,23 @@ function beforeLoad(row, node){
     if (row === null) {
         $(this).treegrid('loading');
         new BandRepository().list(function (resultData) {
-            $('#metaTree').treegrid('loaded')
-                .treegrid('loadData', resultData);
+            $('#metaTree')
+                .treegrid('loadData', resultData)
+                .treegrid('loaded');
+            $(mainTree).trigger(mainTree.loadSuccessEvent, [null, resultData]);
         });
     } else {
         $('#metaTree').treegrid('collapse', row.getId());
         $(this).treegrid('loading');
         row.loadChildren(function (resultData) {
-            $('#metaTree').treegrid('loaded')
+            $('#metaTree')
                 .treegrid('append', {
                     parent: row.getId(), 
                     data: resultData
                 })
-                .treegrid('expand', row.getId());
+                .treegrid('expand', row.getId())
+                .treegrid('loaded');
+            $(mainTree).trigger(mainTree.loadSuccessEvent, [row, resultData]);
         });
     }
     return false;
@@ -67,14 +76,14 @@ function recursePlaylist(node, selected, playlist, traverseToken) {
             if (childNoSelected === null) {
                 continue;
             }
-            if (!childNoSelected && child instanceof TrackNode) {
+            if (!childNoSelected && child.isLeaf()) {
                 playlist.push(child);
             }
             noSelected &= childNoSelected;
         }
         
         // adds all child nodes if no one node selected and if it TrackNode
-        if (noSelected && node.children[0] instanceof TrackNode) {
+        if (noSelected && node.children[0].isLeaf()) {
             $(node.children).each(function (index, child) {
                 playlist.push(child);
             });
@@ -93,8 +102,8 @@ function fillPlaylist(playlist) {
     var traverseToken = new Date().getTime();
     for (var index in selected) {
         var node = selected[index];
-        $('#metaTree').treegrid('expandAll', node.getId());
-        if (node instanceof TrackNode) {
+        //$('#metaTree').treegrid('expandAll', node.getId());
+        if (node.isLeaf()) {
             node.traverseToken = traverseToken;
             playlist.push(node);
             continue;
@@ -103,33 +112,58 @@ function fillPlaylist(playlist) {
     }
 }
 
-function recurseExpand(index, node) {
-    if (node.state == "open") {
-        if (node.children && $.isArray(node.children)) {
-            $(node.children).each(recurseExpand);
+var loadingCounter = 0;
+
+function recurseLoad(node, onLoadedCallback) {
+    if (node.isLeaf())
+        return;
+    
+    if (node.children && $.isArray(node.children)) {
+        $(node.children).each(function (i, child) {
+            loadingCounter ++;
+            recurseLoad(child, onLoadedCallback);
+            loadingCounter --;
+        });
+        if (loadingCounter === 0) {
+            onLoadedCallback();
         }
     } else {
-        console.log("bind ", ".recurseExpand" + node.getId())
-        $(mainTree).bind(mainTree.loadSuccessEvent + ".recurseExpand" + node.getId(), function (event, parent, data) {
-            recurseExpand(-1, parent);
-            console.log("unbind ", ".recurseExpand" + parent.getId())
-            $(mainTree).unbind(mainTree.loadSuccessEvent + ".recurseExpand" + parent.getId());
+        $(mainTree).bind(mainTree.loadSuccessEvent + ".recurseExpand" + node.getId(), function (event, parent, loadedNodes) {
+            loadingCounter --;
+            
+            //console.log("collapse ", node.getId());
+            //$('#metaTree').treegrid('collapse', node.getId());
+
+            $(loadedNodes).each(function (i, child) {
+                recurseLoad(child, onLoadedCallback);
+            });
+            $(mainTree).unbind(mainTree.loadSuccessEvent + ".recurseExpand" + node.getId());
+
+            if (loadingCounter === 0) {
+                onLoadedCallback();
+            }
         });
+        //console.log("expand ", node.getId());
+        loadingCounter ++;
         $('#metaTree').treegrid('expand', node.getId());
     }
     
     
 }
 
-function expandSelected() {
+function loadSelected(onLoadedCallback) {
+    loadingCounter = 0;
     var selected = $('#metaTree').treegrid('getSelections');
-    $(selected).each(recurseExpand);
+    $(selected).each(function(i, node) {
+        recurseLoad(node, onLoadedCallback);
+    });
 }
-            
+
 function play() {
-    expandSelected();
-    mainPlaylist.clean();
-    fillPlaylist(mainPlaylist);
-    mainPlaylist.play();
-    //$('#bodyAccordion').accordion('select', 'Плейлист');
+    loadSelected(function() {
+        mainPlaylist.clean();
+        fillPlaylist(mainPlaylist);
+        mainPlaylist.play();
+        $('#bodyAccordion').accordion('select', 'Плейлист');
+    });
 }

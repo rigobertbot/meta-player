@@ -19,6 +19,8 @@ function Node() {
     this.state = "closed";
     this.checked = false;
     this.traverseToken = null;
+    // Means node has no children.
+    this.leaf = false;
 }
 
 Node.prototype.constructor = Node;
@@ -26,8 +28,9 @@ Node.prototype.constructor = Node;
 Node.prototype._wakeup = function () {
     this.serverId = this.id;
 };
-Node.prototype.loadChildren = function (callback) {};
-Node.prototype.getId = function () {return this.id;};
+Node.prototype.loadChildren = function (callback) {}
+Node.prototype.getId = function () { return this.id; }
+Node.prototype.isLeaf = function () { return this.leaf; }
 
 /***************************************
  *************** BandNode **************
@@ -89,6 +92,7 @@ function TrackNode() {
     this.durationMs = null;
     this.queries = null;
     this.url = null;
+    this.searchTries = 0;
 }
 
 TrackNode.prototype = new Node();
@@ -107,7 +111,11 @@ TrackNode.prototype.setUrl = function (url) {
     }
 }
 TrackNode.prototype.getUrl = function () {return this.url;}
-TrackNode.prototype.urlSetted = function () {};
+TrackNode.prototype.urlSetted = function () {}
+/**
+ * Increment and return previous value.
+ */
+TrackNode.prototype.incSearchTries = function() { return this.searchTries ++; }
 
 
 TrackNode.prototype.getQuery = function (strictLevel) {
@@ -124,5 +132,6 @@ TrackNode.prototype._wakeup = function () {
     this.state = null;
     this.durationMs = this.duration;
     this.setDuration(this.durationMs);
+    this.leaf = true;
 };
 

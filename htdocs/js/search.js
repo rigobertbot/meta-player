@@ -7,6 +7,8 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
+var maximumSearchTries = 5;
+
 function search(track, it, callback) {
     var query = track.getQuery(it);
     if (query === false) {
@@ -23,10 +25,16 @@ function search(track, it, callback) {
             data = data.response;
             if (!data || !$.isArray(data) || data.length < 2) {
                 console.log("Search failed", track, data);
+                addToSearch(track);
                 return;
             }
 
             var count = data.shift();
+            if (count == 0) {
+                console.log("Empty result for query", it, query);
+                search(it + 1);
+                return;
+            }
             var nearestDelta = 4294967295;
             var nearestResult = null;
             for (var index in data) {
@@ -53,22 +61,26 @@ function search(track, it, callback) {
         })
 }
 
-searchQueue = [];
+var searchQueue = [];
 
 setInterval(function () {
     var track = searchQueue.shift();
-    while (track) {
+    if (track) {
         var url = track.getUrl();
         if (!url || url === null) {
             search(track, 0);
         }
-        track = searchQueue.shift();
+        // track = searchQueue.shift();
     }
-}, 250);
+}, 500);
 
 function addToSearch (track) {
     var url = track.getUrl();
     if (!url || url === null) {
+        if (track.incSearchTries() > maximumSearchTries) {
+            console.log("Maximum search tries reached", track);
+            return;
+        }
         searchQueue.push(track);
     }
 }
