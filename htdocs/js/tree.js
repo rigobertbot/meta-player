@@ -45,6 +45,7 @@ function beforeLoad(row, node){
             $('#metaTree')
                 .treegrid('loadData', resultData)
                 .treegrid('loaded');
+            //console.log("root node loaded");
             $(mainTree).trigger(mainTree.loadSuccessEvent, [null, resultData]);
         });
     } else {
@@ -58,6 +59,8 @@ function beforeLoad(row, node){
                 })
                 .treegrid('expand', row.getId())
                 .treegrid('loaded');
+            
+            //console.log("data appended", resultData);
             $(mainTree).trigger(mainTree.loadSuccessEvent, [row, resultData]);
         });
     }
@@ -129,10 +132,14 @@ function recurseLoad(node, onLoadedCallback) {
         }
     } else {
         $(mainTree).bind(mainTree.loadSuccessEvent + ".recurseExpand" + node.getId(), function (event, parent, loadedNodes) {
+            // i want catch only event's of top context node
+            if (parent !== node) {
+                return;
+            }
             loadingCounter --;
             
             //console.log("collapse ", node.getId());
-            //$('#metaTree').treegrid('collapse', node.getId());
+            $('#metaTree').treegrid('collapse', node.getId());
 
             $(loadedNodes).each(function (i, child) {
                 recurseLoad(child, onLoadedCallback);
