@@ -8,10 +8,32 @@
  * 
  */
 function Player() {
+    this.onStartPlayingEvent = "startPlaying";
+    
+    this.paused = false;
+    
     this.init = function () {
+        var that = this;
         $('#mainPlayer').jPlayer({
             ready: function () {
                 console.log("player ready");
+                $('.jp-play').bind('click', function () {
+                    that.paused = false;
+                });
+                $('.jp-pluse').bind('click', function () {
+                    that.paused = true;
+                })
+                $('.jp-play').bind('click', function () {
+                    console.log("click cought, paused", that.paused);
+                    if (!that.paused) {
+                        $(that).trigger(that.onStartPlayingEvent, []);
+                    }
+                });
+                $('.jp-stop').bind('click', function () {
+                    that.paused = false; 
+                    console.log('media cleared, paused', that.paused);
+                    $(this).jPlayer('clearMedia');
+                });
             },
             swfPath: "/js",
             supplied: "mp3"
@@ -19,12 +41,25 @@ function Player() {
     }
     
     this.play = function (node) {
-        $('#mainPlayer').jPlayer("setMedia", {mp3: node.getUrl()});
-        $('#mainPlayer').jPlayer("play");
+        $('#mainPlayer').jPlayer("setMedia", {mp3: node.getUrl()})
+                        .jPlayer("play");
+        $('.jp-title').text(node.getName());
     }
     
     this.onEnded = function (callback) {
         $('#mainPlayer').bind($.jPlayer.event.ended, callback);
+    }
+    
+    this.onStartPlaying = function (callback) {
+        $(this).bind(this.onStartPlayingEvent, callback);
+    }
+    
+    this.onNext = function (callback) {
+        $('.jp-next').bind('click', callback);
+    }
+    
+    this.onPrevious = function (callback) {
+        $('.jp-previous').bind('click', callback);
     }
 }
 

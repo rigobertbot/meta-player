@@ -10,6 +10,26 @@
 function Tree() {
     this.loadSuccessEvent =  "loadSuccess";//$.Event("loadSuccess");
     this.expandedEvent = "expanded";
+    
+    this.init = function () {
+        initMetaTree();
+        
+        var that = this;
+        mainPlayer.onStartPlaying(function () {
+            that.startPlay();
+        });
+    }
+    
+    this.isSelected = function () {
+        var panel = $('#bodyAccordion').accordion('getSelected');
+        return panel.attr('id') == 'treeAccordion';
+    }
+    
+    this.startPlay = function () {
+        if (this.isSelected()) {
+            play();
+        }
+    }
 }
 
 mainTree = new Tree();
@@ -167,6 +187,7 @@ function loadSelected(onLoadedCallback) {
 }
 
 function play() {
+    // enshure that all child nodes loaded
     loadSelected(function() {
         mainPlaylist.clean();
         fillPlaylist(mainPlaylist);

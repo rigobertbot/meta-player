@@ -31,6 +31,7 @@ Node.prototype._wakeup = function () {
 Node.prototype.loadChildren = function (callback) {}
 Node.prototype.getId = function () { return this.id; }
 Node.prototype.isLeaf = function () { return this.leaf; }
+Node.prototype.getName = function () { return this.name; }
 
 /***************************************
  *************** BandNode **************
