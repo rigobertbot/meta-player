@@ -12,7 +12,7 @@
 
 namespace Oak\MVC;
 
-use Ding\MVC\ModelAndView;
+use Ding\Mvc\ModelAndView;
 
 /**
  * The class JsonViewModel handles mapping between view and model for JSON output.

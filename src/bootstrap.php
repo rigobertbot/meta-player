@@ -9,7 +9,6 @@
   *  
  */
 $projectRoot = realpath(__DIR__ . '/../');
-error_log($projectRoot);
 
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, array(
             $projectRoot . '/library', // for namespaced direct libraries
@@ -28,7 +27,6 @@ require_once 'Ding/Autoloader/Autoloader.php';
 
 $logger = \Logger::getLogger("bootstrap");
 $config = include $projectRoot . '/config/ding.config.php';
-
 $container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
 $logger->debug("container initialized");
 $checkContainer = $container->getBean("container");
