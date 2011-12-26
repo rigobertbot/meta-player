@@ -6,9 +6,17 @@
         </layout>        
         <param name="file" value="../log/meatplayer.log" />
     </appender>
-    
     <root>
-        <level value="INFO" />
+        <level value="info" />
         <appender_ref ref="MainFileAppender" />
     </root>
+
+    <logger name="MetaPlayer">
+	<level value="trace" />
+        <appender_ref ref="MainFileAppender" />
+    </logger>
+    <logger name="MetaPlayer.bootstrap">
+	<level value="debug" />
+        <appender_ref ref="MainFileAppender" />
+    </logger>
 </log4php:configuration>

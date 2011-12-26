@@ -12,7 +12,7 @@
 namespace MetaPlayer\Controller;
 
 use \Ding\Logger\ILoggerAware;
-use \Ding\MVC\ModelAndView;
+use \Ding\Mvc\ModelAndView;
 /**
  * Description of ExceptionController
  *

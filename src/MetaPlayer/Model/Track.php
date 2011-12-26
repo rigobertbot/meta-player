@@ -15,12 +15,14 @@ namespace MetaPlayer\Model;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * Description of Track
  * @Entity(repositoryClass="MetaPlayer\Repository\TrackRepository")
+ * @Table(name="track")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 class Track 

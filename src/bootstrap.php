@@ -29,6 +29,7 @@ $logger = \Logger::getLogger("MetaPlayer.bootstrap");
 $config = include $projectRoot . '/config/ding.config.php';
 $container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
 $logger->debug("container initialized");
+$logger->trace("container initialized trace");
 $checkContainer = $container->getBean("container");
 if ($container != $checkContainer) {
     $logger->error("container was not successfully self registered");
@@ -36,7 +37,7 @@ if ($container != $checkContainer) {
 
 set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext) {
     global $logger;
-    $logger->fatal("Unhandled Error: $errstr\n $errfile ($errline) [$errno]");
+    $logger->warn("Unhandled Error: $errstr\n $errfile ($errline) [$errno]");
 }, E_ALL);
 
 register_shutdown_function(function () {
