@@ -25,7 +25,7 @@ require_once $projectRoot . '/config/app.config.php';
 require_once 'Ding/Autoloader/Autoloader.php';
 \Ding\Autoloader\Autoloader::register();
 
-$logger = \Logger::getLogger("bootstrap");
+$logger = \Logger::getLogger("MetaPlayer.bootstrap");
 $config = include $projectRoot . '/config/ding.config.php';
 $container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
 $logger->debug("container initialized");

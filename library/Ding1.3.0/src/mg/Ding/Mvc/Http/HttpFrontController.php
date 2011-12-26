@@ -134,7 +134,7 @@ class HttpFrontController
             $mapper = $container->getBean('HttpUrlMapper');
             self::dispatch($dispatcher, $viewResolver, $action, $mapper, $render);
         } catch(\Exception $exception) {
-            self::$_logger->debug('Got Exception: ' . $exception);
+            self::$_logger->error('Got Exception: ' . $exception);
             ob_end_clean();
             ob_start();
             if ($exceptionMapper === false) {
