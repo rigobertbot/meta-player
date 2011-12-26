@@ -8,7 +8,8 @@
   * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
   *  
  */
-$projectRoot = realpath(__DIR__ . '../../');
+$projectRoot = realpath(__DIR__ . '/../');
+error_log($projectRoot);
 
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, array(
             $projectRoot . '/library', // for namespaced direct libraries
