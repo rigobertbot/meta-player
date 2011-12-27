@@ -14,11 +14,13 @@ namespace MetaPlayer\Model;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\GeneratedValue;
 /**
  * The Band
  *
  * @Entity(repositoryClass="MetaPlayer\Repository\BandRepository")
+ * @Table(name="band")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 class Band 
