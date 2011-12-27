@@ -22,7 +22,7 @@
         <script type="text/javascript">
             VK.init(function() {
                 VK.api('getUserSettings', {test_mode: 1}, function(data) {
-                    if (data.response & 8 !== 8) {
+                    if ((data.response & 8) !== 8) {
                         VK.callMethod('showSettingsBox', 8);
                     }
                 });
