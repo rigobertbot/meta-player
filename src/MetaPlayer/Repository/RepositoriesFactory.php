@@ -52,5 +52,21 @@ class RepositoriesFactory
     public function getTrackRepository() {
         return $this->entityManager->getRepository('MetaPlayer\Model\Track');
     }
+    
+    /**
+     * @Bean(name={userRepository, UserRepository})
+     * @return UserRepository
+     */
+    public function getUserRepository() {
+        return $this->entityManager->getRepository('MetaPlayer\Model\User');
+    }
+    
+    /**
+     * @Bean(name={userBandRepository, UserBandRepository})
+     * @return UserBandRepository
+     */
+    public function getUserBandRepository() {
+        return $this->entityManager->getRepository('MetaPlayer\Model\UserBand');
+    }
 
 }

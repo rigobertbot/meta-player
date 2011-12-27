@@ -29,7 +29,23 @@ class ViewHelper
      * @return string
      */
     public static function formatDate(\DateTime $date) {
+        if ($date == null) {
+            return null;
+        }
         return $date->format(self::$dateFormat);
+    }
+    
+    /**
+     * Parces date from the specified string to DateTime
+     *
+     * @param string $date
+     * @return \DateTime
+     */
+    public static function parceDate($date) {
+        if ($date == null || empty($date)) {
+            return null;
+        }
+        return \DateTime::createFromFormat(self::$dateFormat, $date);
     }
     
     /**

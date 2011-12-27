@@ -12,10 +12,12 @@
 
 namespace MetaPlayer\Controller;
 
+use MetaPlayer\JsonException;
 use MetaPlayer\Repository\AlbumRepository;
 use Oak\MVC\JsonViewModel;
 use MetaPlayer\Model\Album;
 use MetaPlayer\ViewHelper;
+use Ding\Logger\ILoggerAware;
 
 /**
  * Description of AlbumController
@@ -24,8 +26,13 @@ use MetaPlayer\ViewHelper;
  * @Controller
  * @RequestMapping(url={/album/})
  */
-class AlbumController extends BaseSecurityController
+class AlbumController extends BaseSecurityController implements ILoggerAware
 {
+    /**
+     * @var \Logger
+     */
+    private $logger;
+    
     /**
      * @Resource
      * @var AlbumRepository
@@ -49,5 +56,17 @@ class AlbumController extends BaseSecurityController
         }
         
         return new JsonViewModel($data);
+    }
+    
+    public function addAction($data) {
+        $object = json_decode($data);
+        if ($object == null) {
+            throw new JsonException("Wrong or empty json.");
+        }
+        
+    }
+
+    public function setLogger(\Logger $logger) {
+        $this->logger = $logger;
     }
 }

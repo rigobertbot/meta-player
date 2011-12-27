@@ -12,6 +12,8 @@
 
 namespace MetaPlayer\Manager;
 use Ding\Logger\ILoggerAware;
+use MetaPlayer\Repository\UserRepository;
+use MetaPlayer\Model\User;
 
 /**
  * The SecurityManager provides security mehods and manages session.
@@ -30,6 +32,12 @@ class SecurityManager implements ILoggerAware
     private $logger;
     
     /**
+     * @Resource
+     * @var UserRepository
+     */
+    private $userRepository;
+    
+    /**
      * Init session.
      */
     public function init() {
@@ -42,13 +50,22 @@ class SecurityManager implements ILoggerAware
      * @param int $viewerId 
      */
     public function authenticate($viewerId) {
-        if ($this->isAuthenticated()) {
-            $currentUserId = $_SESSION[self::USER_ID];
-            if ($currentUserId != $viewerId) {
+        $user = $this->getUser();
+        if ($user != null) {
+            if ($user->getVkId() != $viewerId) {
+                $currentUserId = $user->getVkId();
                 $this->logger->warn("User $currentUserId replaced with $viewerId.");
             }
+        } else {
+            $user = $this->userRepository->findOneByVkId($viewerId);
         }
-        $_SESSION[self::USER_ID] = $viewerId;
+        
+        if ($user == null) {
+            $user = new User($viewerId);
+            $this->userRepository->persistAndFlush($user);
+        }
+        
+        $_SESSION[self::USER_ID] = $user->getId();
     }
     
     /**
@@ -58,6 +75,23 @@ class SecurityManager implements ILoggerAware
      */
     public function isAuthenticated() {
         return array_key_exists(self::USER_ID, $_SESSION);
+    }
+    
+    /**
+     * Get current user id.
+     *
+     * @return int
+     */
+    public function getUserId() {
+        return $_SESSION[self::USER_ID];
+    }
+    
+    /**
+     * Get current authenticated use or null.
+     * @return User
+     */
+    public function getUser() {
+        return $this->userRepository->find($this->getUserId());
     }
 
     public function setLogger(\Logger $logger) {

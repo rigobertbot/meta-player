@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 class Band 
 {
     /**
-     * @Id @Column(type="integer")
+     * @Id @Column(type="bigint")
      * @GeneratedValue
      * @var int
      */

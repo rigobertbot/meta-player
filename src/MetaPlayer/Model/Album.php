@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 class Album 
 {
     /**
-     * @Id @Column(type="integer")
+     * @Id @Column(type="bigint")
      * @GeneratedValue
      * @var int
      */

@@ -11,8 +11,10 @@
  */
 namespace MetaPlayer\Controller;
 
-use \Ding\Logger\ILoggerAware;
-use \Ding\Mvc\ModelAndView;
+use Ding\Logger\ILoggerAware;
+use Ding\Mvc\ModelAndView;
+use Oak\MVC\JsonViewModel;
+use Oak\Json\JsonUtils;
 /**
  * Description of ExceptionController
  *
@@ -30,9 +32,19 @@ class ExceptionController implements ILoggerAware
      */
     private $logger;
     
+    /**
+     * @Resource
+     * @var JsonUtils
+     */
+    private $jsonUtils;
+    
     public function _exceptionAction($exception)
     {
         return new ModelAndView("Exception\exception", array('exception' => $exception));
+    }
+    
+    public function metaPlayer_JsonExceptionAction(\Exception $exception) {
+        return new JsonViewModel(array('error' => array('code' => $exception->getCode(), 'message' => $exception->getMessage())), $this->jsonUtils);
     }
 
     public function setLogger(\Logger $logger) {

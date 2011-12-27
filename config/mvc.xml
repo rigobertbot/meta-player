@@ -7,6 +7,16 @@
                 <entry key="0">
                     <array>
                         <entry key="0">
+                            <value>MetaPlayer\JsonException</value>
+                        </entry>
+                        <entry key="1">
+                            <ref bean="ExceptionController"/>
+                        </entry>
+                    </array>
+                </entry>            
+                <entry key="1">
+                    <array>
+                        <entry key="0">
                             <value>\Exception</value>
                         </entry>
                         <entry key="1">

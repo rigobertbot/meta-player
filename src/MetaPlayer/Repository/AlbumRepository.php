@@ -1,5 +1,4 @@
 <?php
-
 /*
  * MetaPlayer 1.0
  *

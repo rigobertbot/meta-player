@@ -17,6 +17,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, a
             $projectRoot . '/library/Doctrine/lib',
             $projectRoot . '/library/Doctrine/lib/vendor/doctrine-common/lib',
             $projectRoot . '/library/Doctrine/lib/vendor/doctrine-dbal/lib',
+            $projectRoot . '/library/FastJSON', // FastJSON
             $projectRoot . '/src',
         )));
 

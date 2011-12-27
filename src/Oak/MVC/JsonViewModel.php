@@ -21,9 +21,9 @@ use Ding\Mvc\ModelAndView;
  */
 class JsonViewModel extends ModelAndView
 {
-    public function __construct($object) {
+    public function __construct($object, \Oak\Json\JsonUtils $jsonUtils) {
         $options = array(
-            'json' => json_encode($object),
+            'json' => $jsonUtils->serialize($object),
             'headers' => array(
                 'Cache-Control: no-cache, must-revalidate', 
                 'Expires: Mon, 26 Jul 1997 05:00:00 GMT', //date in the past

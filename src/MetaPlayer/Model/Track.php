@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 class Track 
 {
     /**
-     * @Id @Column(type="integer")
+     * @Id @Column(type="bigint")
      * @GeneratedValue
      * @var integer
      */
@@ -44,12 +44,12 @@ class Track
      */
     protected $title;
     /**
-     * @Column(type="integer");
+     * @Column(type="bigint");
      * @var int
      */
     protected $duration;
     /**
-     * @Column(type="integer")
+     * @Column(type="bigint")
      * @var int
      */
     protected $serial;
