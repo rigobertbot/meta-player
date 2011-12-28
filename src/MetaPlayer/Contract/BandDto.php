@@ -11,7 +11,6 @@
  */
 
 namespace MetaPlayer\Contract;
-use MetaPlayer\Model\Band;
 
 /**
  * Description of Band

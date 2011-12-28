@@ -23,7 +23,7 @@ class BaseSecurityController
 {
     /**
      * @Resource
-     * @var SecurityManager
+     * @var \MetaPlayer\Manager\SecurityManager
      */
     protected $securityManager;
 

@@ -11,7 +11,58 @@ $(document).ready(function () {
     mainPlayer.init();
     mainTree.init();
     mainPlaylist.init();
+
+    easyloader.load('combobox', function(){
+        $('#bandList').combobox({onSelect: function (record) {
+            $('#albumList').combobox('reload', 'album/listUser?bandId=' + record.id);
+        }});
+    });
+    easyloader.load('form', function () {
+        $('#editTreeForm').form({
+            onSubmit: function () {
+                // recalculate track duration
+                $('#trackDuration').val(parseInt($('#trackDurationMM').val()) * 60 + parseInt($('#trackDurationSS').val()));
+
+                if ($(this).form('validate')) {
+                    alert('submit');
+                }
+                return false;
+            }
+        });
+        albumRow = $('#editRowAlbum').parent();
+        trackRow = $('#editRowTrack').parent();
+        editTypeChanged($('#editTypeBand'));
+    });
 });
+
+var albumRow = null;
+var trackRow = null;
+
+function editTypeChanged(radio) {
+    switch ($(radio).val()) {
+        case 'band':
+            $('#editRowAlbum').fadeOut(function () {
+                $('#hiddenFormElements').append($('#editRowAlbum'));
+            });
+            $('#editRowTrack').fadeOut(function () {
+                $('#hiddenFormElements').append($('#editRowTrack'));
+            });
+            break;
+        case 'album':
+            $(albumRow).append($('#editRowAlbum'));
+            $('#editRowAlbum').fadeIn();
+            $('#editRowTrack').fadeOut(function() {
+                $('#hiddenFormElements').append($('#editRowTrack'));
+            });
+            break;
+        case 'track':
+            $(albumRow).append($('#editRowAlbum'));
+            $('#editRowAlbum').fadeIn();
+            $(trackRow).append($('#editRowTrack'));
+            $('#editRowTrack').fadeIn();
+            break;
+    }
+}
 
 window.setInterval(function () {
     // resize widgets

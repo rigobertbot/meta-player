@@ -33,7 +33,7 @@ use MetaPlayer\JsonException;
  */
 class BandController extends BaseSecurityController implements ILoggerAware
 {
-    
+    public static $userBandIdPrefix = "user_";
     /**
      * @Resource
      * @var BandRepository
@@ -42,7 +42,7 @@ class BandController extends BaseSecurityController implements ILoggerAware
     
     /**
      * @Resource
-     * @var UserBandRepository
+     * @var \MetaPlayer\Repository\UserBandRepository
      */
     private $userBandRepository;
     
@@ -71,8 +71,13 @@ class BandController extends BaseSecurityController implements ILoggerAware
         
         foreach ($bands as $band) {
             /* @var $band Band */
+            $id = $band->getId();
+            if ($band instanceof UserBand) {
+                $id = self::$userBandIdPrefix . $id;
+            }
+            
             $bandDto = new BandDto();
-            $bandDto->id = $band->getId();
+            $bandDto->id = $id;
             $bandDto->name = $band->getName();
             $bandDto->foundDate = ViewHelper::formatDate($band->getFoundDate());
             $bandDto->endDate = ViewHelper::formatDate($band->getEndDate());
@@ -82,24 +87,36 @@ class BandController extends BaseSecurityController implements ILoggerAware
         
         return new JsonViewModel($data, $this->jsonUtils);
     }
+
+    public function listUserAction() {
+        $userBands = $this->userBandRepository->findNotApproved($this->securityManager->getUser());
+        $result = array();
+        foreach ($userBands as $userBand) {
+
+            $dto = array('id' => $userBand->getId(), 'name' => $userBand->getName());
+            $result[] = $dto;
+        }
+
+        return new JsonViewModel($result, $this->jsonUtils);;
+    }
     
     public function addAction($json) {
         $bandDto = $this->jsonUtils->deserialize($json);
+        /* @var $bandDto BandDto */
         if (!$bandDto instanceof BandDto) {
             $this->logger->error("json shuld be instance of BandDto but got " . print_r($bandDto, true));
             throw new JsonException("Wrong json format.");
         }
         
-        /* @var $bandDto BandDto */
-        
         $userBand = new UserBand(
                 $this->securityManager->getUser(), 
                 $bandDto->name, 
-                ViewHelper::parceDate($bandDto->foundDate), 
+                ViewHelper::parseDate($bandDto->foundDate), 
                 $bandDto->source, 
-                ViewHelper::parceDate($bandDto->endDate));
+                ViewHelper::parseDate($bandDto->endDate));
         
         $this->userBandRepository->persist($userBand);
+        $this->userBandRepository->flush();
     }
 
     public function setLogger(\Logger $logger) {

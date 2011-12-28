@@ -25,14 +25,12 @@
     <body>
         <div id="mainHeader">
         </div>
-        
-        
-        
+
         <div id="mainBody" class="easyui-layout" style="width: 650px; height: 540px;">
             <div id="bodyTree" region="south" title="Каталог" split="true" style="height: 400px;">
                 <div id="bodyAccordion" class="easyui-accordion">
                     <div id="treeAccordion" selected="true" title="MetaTree">
-                        <table id="metaTree" style="height: 300px"
+                        <table id="metaTree" style="height: 288px"
                                class="easyui-treegrid" url=""
                                nowrap="true" rownumbers="false" animate="true" singleSelect="false"
                                idField="id" treeField="name">
@@ -57,6 +55,65 @@
                                 </tr>
                             </thead>
                         </table>
+                    </div>
+                    <div id="editTreeAccordion" title="Редактировать">
+                        <form id="editTreeForm" action="" method="post">
+                            <table>
+                                <tr>
+                                    <td align="right">
+                                        <label for="editTypeBand">Band</label>
+                                        <input type="radio" id="editTypeBand" name="editType" value="band" checked="checked" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
+                                    </td>
+                                    <td>
+                                        <select name="bandList" id="bandList" class="easyui-combobox" valueField="id" textField="name" mode="remote" url="/band/listUser" method="get" required="true" missingMessage="Выберите или введите название группы."></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right">
+                                        <label for="editTypeAlbum">Album</label>
+                                        <input id="editTypeAlbum" type="radio" name="editType" value="album" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
+                                    </td>
+                                    <td id="editRowAlbum">
+                                        <select name="albumList" id="albumList" class="easyui-combobox" valueField="id" textField="name" mode="remote" url="/album/listUser" method="get" required="true" missingMessage="Выберите или введите название альбома."></select>
+                                    </td>
+                                </tr>
+                                <tr valign="top">
+                                    <td align="right">
+                                        <label for="editTypeTrack">Track</label>
+                                        <input id="editTypeTrack" type="radio" name="editType" value="track" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
+                                    </td>
+                                    <td id="editRowTrack">
+                                        <table>
+                                            <tr>
+                                                <td>Title</td>
+                                                <td><input type="text" name="trackTitle" id="trackTitle" 
+                                                           class="easyui-validatebox" required="true" missingMessage="Введите название композиции."></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Duration</td>
+                                                <td>
+                                                    <input type="text" name="trackDurationMM" id="trackDurationMM" size="2" maxlength="3" class="easyui-numberspinner" required="true" min="0" max="999" value="0" editable="true">:
+                                                    <input type="text" name="trackDurationSS" id="trackDurationSS" size="2" class="easyui-numberspinner" required="true" min="1" value="0" max="60" editable="true">
+                                                    <input type="hidden" name="trackDuration" id="trackDuration">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Serial</td>
+                                                <td><input type="text" name="trackSerial" id="trackSerial" size="3" class="easyui-numberspinner" min="1" required="true" missingMessage="Укажите порядковый номер композиции в альбоме."></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Source</td>
+                                    <td><input type="text" name="editSource" id="editSource" class="easyui-validatebox" required="true"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="button" name="submit" onclick="$('#editTreeForm').submit();" value="Add"></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <div id="hiddenFormElements" style="display: none"></div>
                     </div>
                 </div>
                 <div id="treeMenu" class="easyui-menu" style="width:120px;">

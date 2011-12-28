@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
  * @Table(name="user_band")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class UserBand extends Band {
+class UserBand extends BaseBand {
     /**
      * @ManyToOne(targetEntity="User")
      * @var User
@@ -43,7 +43,7 @@ class UserBand extends Band {
      * @Column(type="boolean", nullable=true, name="is_approved")
      * @var bool
      */
-    protected $isApproved;
+    protected $isApproved = false;
     
     public function __construct(User $user, $name, \DateTime $foundDate, $source, \DateTime $endDate = null) {
         parent::__construct($name, $foundDate, $endDate);

@@ -36,12 +36,12 @@ class ViewHelper
     }
     
     /**
-     * Parces date from the specified string to DateTime
+     * Parses date from the specified string to DateTime
      *
      * @param string $date
      * @return \DateTime
      */
-    public static function parceDate($date) {
+    public static function parseDate($date) {
         if ($date == null || empty($date)) {
             return null;
         }

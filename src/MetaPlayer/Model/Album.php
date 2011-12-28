@@ -25,29 +25,13 @@ use Doctrine\ORM\Mapping\ManyToOne;
  * @Table(name="album")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class Album 
+class Album extends BaseAlbum
 {
-    /**
-     * @Id @Column(type="bigint")
-     * @GeneratedValue
-     * @var int
-     */
-    protected $id;
     /**
      * @ManyToOne(targetEntity="Band")
      * @var Band 
      */
     protected $band;
-    /**
-     * @Column
-     * @var string
-     */
-    protected $title;
-    /**
-     * @Column(type="date", name="release_date")
-     * @var \DateTime
-     */
-    protected $releaseDate;
 
     /**
      *
@@ -57,35 +41,14 @@ class Album
      */
     public function __construct($band, $title, \DateTime $releaseDate) {
         $this->band = $band;
-        $this->title = $title;
-        $this->releaseDate = $releaseDate;
+        parent::__construct($title, $releaseDate);
     }
 
-    public function getId() {
-        return $this->id;
-    }
-    
+   
     /**
      * @return Band
      */
     public function getBand() {
         return $this->band;
     }
-
-    /**
-     *
-     * @return string
-     */
-    public function getTitle() {
-        return $this->title;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getReleaseDate() {
-        return $this->releaseDate;
-    }
-
-
 }
