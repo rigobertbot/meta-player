@@ -32,6 +32,12 @@ class TrackController extends BaseSecurityController
      */
     private $trackRepository;
 
+    /**
+     * @Resource
+     * @var JsonUtils
+     */
+    private $jsonUtils;
+
 
     public function listAction($albumId) {
         $data = array();
@@ -52,6 +58,6 @@ class TrackController extends BaseSecurityController
             $data[] = $trackDto;
         }
         
-        return new JsonViewModel($data);
+        return new JsonViewModel($data, $this->jsonUtils);
     }
 }

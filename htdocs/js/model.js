@@ -32,6 +32,7 @@ Node.prototype.loadChildren = function (callback) {}
 Node.prototype.getId = function () { return this.id; }
 Node.prototype.isLeaf = function () { return this.leaf; }
 Node.prototype.getName = function () { return this.name; }
+Node.prototype.getServerId = function () { return this.serverId; }
 
 /***************************************
  *************** BandNode **************
@@ -55,6 +56,8 @@ BandNode.prototype._wakeup = function () {
 BandNode.prototype.loadChildren = function (callback) {
     new AlbumRepository().list(callback, {bandId: this.serverId});
 };
+BandNode.prototype.getFoundDate = function () { return this.foundDate; }
+BandNode.prototype.getEndDate = function () { return this.endDate; }
 
 /***************************************
  ************** AlbumNode **************
@@ -75,11 +78,13 @@ AlbumNode.prototype._wakeup = function () {
     this.id = 'a' + this.id;
     this.date = this.releaseDate;
     this.name = this.title;
-};
+}
 
 AlbumNode.prototype.loadChildren = function (callback) {
     new TrackRepository().list(callback, {albumId: this.serverId});
 }
+
+AlbumNode.prototype.getReleaseDate = function () { return this.releaseDate; }
 
 /***************************************
  ************** TrackNode **************

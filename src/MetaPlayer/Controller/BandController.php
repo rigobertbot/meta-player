@@ -62,8 +62,8 @@ class BandController extends BaseSecurityController implements ILoggerAware
         return $this->listAction();
     }
     
-    public function listAction() {
-        $bands = $this->bandRepository->findAll();
+    public function listAction($onlyUser = false) {
+        $bands = $onlyUser ? array() : $this->bandRepository->findAll();
         $userBands = $this->userBandRepository->findNotApproved($this->securityManager->getUser());
         $bands = array_merge($bands, $userBands);
         

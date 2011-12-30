@@ -13,9 +13,27 @@ $(document).ready(function () {
     mainPlaylist.init();
 
     easyloader.load('combobox', function(){
-        $('#bandList').combobox({onSelect: function (record) {
-            $('#albumList').combobox('reload', 'album/listUser?bandId=' + record.id);
-        }});
+        $('#bandList').combobox({
+            onSelect: function (record) {
+                $('#bandFoundDate').datebox('setValue', record.getFoundDate());
+                $('#bandEndDate').datebox('setValue', record.getEndDate());
+                record.loadChildren(function (data) {
+                    $('#albumList').combobox('loadData', data);
+                });
+            }
+        });
+        new BandRepository().list(function (data) {
+            $('#bandList').combobox('loadData', data);
+        }, {onlyUser: true});
+
+        $('#albumList').combobox({
+            onSelect: function (record) {
+                $('#albumReleaseDate').datebox('setValue', record.getReleaseDate());
+                record.loadChildren(function (data) {
+                    $('#trackList').combobox('loadData', data);
+                });
+            }
+        })
     });
     easyloader.load('form', function () {
         $('#editTreeForm').form({
@@ -24,42 +42,51 @@ $(document).ready(function () {
                 $('#trackDuration').val(parseInt($('#trackDurationMM').val()) * 60 + parseInt($('#trackDurationSS').val()));
 
                 if ($(this).form('validate')) {
-                    alert('submit');
+                    var type = $('#editTreeForm input:checked').val();
+                    alert(type);
+                    $(this).form({url: '/' + type + '/add'});
+                    return true;
                 }
                 return false;
             }
         });
-        albumRow = $('#editRowAlbum').parent();
-        trackRow = $('#editRowTrack').parent();
         editTypeChanged($('#editTypeBand'));
+    });
+    easyloader.load('datebox', function () {
+        $('#bandFoundDate,#bandEndDate,#albumReleaseDate').datebox({
+            formatter: function (dateDate) {
+                return $.format.date(dateDate, "yyyy-MM-dd");
+            }
+        });
     });
 });
 
-var albumRow = null;
-var trackRow = null;
+function submitForm(form) {
+
+}
 
 function editTypeChanged(radio) {
     switch ($(radio).val()) {
         case 'band':
-            $('#editRowAlbum').fadeOut(function () {
-                $('#hiddenFormElements').append($('#editRowAlbum'));
+            $('#editCellAlbum').fadeOut(function () {
+                $('#hiddenFormElements').append($('#editCellAlbum'));
             });
-            $('#editRowTrack').fadeOut(function () {
-                $('#hiddenFormElements').append($('#editRowTrack'));
+            $('#editCellTrack').fadeOut(function () {
+                $('#hiddenFormElements').append($('#editCellTrack'));
             });
             break;
         case 'album':
-            $(albumRow).append($('#editRowAlbum'));
-            $('#editRowAlbum').fadeIn();
-            $('#editRowTrack').fadeOut(function() {
-                $('#hiddenFormElements').append($('#editRowTrack'));
+            $('#editRowAlbum').append($('#editCellAlbum'));
+            $('#editCellAlbum').fadeIn();
+            $('#editCellTrack').fadeOut(function() {
+                $('#hiddenFormElements').append($('#editCellTrack'));
             });
             break;
         case 'track':
-            $(albumRow).append($('#editRowAlbum'));
-            $('#editRowAlbum').fadeIn();
-            $(trackRow).append($('#editRowTrack'));
-            $('#editRowTrack').fadeIn();
+            $('#editRowAlbum').append($('#editCellAlbum'));
+            $('#editCellAlbum').fadeIn();
+            $('#editRowTrack').append($('#editCellTrack'));
+            $('#editCellTrack').fadeIn();
             break;
     }
 }
