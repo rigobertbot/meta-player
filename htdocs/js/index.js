@@ -13,6 +13,23 @@ $(document).ready(function () {
     mainPlaylist.init();
 
     easyloader.load('combobox', function(){
+        $.extend($.fn.validatebox.defaults.rules, {
+            checkSelected: {
+                validator: function(value, param){
+                    var mode = param[0];
+                    var combobox = param[1];
+                    if (getEditMode() == mode) {
+                        return true;
+                    }
+                    if (getSelectedNode(combobox) != null) {
+                        return true;
+                    }
+                    console.log('validate: ', this, value, param);
+                    return false;
+                },
+                message: 'Выберите любое значени из списка.'
+            }
+        });
         $('#bandList').combobox({
             onSelect: function (record) {
                 $('#bandFoundDate').datebox('setValue', record.getFoundDate());
@@ -38,14 +55,13 @@ $(document).ready(function () {
     easyloader.load('form', function () {
         $('#editTreeForm').form({
             onSubmit: function () {
+                // clean wrong values
+
                 // recalculate track duration
                 $('#trackDuration').val(parseInt($('#trackDurationMM').val()) * 60 + parseInt($('#trackDurationSS').val()));
 
                 if ($(this).form('validate')) {
-                    var type = $('#editTreeForm input:checked').val();
-                    alert(type);
-                    $(this).form({url: '/' + type + '/add'});
-                    return true;
+                    submitForm(this);
                 }
                 return false;
             }
@@ -61,8 +77,53 @@ $(document).ready(function () {
     });
 });
 
-function submitForm(form) {
+function getSelectedNode(combobox) {
+    var value = $(combobox).combobox('getValue');
+    if (typeof value == undefined)
+        return null;
 
+    var data = $(combobox).combobox('getData');
+    for (var index in data) {
+        var obj = data[index];
+        if (obj.getId() == value) {
+            return obj;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Returns current edit mode. Available values band, album or track.
+ */
+function getEditMode() {
+    var mode = $('#editTreeForm').find('input:checked').val();
+    return mode;
+}
+
+function submitForm(form) {
+    var mode = getEditMode();
+    var node = null;
+    switch (mode) {
+        case 'band':
+            node = new BandNode();
+            break;
+        case 'album':
+            var obj = getSelectedNode($('#bandList'));
+            if (obj == null)
+            node = new AlbumNode();
+            break;
+        case 'track':
+            node = new TrackNode();
+            break;
+    }
+    var source = $('#editSource').val();
+    node.setSource(source);
+
+    var text = $('#bandList').combobox('getText');
+    var value = $('#bandList').combobox('getValue');
+    var obj = getSelectedNode($('#bandList'));
+    console.log(text, value, obj);
 }
 
 function editTypeChanged(radio) {

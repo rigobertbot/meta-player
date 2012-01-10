@@ -91,7 +91,7 @@ class SecurityManager implements ILoggerAware
      * @return User
      */
     public function getUser() {
-        return $this->userRepository->find($this->getUserId());
+        return $this->isAuthenticated() ? $this->userRepository->find($this->getUserId()) : null;
     }
 
     public function setLogger(\Logger $logger) {

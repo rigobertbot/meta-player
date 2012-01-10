@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>MetaPlayer - Demo Version</title>
+        <title>MetaPlayer - Alpha Version</title>
         <link rel="stylesheet" type="text/css" href="css/mp.css">
         <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
@@ -68,8 +68,8 @@
                                     <td>
                                         <table>
                                             <tr>
-                                                <td align="right">Name:</td>
-                                                <td><select id="bandList" name="name" class="easyui-combobox" valueField="id" textField="name" mode="local" required="true" missingMessage="Выберите или введите название группы."></select></td>
+                                                <td align="right" style="min-width: 70px">Name:</td>
+                                                <td><select id="bandList" name="name" class="easyui-combobox" validType="checkSelected['band',bandList]" valueField="id" textField="name" mode="local" required="true" missingMessage="Выберите или введите название группы."></select></td>
                                             </tr>
                                             <tr>
                                                 <td align="right">Found date:</td>
@@ -90,8 +90,8 @@
                                     <td id="editCellAlbum">
                                         <table>
                                             <tr>
-                                                <td align="right">Title:</td>
-                                                <td><select name="albumList" id="albumList" class="easyui-combobox" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название альбома."></select></td>
+                                                <td align="right" style="min-width: 70px">Title:</td>
+                                                <td><select name="albumList" id="albumList" class="easyui-combobox" validType="checkSelected['album',albumList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название альбома."></select></td>
                                             </tr>
                                             <tr>
                                                 <td align="right">Release date:</td>
@@ -108,9 +108,10 @@
                                     <td id="editCellTrack">
                                         <table>
                                             <tr>
-                                                <td align="right">Title:</td>
+                                                <td align="right" style="min-width: 70px">Title:</td>
                                                 <td>
-                                                    <select name="trackList" id="trackList" class="easyui-combobox" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название композиции."></select>
+                                                    <select name="trackList" id="trackList" class="easyui-combobox" validType="checkSelected['track',trackList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название композиции."></select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td align="right">Duration:</td>
@@ -122,14 +123,14 @@
                                             </tr>
                                             <tr>
                                                 <td align="right">Serial:</td>
-                                                <td><input type="text" name="trackSerial" id="trackSerial" size="3" class="easyui-numberspinner" min="1" required="true" missingMessage="Укажите порядковый номер композиции в альбоме."></td>
+                                                <td><input type="text" name="trackSerial" id="trackSerial" size="3" class="easyui-numberspinner" min="1" value="1" required="true" missingMessage="Укажите порядковый номер композиции в альбоме."></td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="right">Source:</td>
-                                    <td><input type="text" name="editSource" id="editSource" class="easyui-validatebox" required="true"></td>
+                                    <td><input type="text" name="editSource" id="editSource" class="easyui-validatebox" required="true" missingMessage="Укажите источник информации (адрес сайта, название книги и т.п.)"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="button" name="submit" onclick="$('#editTreeForm').submit();" value="Add"></td>

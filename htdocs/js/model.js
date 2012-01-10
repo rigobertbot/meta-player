@@ -21,6 +21,8 @@ function Node() {
     this.traverseToken = null;
     // Means node has no children.
     this.leaf = false;
+    // for editing node: information source
+    this.source = null;
 }
 
 Node.prototype.constructor = Node;
@@ -33,6 +35,7 @@ Node.prototype.getId = function () { return this.id; }
 Node.prototype.isLeaf = function () { return this.leaf; }
 Node.prototype.getName = function () { return this.name; }
 Node.prototype.getServerId = function () { return this.serverId; }
+Node.prototype.setSource = function (source) { this.source = source; }
 
 /***************************************
  *************** BandNode **************
