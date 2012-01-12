@@ -40,11 +40,11 @@ class ExceptionController implements ILoggerAware
     
     public function _exceptionAction($exception)
     {
-        return new ModelAndView("Exception\exception", array('exception' => $exception));
+        return new ModelAndView("Exception\exception", array('headers' => array('HTTP/1.1 500 Internal Server Error', 'Status: 500 Internal Server Error'), 'exception' => $exception));
     }
     
-    public function metaPlayer_JsonExceptionAction(\Exception $exception) {
-        return new JsonViewModel(array('error' => array('code' => $exception->getCode(), 'message' => $exception->getMessage())), $this->jsonUtils);
+    public function metaPlayer_JsonExceptionAction(\MetaPlayer\JsonException $exception) {
+        return new JsonViewModel(new \MetaPlayer\Contract\ExceptionDto($exception->getMessage(), $exception->getCode()), $this->jsonUtils);
     }
 
     public function setLogger(\Logger $logger) {

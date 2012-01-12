@@ -133,7 +133,12 @@
                                     <td><input type="text" name="editSource" id="editSource" class="easyui-validatebox" required="true" missingMessage="Укажите источник информации (адрес сайта, название книги и т.п.)"></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="button" name="submit" onclick="$('#editTreeForm').submit();" value="Add"></td>
+                                    <td colspan="2">
+                                        <div id="editMessages"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><input type="button" name="submit" onclick="$('#editTreeForm').submit();" value="Add"></td>
                                 </tr>
                             </table>
                         </form>

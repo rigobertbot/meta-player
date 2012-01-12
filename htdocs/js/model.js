@@ -11,6 +11,7 @@
  ***************** Node ****************
  ***************************************/
 function Node() {
+    this.className = 'Node';
     this.id = null;
     this.serverId = null;
     this.name = null;
@@ -32,16 +33,25 @@ Node.prototype._wakeup = function () {
 };
 Node.prototype.loadChildren = function (callback) {}
 Node.prototype.getId = function () { return this.id; }
+Node.prototype.setId = function (value) { this.id = value; return this; }
 Node.prototype.isLeaf = function () { return this.leaf; }
 Node.prototype.getName = function () { return this.name; }
+Node.prototype.setName = function (value) {
+    this.name = value;
+    return this;
+}
 Node.prototype.getServerId = function () { return this.serverId; }
+Node.prototype.setServerId = function (value) { this.serverId = value; return this; }
 Node.prototype.setSource = function (source) { this.source = source; }
+Node.prototype.setDate = function (value) { this.date = value; return this; }
+Node.prototype.setDuration = function (value) { this.date = value; return this; }
 
 /***************************************
  *************** BandNode **************
  ***************************************/
 function BandNode() {
     this.parent();
+    this.className = 'BandNode';
 
     this.endDate = null;
     this.foundDate = null;
@@ -53,7 +63,7 @@ BandNode.prototype.parent = Node;
 BandNode.prototype._wakeup = function () {
     this.parent.prototype._wakeup.call(this);
     this.id = 'b' + this.id;
-    this.date = this.foundDate;
+    this.setDate(this.foundDate);
 };
 
 BandNode.prototype.loadChildren = function (callback) {
@@ -61,12 +71,22 @@ BandNode.prototype.loadChildren = function (callback) {
 };
 BandNode.prototype.getFoundDate = function () { return this.foundDate; }
 BandNode.prototype.getEndDate = function () { return this.endDate; }
+BandNode.prototype.setFoundDate = function (value) {
+    this.foundDate = value;
+    this.setDate(this.foundDate);
+    return this;
+}
+BandNode.prototype.setEndDate = function (value) {
+    this.endDate = value;
+    return this;
+}
 
 /***************************************
  ************** AlbumNode **************
  ***************************************/
 function AlbumNode() {
     this.parent();
+    this.className = 'AlbumNode';
     
     this.bandId = null;
     this.title = null;
@@ -82,18 +102,26 @@ AlbumNode.prototype._wakeup = function () {
     this.date = this.releaseDate;
     this.name = this.title;
 }
+/**
+ * Sets parent band server id.
+ * @param value Band server id.
+ */
+AlbumNode.prototype.setParentBand = function (band) { this.bandId = band.getServerId(); return this; }
 
 AlbumNode.prototype.loadChildren = function (callback) {
     new TrackRepository().list(callback, {albumId: this.serverId});
 }
 
 AlbumNode.prototype.getReleaseDate = function () { return this.releaseDate; }
+AlbumNode.prototype.setReleaseDate = function (value) { this.releaseDate = value; this.setDate(value); return this; }
+AlbumNode.prototype.setTitle = function (value) { this.title = value; this.setName(value); return this; }
 
 /***************************************
  ************** TrackNode **************
  ***************************************/
 function TrackNode() {
     this.parent();
+    this.className = 'TrackNode';
     
     this.albumId = null;
     this.title = null;
@@ -108,6 +136,7 @@ TrackNode.prototype = new Node();
 TrackNode.prototype.parent = Node;
 
 TrackNode.prototype.setDuration = function (durationMs) {
+    this.durationMs = durationMs;
     this.duration = Math.floor(durationMs / 60) + ":" + durationMs % 60;
 }
 
@@ -121,6 +150,10 @@ TrackNode.prototype.setUrl = function (url) {
 }
 TrackNode.prototype.getUrl = function () {return this.url;}
 TrackNode.prototype.urlSetted = function () {}
+//TrackNode.prototype.set
+TrackNode.prototype.setParentAlbum = function (album) { this.albumId = album.getServerId(); return this; }
+TrackNode.prototype.setTitle = function (value) { this.title = value; this.setName(value); return this; }
+TrackNode.prototype.setSerial = function (value) { this.serial = value; return this; }
 /**
  * Increment and return previous value.
  */

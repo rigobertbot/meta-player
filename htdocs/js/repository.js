@@ -18,7 +18,7 @@ BaseRepository.prototype = BaseRepository;
 BaseRepository.prototype.list = function (success, params) {
     var url = this.url + 'list';
     $.getJSON(url, params, function (data, textStatus, jqXHR) {
-            var parsedData = $.parseJSON(data);
+            var parsedData = $.parseJSONObject(data);
             success(parsedData);
     });
 }
@@ -26,10 +26,20 @@ BaseRepository.prototype.list = function (success, params) {
 BaseRepository.prototype.get = function (id, success) {
     var url = this.url + 'get';
     $.getJSON(url, {"id": id}, function (data, textStatus, jqXHR) {
-            var parsedData = $.parseJSON(data);
+            var parsedData = $.parseJSONObject(data);
             success(parsedData);
     });
 }
+
+BaseRepository.prototype.add = function (node, success) {
+    var url = this.url + 'add';
+    var data = $.toJSON(node);
+
+    $.post(url, {"json": data}, function (result, textStatus, jqXHR) {
+        success($.parseJSONObject(result), node);
+    }, "json");
+}
+
 
 /***************************************
  *********** BandRepository ************

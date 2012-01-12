@@ -29,8 +29,11 @@
         
         return replaceObject;
     }
-    
-    $.parseJSON = function (jsonObject) {
+
+    $.parseJSONObject = function (jsonObject) {
+        if (typeof jsonObject == 'string') {
+            jsonObject = $.evalJSON(jsonObject);
+        }
         return recourceParse(jsonObject);
     }
     

@@ -12,6 +12,10 @@
 
 namespace MetaPlayer\Contract;
 
+use MetaPlayer\Model\BaseBand;
+use MetaPlayer\Model\UserBand;
+use MetaPlayer\ViewHelper;
+
 /**
  * The class BandHelper provides methods for converting dto to model and vice versa
  *
@@ -20,6 +24,12 @@ namespace MetaPlayer\Contract;
  */
 class BandHelper 
 {
+    /**
+     * @Resource
+     * @var \MetaPlayer\Manager\SecurityManager
+     */
+    private $securityManager;
+
     private static $userBandIdPrefix = "user_";
     
     public function convertUserBandIdToDto($userBandId) {
@@ -31,6 +41,56 @@ class BandHelper
             return substr($dtoBandId, strlen(self::$userBandIdPrefix));
         }
         return null;
+    }
+
+    /**
+     * Converts base band to dto.
+     * @param \MetaPlayer\Model\BaseBand $baseBand
+     * @return BandDto
+     */
+    private function convertBaseBandToDto(BaseBand $baseBand) {
+        $dto = new BandDto();
+
+        $dto->id = $baseBand->getId();
+        $dto->name = $baseBand->getName();
+        $dto->endDate = ViewHelper::formatDate($baseBand->getEndDate());
+        $dto->foundDate = ViewHelper::formatDate($baseBand->getFoundDate());
+
+        return $dto;
+    }
+
+    /**
+     * @param \MetaPlayer\Model\Band $band
+     * @return BandDto
+     */
+    public function convertBandToDto(Band $band) {
+        return $this->convertBaseBandToDto($band);
+    }
+
+    /**
+     * @param \MetaPlayer\Model\UserBand $userBand
+     * @return BandDto
+     */
+    public function convertUserBandToDto(UserBand $userBand) {
+        $dto = $this->convertBaseBandToDto($userBand);
+        $dto->id = self::convertUserBandIdToDto($userBand->getId());
+        $dto->source = $userBand->getSource();
+        return $dto;
+    }
+
+    /**
+     * @param BandDto $dto
+     * @return \MetaPlayer\Model\UserBand
+     */
+    public function convertDtoToUserBand(BandDto $dto) {
+        $userBand = new UserBand(
+            $this->securityManager->getUser(),
+            $dto->name,
+            ViewHelper::parseDate($dto->foundDate),
+            $dto->source,
+            ViewHelper::parseDate($dto->endDate));
+
+        return $userBand;
     }
 
 }

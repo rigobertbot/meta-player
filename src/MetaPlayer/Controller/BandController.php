@@ -23,6 +23,7 @@ use MetaPlayer\Model\UserBand;
 use MetaPlayer\Manager\SecurityManager;
 use Ding\Logger\ILoggerAware;
 use MetaPlayer\JsonException;
+use MetaPlayer\Contract\BandHelper;
 
 /**
  * Description of BandController
@@ -45,6 +46,12 @@ class BandController extends BaseSecurityController implements ILoggerAware
      * @var \MetaPlayer\Repository\UserBandRepository
      */
     private $userBandRepository;
+
+    /**
+     * @Resource
+     * @var \MetaPlayer\Contract\BandHelper
+     */
+    private $bandHelper;
     
     /**
      * @Resource
@@ -107,16 +114,15 @@ class BandController extends BaseSecurityController implements ILoggerAware
             $this->logger->error("json shuld be instance of BandDto but got " . print_r($bandDto, true));
             throw new JsonException("Wrong json format.");
         }
-        
-        $userBand = new UserBand(
-                $this->securityManager->getUser(), 
-                $bandDto->name, 
-                ViewHelper::parseDate($bandDto->foundDate), 
-                $bandDto->source, 
-                ViewHelper::parseDate($bandDto->endDate));
+
+        $userBand = $this->bandHelper->convertDtoToUserBand($bandDto);
         
         $this->userBandRepository->persist($userBand);
         $this->userBandRepository->flush();
+
+        $resultDto = $this->bandHelper->convertUserBandToDto($userBand);
+
+        return new JsonViewModel($resultDto, $this->jsonUtils);
     }
 
     public function setLogger(\Logger $logger) {

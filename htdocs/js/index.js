@@ -11,6 +11,12 @@ $(document).ready(function () {
     mainPlayer.init();
     mainTree.init();
     mainPlaylist.init();
+    easyloader.load('messager', function () {
+        $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
+            console.log("errrrrorrrr!");
+            $.messager.show({msg: '<div class=\"messager-icon messager-error\"></div>Произошла ошибка на сервере:<br />' + thrownError, title: 'Ошибка', timeout: 0});
+        });
+    });
 
     easyloader.load('combobox', function(){
         $.extend($.fn.validatebox.defaults.rules, {
@@ -104,26 +110,60 @@ function getEditMode() {
 function submitForm(form) {
     var mode = getEditMode();
     var node = null;
+    var repository = null;
+    //var list = '#' + mode + 'List';
     switch (mode) {
         case 'band':
             node = new BandNode();
+            repository = new BandRepository();
+
+            node.setFoundDate($('#bandFoundDate').combo('getValue'))
+                .setEndDate($('#bandEndDate').combo('getValue'))
+                .setName($('#bandList').combo('getText'));
             break;
         case 'album':
-            var obj = getSelectedNode($('#bandList'));
-            if (obj == null)
             node = new AlbumNode();
+            repository = new AlbumRepository();
+            var band = getSelectedNode($('#bandList'));
+            node.setParentBand(band)
+                .setTitle($('#albumList').combo('getValue'))
+                .setReleaseDate($('#albumReleaseDate').combo('getValue'));
+
             break;
         case 'track':
             node = new TrackNode();
+            repository = new TrackRepository();
+            var album = getSelectedNode($('#albumList'));
+            node.setParentAlbum(album)
+                .setTitle($('#trackList').combo('getValue'))
+                .setDuration($('#trackDuration').combo('getValue'))
+                .setSerial($('#trackSerial').val());
+
+            $('#trackSerial').val(parseInt($('#trackSerial').val()) + 1);
             break;
     }
     var source = $('#editSource').val();
     node.setSource(source);
 
-    var text = $('#bandList').combobox('getText');
-    var value = $('#bandList').combobox('getValue');
-    var obj = getSelectedNode($('#bandList'));
-    console.log(text, value, obj);
+    //console.log("save", mode, node);
+    repository.add(node, successfulAdded);
+}
+
+function successfulAdded(result, node) {
+    var message = null;
+    switch (node.className) {
+        case 'BandNode':
+            message = 'Группа "' + node.getName() + '" была успешно добавлена!';
+            break;
+        case 'AlbumNode':
+            message = 'Альбом "' + node.getName() + '" был успешно добавлен!';
+            break;
+        case 'TrackNode':
+            message = 'Композиция "' + node.getName() + '" была успешно добавлена!';
+            break;
+    }
+    $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>' + message, title: 'Успех', timeout: 0});
+    console.log("added", node, result);
 }
 
 function editTypeChanged(radio) {
