@@ -83,7 +83,7 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
         $data = array();
         foreach ($albums as $album) {
             /* @var $album Album */
-            $albumDto = $this->albumHelper->convertAlbumToDto($album);
+            $albumDto = $album instanceof UserAlbum ? $this->albumHelper->convertUserAlbumToDto($album) : $this->albumHelper->convertAlbumToDto($album);
             $data[] = $albumDto;
         }
         

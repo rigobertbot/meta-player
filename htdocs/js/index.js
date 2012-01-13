@@ -7,13 +7,14 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
+
+var obj = new Object();
 $(document).ready(function () {
     mainPlayer.init();
     mainTree.init();
     mainPlaylist.init();
     easyloader.load('messager', function () {
         $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
-            console.log("errrrrorrrr!");
             $.messager.show({msg: '<div class=\"messager-icon messager-error\"></div>Произошла ошибка на сервере:<br />' + thrownError, title: 'Ошибка', timeout: 0});
         });
     });
@@ -30,7 +31,6 @@ $(document).ready(function () {
                     if (getSelectedNode(combobox) != null) {
                         return true;
                     }
-                    console.log('validate: ', this, value, param);
                     return false;
                 },
                 message: 'Выберите любое значени из списка.'
@@ -45,9 +45,10 @@ $(document).ready(function () {
                 });
             }
         });
-        new BandRepository().list(function (data) {
-            $('#bandList').combobox('loadData', data);
-        }, {onlyUser: true});
+        bandRepository.onLoaded(function (e, data) {
+            var oldData =  $('#bandList').combobox('getData');
+            $('#bandList').combobox('loadData', [].concat(oldData, data));
+        });
 
         $('#albumList').combobox({
             onSelect: function (record) {
@@ -115,7 +116,7 @@ function submitForm(form) {
     switch (mode) {
         case 'band':
             node = new BandNode();
-            repository = new BandRepository();
+            repository = bandRepository;
 
             node.setFoundDate($('#bandFoundDate').combo('getValue'))
                 .setEndDate($('#bandEndDate').combo('getValue'))
@@ -123,7 +124,7 @@ function submitForm(form) {
             break;
         case 'album':
             node = new AlbumNode();
-            repository = new AlbumRepository();
+            repository = albumRepository;
             var band = getSelectedNode($('#bandList'));
             node.setParentBand(band)
                 .setTitle($('#albumList').combo('getValue'))
@@ -132,7 +133,7 @@ function submitForm(form) {
             break;
         case 'track':
             node = new TrackNode();
-            repository = new TrackRepository();
+            repository = trackRepository;
             var album = getSelectedNode($('#albumList'));
             node.setParentAlbum(album)
                 .setTitle($('#trackList').combo('getValue'))

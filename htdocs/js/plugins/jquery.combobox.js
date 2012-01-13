@@ -131,7 +131,7 @@ _2a.push(_2b);
 });
 return _2a;
 };
-function _2c(_2d,_2e,_2f){
+function loadData(_2d,_2e,_2f){
 var _30=$.data(_2d,"combobox").options;
 var _31=$(_2d).combo("panel");
 $.data(_2d,"combobox").data=_2e;
@@ -196,7 +196,7 @@ return;
 }
 _37=_37||{};
 $.ajax({type:_39.method,url:_39.url,dataType:"json",data:_37,success:function(_3a){
-_2c(_36,_3a,_38);
+loadData(_36,_3a,_38);
 },error:function(){
 _39.onLoadError.apply(this,arguments);
 }});
@@ -255,10 +255,10 @@ _41(this);
 }else{
 _47=$.data(this,"combobox",{options:$.extend({},$.fn.combobox.defaults,$.fn.combobox.parseOptions(this),_44)});
 _41(this);
-_2c(this,_27(this));
+loadData(this,_27(this));
 }
 if(_47.options.data){
-_2c(this,_47.options.data);
+loadData(this,_47.options.data);
 }
 _35(this);
 });
@@ -283,7 +283,7 @@ _4a.find("div.combobox-item-selected").removeClass("combobox-item-selected");
 });
 },loadData:function(jq,_4b){
 return jq.each(function(){
-_2c(this,_4b);
+loadData(this,_4b);
 });
 },reload:function(jq,url){
 return jq.each(function(){

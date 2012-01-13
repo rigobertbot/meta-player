@@ -24,6 +24,7 @@ use MetaPlayer\Repository\UserBandRepository;
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 class AlbumHelper {
+    private static $userAlbumIdPrefix = "user_";
     
     /**
      * @Resource
@@ -81,6 +82,17 @@ class AlbumHelper {
                         $albumDto->source);
         
         return $userAlbum;
+    }
+
+    public function convertUserAlbumIdToDto($userAlbumId) {
+        return self::$userAlbumIdPrefix . $userAlbumId;
+    }
+
+    public function convertDtoToUserAlbumId($dtoUserAlbumId) {
+        if (strpos($dtoUserAlbumId, self::$userAlbumIdPrefix) !== 0) {
+            throw new \MetaPlayer\MetaPlayerException("Argument dtoAlbumId ($dtoUserAlbumId) isn't a user album id.");
+        }
+        return substr($dtoUserAlbumId, strlen(self::$userAlbumIdPrefix));
     }
     
 }

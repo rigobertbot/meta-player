@@ -12,11 +12,55 @@ function Tree() {
     this.expandedEvent = "expanded";
     
     this.init = function () {
-        initMetaTree();
+        easyloader.load('treegrid', function(){
+            $.extend($.fn.treegrid.defaults, {
+                onBeforeLoad: function (row, node) {
+                    $('#metaTree').treegrid('loading');
+                    if (row) {
+                        row.loadChildren(function () {
+                            $('#metaTree').treegrid('loaded');
+                        });
+                    } else {
+                        bandRepository.list(function () {
+                            $('#metaTree').treegrid('loaded');
+                        });
+                    }
+                    return false;
+                },
+                onContextMenu: function(e, row){
+                    e.preventDefault();
+                    // $(this).treegrid('unselectAll');
+                    // $(this).treegrid('select', row.code);
+                    $('#treeMenu').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                },
+                onLoadSuccess: function (row, data) {
+                    // load is ovverided in the beforLoad method, and it has own 'loadSuccess' event.
+                    // $(mainTree).trigger(mainTree.loadSuccessEvent, [row, data]);
+                },
+                onExpand: function (row) {
+                    $(mainTree).trigger(mainTree.expandedEvent, [row]);
+                }
+            });
+        });
         
         var that = this;
         mainPlayer.onStartPlaying(function () {
             that.startPlay();
+        });
+
+        bandRepository.onLoaded(function (e, data) {
+            that.nodeLoaded(data);
+        });
+
+        albumRepository.onLoaded(function (e, data){
+            that.nodeLoaded(data);
+        });
+
+        trackRepository.onLoaded(function (e, data) {
+            that.nodeLoaded(data);
         });
     }
     
@@ -30,33 +74,33 @@ function Tree() {
             play();
         }
     }
+
+    this.nodeLoaded = function (nodes) {
+        if (!nodes.length || nodes.length < 1) {
+            return;
+        }
+        var parentId = nodes[0].getParentId();
+        var parentNode = parentId ? $('#metaTree').treegrid('find', parentId) : undefined;
+        //console.log("nodeLoaded", node, parentId, $('#metaTree').treegrid('find', parentId));
+        $('#metaTree')
+            .treegrid('toggle', parentId)
+            .treegrid('append', {
+                parent: parentId,
+                data: nodes
+            });
+
+        if (parentNode) {
+            $('#metaTree').treegrid('toggle', parentNode.getId()); // treegrid('toggle', parentNode.getId()).
+            $(this).trigger(this.loadSuccessEvent, [parentNode, nodes]);
+        } else {
+            $(this).trigger(this.loadSuccessEvent, [null, nodes]);
+        }
+
+    }
 }
 
 mainTree = new Tree();
 
-function initMetaTree() {
-    easyloader.load('treegrid', function(){
-        $.extend($.fn.treegrid.defaults, {
-            onBeforeLoad: beforeLoad,
-            onContextMenu: function(e, row){
-                e.preventDefault();
-                // $(this).treegrid('unselectAll');
-                // $(this).treegrid('select', row.code);
-                $('#treeMenu').menu('show', {
-                    left: e.pageX,
-                    top: e.pageY
-                });
-            },
-            onLoadSuccess: function (row, data) {
-                // load is ovverided in the beforLoad method, and it has own 'loadSuccess' event.
-                // $(mainTree).trigger(mainTree.loadSuccessEvent, [row, data]);
-            },
-            onExpand: function (row) {
-                $(mainTree).trigger(mainTree.expandedEvent, [row]);
-            }
-        });
-    });
-}
 
 function beforeLoad(row, node){
     if (row === null) {

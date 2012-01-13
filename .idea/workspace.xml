@@ -5,17 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/ExceptionDto.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackDto.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/MetaPlayerException.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/beans.xml" afterPath="$PROJECT_DIR$/config/beans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/index.html" afterPath="$PROJECT_DIR$/htdocs/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/index.js" afterPath="$PROJECT_DIR$/htdocs/js/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/model.js" afterPath="$PROJECT_DIR$/htdocs/js/model.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/plugins/jquery.combobox.js" afterPath="$PROJECT_DIR$/htdocs/js/plugins/jquery.combobox.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/plugins/jquery.treegrid.js" afterPath="$PROJECT_DIR$/htdocs/js/plugins/jquery.treegrid.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/repository.js" afterPath="$PROJECT_DIR$/htdocs/js/repository.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/tree.js" afterPath="$PROJECT_DIR$/htdocs/js/tree.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/utils.js" afterPath="$PROJECT_DIR$/htdocs/js/utils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/ExceptionController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/ExceptionController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php" afterPath="$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php" />
     </list>
     <ignored path="meta-player.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,46 +43,84 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/index.html">
+      <file leaf-file-name="model.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="136" column="61" selection-start="9939" selection-end="9951" vertical-scroll-proportion="-12.423077">
+            <state line="143" column="4" selection-start="4396" selection-end="4396" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TrackController.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="65" column="42" selection-start="1577" selection-end="1577" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+      <file leaf-file-name="TrackDto.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/TrackDto.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="19" selection-start="349" selection-end="349" vertical-scroll-proportion="0.2735632">
+            <state line="24" column="19" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="repository.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
+      <file leaf-file-name="TrackHelper.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="9" selection-start="1048" selection-end="1048" vertical-scroll-proportion="0.0">
+            <state line="47" column="69" selection-start="1052" selection-end="1052" vertical-scroll-proportion="0.82271147">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jquery-1.6.2.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/jquery-1.6.2.js">
+      <file leaf-file-name="AlbumRepository.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/AlbumRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6868" column="0" selection-start="179947" selection-end="179947" vertical-scroll-proportion="0.0">
+            <state line="19" column="6" selection-start="356" selection-end="356" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jquery.messager.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/plugins/jquery.messager.js">
+      <file leaf-file-name="AlbumHelper.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="111" column="54" selection-start="2558" selection-end="2607" vertical-scroll-proportion="0.0">
+            <state line="90" column="48" selection-start="2390" selection-end="2390" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BandHelper.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="45" column="7" selection-start="1040" selection-end="1040" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AlbumDto.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumDto.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AlbumController.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="108" column="0" selection-start="2700" selection-end="2981" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -97,22 +141,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/UserAlbumRepository.php" />
-        <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" />
-        <option value="$PROJECT_DIR$/htdocs/js/utils.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/repository.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/model.js" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/ExceptionDto.php" />
-        <option value="$PROJECT_DIR$/config/beans.xml" />
         <option value="$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/ExceptionController.php" />
-        <option value="$PROJECT_DIR$/htdocs/index.html" />
+        <option value="$PROJECT_DIR$/htdocs/js/plugins/jquery.treegrid.js" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
+        <option value="$PROJECT_DIR$/htdocs/js/plugins/jquery.combobox.js" />
         <option value="$PROJECT_DIR$/htdocs/js/index.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/repository.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/utils.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/model.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackDto.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/MetaPlayerException.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
       </list>
     </option>
   </component>
@@ -176,6 +220,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -222,46 +267,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Oak" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Oak" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Json" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="MetaPlayer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -284,7 +289,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Controller" />
+              <option name="myItemId" value="Repository" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -310,41 +315,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="htdocs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="meta-player" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="htdocs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -507,14 +479,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1573" height="1066" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22796553" sideWeight="0.67070484" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23459245" sideWeight="0.3270925" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23459245" sideWeight="0.66519827" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39977974" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39977974" sideWeight="0.50033134" order="7" side_tool="true" content_ui="tabs" />
@@ -579,124 +551,121 @@
     <MESSAGE value="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php</url>
-          <line>103</line>
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/beans.xml">
+    <entry file="file://$PROJECT_DIR$/htdocs/js/plugins/jquery.combobox.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="47" selection-start="688" selection-end="688" vertical-scroll-proportion="0.33487833">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Oak/Json/JsonUtils.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.80860704">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/JsonException.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="19" selection-start="315" selection-end="328" vertical-scroll-proportion="0.3657984">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/ExceptionDto.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="18" selection-start="289" selection-end="301" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/ModelAndView.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="20" selection-start="2520" selection-end="2520" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Dispatcher.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="23" selection-start="3993" selection-end="3993" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="0" selection-start="2433" selection-end="2433" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="7" selection-start="947" selection-end="947" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="20" selection-start="596" selection-end="603" vertical-scroll-proportion="0.51216686">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/ExceptionController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="3" selection-start="576" selection-end="576" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/plugins/jquery.messager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="54" selection-start="2558" selection-end="2607" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="136" column="61" selection-start="9939" selection-end="9951" vertical-scroll-proportion="-12.423077">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/plugins/jquery.tabs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="433" column="2" selection-start="10674" selection-end="10674" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/jquery-1.6.2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6868" column="0" selection-start="179947" selection-end="179947" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="9" selection-start="1048" selection-end="1048" vertical-scroll-proportion="0.0">
+        <state line="288" column="26" selection-start="6164" selection-end="6164" vertical-scroll-proportion="0.43103448">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="19" selection-start="349" selection-end="349" vertical-scroll-proportion="0.2735632">
+        <state line="126" column="33" selection-start="4085" selection-end="4085" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="32" selection-start="1815" selection-end="1815" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="29" selection-start="2501" selection-end="2513" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="141" column="49" selection-start="4778" selection-end="4778" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="108" column="0" selection-start="2700" selection-end="2981" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="42" selection-start="1577" selection-end="1577" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="143" column="4" selection-start="4396" selection-end="4396" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumDto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/TrackDto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="19" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/MetaPlayerException.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="1" selection-start="323" selection-end="323" vertical-scroll-proportion="0.37427577">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/JsonException.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="47" selection-start="356" selection-end="356" vertical-scroll-proportion="0.37427577">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="7" selection-start="1040" selection-end="1040" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="48" selection-start="2390" selection-end="2390" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/AlbumRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="6" selection-start="356" selection-end="356" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="69" selection-start="1052" selection-end="1052" vertical-scroll-proportion="0.82271147">
           <folding />
         </state>
       </provider>

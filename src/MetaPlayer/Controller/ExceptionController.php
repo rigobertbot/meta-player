@@ -31,6 +31,8 @@ class ExceptionController implements ILoggerAware
      * @var \Logger
      */
     private $logger;
+
+    private $headers = array('HTTP/1.1 500 Internal Server Error', 'Status: 500 Internal Server Error');
     
     /**
      * @Resource
@@ -40,11 +42,15 @@ class ExceptionController implements ILoggerAware
     
     public function _exceptionAction($exception)
     {
-        return new ModelAndView("Exception\exception", array('headers' => array('HTTP/1.1 500 Internal Server Error', 'Status: 500 Internal Server Error'), 'exception' => $exception));
+        return new ModelAndView("Exception\exception", array('headers' => $this->headers, 'exception' => $exception));
     }
     
     public function metaPlayer_JsonExceptionAction(\MetaPlayer\JsonException $exception) {
-        return new JsonViewModel(new \MetaPlayer\Contract\ExceptionDto($exception->getMessage(), $exception->getCode()), $this->jsonUtils);
+        return new JsonViewModel(
+                new \MetaPlayer\Contract\ExceptionDto($exception->getMessage(),
+                $exception->getCode()),
+                $this->jsonUtils,
+                $this->headers);
     }
 
     public function setLogger(\Logger $logger) {

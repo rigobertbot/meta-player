@@ -17,7 +17,7 @@ namespace MetaPlayer;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class JsonException extends \Exception
+class JsonException extends MetaPlayerException
 {
     function __construct($message = null, $code = null, $previous = null) {
         parent::__construct($message, $code, $previous);

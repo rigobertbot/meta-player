@@ -47,5 +47,16 @@
         var stop = constr.indexOf('(');
         var constrName = constr.substring(start, stop);
         return constrName;
-    }    
+    }
+    $.trace = function () {
+        if (console && console.log) {
+            console.log(arguments);
+        }
+    }
+    $.objectToJSON = function (object) {
+        if (object && $.isFunction(object._sleep)) {
+            object = object._sleep();
+        }
+        return $.toJSON(object);
+    }
 })(jQuery);

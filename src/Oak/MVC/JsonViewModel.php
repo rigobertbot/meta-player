@@ -21,14 +21,14 @@ use Ding\Mvc\ModelAndView;
  */
 class JsonViewModel extends ModelAndView
 {
-    public function __construct($object, \Oak\Json\JsonUtils $jsonUtils) {
+    public function __construct($object, \Oak\Json\JsonUtils $jsonUtils, array $headers = array()) {
         $options = array(
             'json' => $jsonUtils->serialize($object),
-            'headers' => array(
+            'headers' => \array_merge(array(
                 'Cache-Control: no-cache, must-revalidate', 
                 'Expires: Mon, 26 Jul 1997 05:00:00 GMT', //date in the past
                 'Content-type: application/json',
-                ),
+                ), $headers),
         );
         
         parent::__construct('json/common', $options);

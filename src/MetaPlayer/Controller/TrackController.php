@@ -60,4 +60,13 @@ class TrackController extends BaseSecurityController
         
         return new JsonViewModel($data, $this->jsonUtils);
     }
+
+    public function addAction($json) {
+        $trackDto = $this->jsonUtils->deserialize($json);
+        if (!$trackDto instanceof TrackDto) {
+            $this->logger->error("json shuld be instance of AlbumDto but got " . print_r($trackDto, true));
+            throw new JsonException("Wrong json format.");
+        }
+
+    }
 }
