@@ -57,7 +57,7 @@ abstract class BaseAlbum
     }
     
     /**
-     * @return Band
+     * @return BaseBand
      */
     public abstract function getBand();
 

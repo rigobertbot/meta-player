@@ -57,7 +57,15 @@ $(document).ready(function () {
                     $('#trackList').combobox('loadData', data);
                 });
             }
-        })
+        });
+
+        $('#trackList').combobox({
+            onSelect: function (record) {
+                $('#trackDurationMM').val(Math.floor(record.getDurationMs() / 60));
+                $('#trackDurationSS').val(record.getDurationMs() % 60);
+                $('#trackSerial').val(record.getSerial());
+            }
+        });
     });
     easyloader.load('form', function () {
         $('#editTreeForm').form({
@@ -137,7 +145,7 @@ function submitForm(form) {
             var album = getSelectedNode($('#albumList'));
             node.setParentAlbum(album)
                 .setTitle($('#trackList').combo('getValue'))
-                .setDuration($('#trackDuration').combo('getValue'))
+                .setDuration($('#trackDuration').val())
                 .setSerial($('#trackSerial').val());
 
             $('#trackSerial').val(parseInt($('#trackSerial').val()) + 1);

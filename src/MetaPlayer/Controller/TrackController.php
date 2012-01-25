@@ -12,6 +12,8 @@
 
 namespace MetaPlayer\Controller;
 
+use \MetaPlayer\Contract\TrackDto;
+use \MetaPlayer\JsonException;
 use Oak\MVC\JsonViewModel;
 use MetaPlayer\ViewHelper;
 use MetaPlayer\Repository\TrackRepository;
@@ -24,8 +26,13 @@ use MetaPlayer\Model\Track;
  * @Controller
  * @RequestMapping(url={/track/})
  */
-class TrackController extends BaseSecurityController
+class TrackController extends BaseSecurityController implements \Ding\Logger\ILoggerAware
 {
+    /**
+     * @var \Logger
+     */
+    private $logger;
+
     /**
      * @Resource
      * @var TrackRepository
@@ -34,7 +41,19 @@ class TrackController extends BaseSecurityController
 
     /**
      * @Resource
-     * @var JsonUtils
+     * @var \MetaPlayer\Repository\UserTrackRepository
+     */
+    private $userTrackRepository;
+
+    /**
+     * @Resource
+     * @var \MetaPlayer\Contract\TrackHelper
+     */
+    private $trackHelper;
+
+    /**
+     * @Resource
+     * @var \Oak\Json\JsonUtils
      */
     private $jsonUtils;
 
@@ -67,6 +86,22 @@ class TrackController extends BaseSecurityController
             $this->logger->error("json shuld be instance of AlbumDto but got " . print_r($trackDto, true));
             throw new JsonException("Wrong json format.");
         }
+        $userTrack = $this->trackHelper->convertDtoToUserTrack($trackDto);
+        $this->userTrackRepository->persist($userTrack);
+        $this->userTrackRepository->flush();
 
+        $resultDto = $this->trackHelper->convertUserTrackToDto($userTrack);
+        return new JsonViewModel($resultDto, $this->jsonUtils);
+    }
+
+    /**
+     * Called by the container to inject the logger instance.
+     *
+     * @param \Logger $logger A log4php instance or dummy logger.
+     *
+     * @return void
+     */
+    public function setLogger(\Logger $logger) {
+        $this->logger = $logger;
     }
 }

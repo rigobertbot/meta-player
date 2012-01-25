@@ -20,85 +20,28 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
- * Description of Track
+ * The class Track represents track entity.
  * @Entity(repositoryClass="MetaPlayer\Repository\TrackRepository")
  * @Table(name="track")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class Track 
+class Track extends BaseTrack
 {
-    /**
-     * @Id @Column(type="bigint")
-     * @GeneratedValue
-     * @var integer
-     */
-    protected $id;
     /**
      * @ManyToOne(targetEntity="Album")
      * @var Album
      */
     protected $album;
-    /**
-     * @Column
-     * @var string
-     */
-    protected $title;
-    /**
-     * @Column(type="bigint");
-     * @var int
-     */
-    protected $duration;
-    /**
-     * @Column(type="bigint")
-     * @var int
-     */
-    protected $serial;
-    
-    public function __construct($album, $title, $duration, $serial) {
-        $this->album = $album;
-        $this->title = $title;
-        $this->duration = $duration;
-        $this->serial = $serial;
-    }
-    
-    public function getId() {
-        return $this->id;
-    }
 
+    public function __construct(Album $album, $title, $duration, $serial) {
+        parent::__construct($title, $duration, $serial);
+        $this->album = $album;
+    }
+    
     /**
-     *
      * @return Album
      */
     public function getAlbum() {
         return $this->album;
     }
-
-    public function getTitle() {
-        return $this->title;
-    }
-
-    public function getDuration() {
-        return $this->duration;
-    }
-
-    public function getSerial() {
-        return $this->serial;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getQueries() {
-        $result = array();
-        
-        $band = $this->album->getBand();
-        
-        $result[] = implode(" ", array($band->getName(), $this->album->getTitle(), $this->getTitle()));
-        $result[] = implode(" ", array($band->getName(), $this->getTitle()));
-        $result[] = $this->getTitle();
-        
-        return $result;
-    }
-
-
 }

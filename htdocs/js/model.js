@@ -30,7 +30,12 @@ Node.prototype.constructor = Node;
 
 Node.prototype._wakeup = function () {
     this.serverId = this.id;
-};
+}
+Node.prototype._sleep = function () {
+    var clone = $.extend({}, this);
+    clone.id = this.serverId;
+    return clone;
+}
 Node.prototype.loadChildren = function (callback) {}
 Node.prototype.getId = function () { return this.id; }
 Node.prototype.setId = function (value) { this.id = value; return this; }
@@ -67,7 +72,7 @@ BandNode.prototype._wakeup = function () {
     this.setDate(this.foundDate);
 };
 BandNode.prototype._sleep = function () {
-    return this;
+    return this.parent.prototype._sleep.call(this);
 }
 
 BandNode.prototype.loadChildren = function (callback) {
@@ -111,9 +116,8 @@ AlbumNode.prototype._wakeup = function () {
 }
 
 AlbumNode.prototype._sleep = function () {
-    var clone = $.extend({}, this);
+    var clone = this.parent.prototype._sleep.call(this);
     clone.bandId = this.serverBandId;
-    clone.id = this.serverId;
     return clone;
 }
 /**
@@ -155,11 +159,6 @@ function TrackNode() {
 TrackNode.prototype = new Node();
 TrackNode.prototype.parent = Node;
 
-TrackNode.prototype.setDuration = function (durationMs) {
-    this.durationMs = durationMs;
-    this.duration = Math.floor(durationMs / 60) + ":" + durationMs % 60;
-}
-
 TrackNode.prototype._wakeup = function () {
     this.parent.prototype._wakeup.call(this);
     this.id = 't' + this.id;
@@ -171,7 +170,21 @@ TrackNode.prototype._wakeup = function () {
     this.serverAlbumId = this.albumId;
     this.albumId = 'a' + this.albumId;
 };
+
+TrackNode.prototype._sleep = function () {
+    var clone = this.parent.prototype._sleep.call(this);
+    clone.albumId = this.serverAlbumId;
+    clone.duration = this.durationMs;
+    return clone;
+}
+
 TrackNode.prototype.getDurationMs = function () {return this.durationMs;}
+TrackNode.prototype.setDuration = function (durationMs) {
+    this.durationMs = durationMs;
+    this.duration = Math.floor(durationMs / 60) + ":" + durationMs % 60;
+    return this;
+}
+
 
 TrackNode.prototype.setUrl = function (url) {
     this.url = url;
@@ -189,6 +202,7 @@ TrackNode.prototype.setParentAlbum = function (album) {
 }
 TrackNode.prototype.setTitle = function (value) { this.title = value; this.setName(value); return this; }
 TrackNode.prototype.setSerial = function (value) { this.serial = value; return this; }
+TrackNode.prototype.getSerial = function () { return this.serial; }
 /**
  * Increment and return previous value.
  */
