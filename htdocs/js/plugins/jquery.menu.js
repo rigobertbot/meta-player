@@ -345,9 +345,9 @@ _34(this,_46);
 return jq.each(function(){
 _2b(this,_47,false);
 });
-},disableItem:function(jq,_48){
+},disableItem:function(jq,itemEl){
 return jq.each(function(){
-_2b(this,_48,true);
+_2b(this,itemEl,true);
 });
 }};
 $.fn.menu.defaults={zIndex:110000,left:0,top:0,onShow:function(){

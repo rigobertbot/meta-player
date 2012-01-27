@@ -14,6 +14,7 @@ function BaseRepository() {
     this.url = undefined;
     this.nodeLoadedEvent = "nodeLoaded";
     this.nodeUpdatedEvent = "nodeUpdated";
+    this.nodeRemovedEvent = "nodeRemoved";
     this.identityMap = [];
 }
 
@@ -26,6 +27,10 @@ BaseRepository.prototype.onLoaded = function (handler) {
 BaseRepository.prototype.onUpdated = function (handler) {
     $(this).bind(this.nodeUpdatedEvent, handler);
     console.log('bind', this.nodeUpdatedEvent, this, handler);
+}
+BaseRepository.prototype.onRemoved = function (handler) {
+    $(this).bind(this.nodeRemovedEvent, handler);
+    console.log('bind', this.nodeRemovedEvent, handler);
 }
 
 BaseRepository.prototype.dispatch = function (data) {
@@ -47,13 +52,19 @@ BaseRepository.prototype.dispatch = function (data) {
         }
     }
     if (loaded.length > 0) {
-        console.log("trigger", this.nodeLoadedEvent);
+        console.log("trigger", this.nodeLoadedEvent, loaded);
         $(this).trigger(this.nodeLoadedEvent, [loaded]);
     }
     if (updated.length > 0) {
-        console.log("trigger", this.nodeUpdatedEvent);
+        console.log("trigger", this.nodeUpdatedEvent, updated);
         $(this).trigger(this.nodeUpdatedEvent, [updated]);
     }
+}
+
+BaseRepository.prototype.dispatchRemove = function (node) {
+    var identity = node.id.toString();
+    this.identityMap[identity] = undefined;
+    $(this).trigger(this.nodeRemovedEvent, [node]);
 }
 
 BaseRepository.prototype.list = function (success, params) {
@@ -94,6 +105,18 @@ BaseRepository.prototype.add = function (node, success) {
     }, "json");
 }
 
+BaseRepository.prototype.remove = function (node, success) {
+    var url = this.url + 'remove';
+    var that = this;
+    var id = node.getServerId();
+
+    $.post(url, {"id": id}, function (result, textStatus, jqXHR) {
+        that.dispatchRemove(node);
+        if ($.isFunction(success)) {
+            success(node);
+        }
+    })
+}
 
 /***************************************
  *********** BandRepository ************

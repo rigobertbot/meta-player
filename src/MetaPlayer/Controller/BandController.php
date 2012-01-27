@@ -125,6 +125,28 @@ class BandController extends BaseSecurityController implements ILoggerAware
         return new JsonViewModel($resultDto, $this->jsonUtils);
     }
 
+    /**
+     * Remove user band
+     * @param $id
+     */
+    public function removeAction($id) {
+        $id = $this->bandHelper->convertDtoToUserBandId($id);
+
+        $userBand = $this->userBandRepository->find($id);
+        if ($userBand == null) {
+            $this->logger->error("There is no user band with id $id.");
+            throw new JsonException("Invalid band id.");
+        }
+
+        if ($userBand->isApproved()) {
+            $this->logger->error("There was try to remove approved user band with id $id.");
+            throw new JsonException("This band has already approved.");
+        }
+
+        $this->userBandRepository->remove($userBand);
+        $this->userBandRepository->flush();
+    }
+
     public function setLogger(\Logger $logger) {
         $this->logger = $logger;
     }

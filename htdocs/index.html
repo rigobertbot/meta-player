@@ -146,11 +146,18 @@
                     </div>
                 </div>
                 <div id="treeMenu" class="easyui-menu" style="width:120px;">
-                    <div onclick="play()">Проигрывать</div>
+                    <div onclick="play()"><b>Проигрывать</b></div>
                     <div onclick="addToPlaylist()">Добавить</div>
+                    <div id="treeMenuEdit">
+                        <span>Править</span>
+                        <div style="width: 120px">
+                            <div onclick="mainTree.removeMenuNode()">Удалить</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
+            <!-- onclick="mainTree.removeNode('a')" -->
             <div id="bodyPlayer" region="center" title="Плеер" style="height: 140px">
                 <div id="mainPlayer" class="jp-jplayer"></div>
                 <div id="jp_container_1" class="jp-audio" style="margin: auto">

@@ -111,7 +111,7 @@ abstract class Dispatcher implements ILoggerAware, IReflectionFactoryAware
         }
         
         if (!method_exists($controller, $actionHandler)) {
-            throw new MvcException('No valid action handler found: ' . $actionHandler);
+            throw new MvcException("No valid action handler found in controller " . get_class($controller) . " for action $actionHandler.");
         }
         $result = $this->invokeAction($controller, $actionHandler, $action->getArguments());
         

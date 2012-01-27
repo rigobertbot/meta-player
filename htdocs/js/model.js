@@ -24,12 +24,15 @@ function Node() {
     this.leaf = false;
     // for editing node: information source
     this.source = null;
+    // the flag is this node belongs to user
+    this.belongsToUser = false;
 }
 
 Node.prototype.constructor = Node;
 
 Node.prototype._wakeup = function () {
     this.serverId = this.id;
+    this.belongsToUser = (this.id.indexOf('user_') === 0);
 }
 Node.prototype._sleep = function () {
     var clone = $.extend({}, this);
@@ -51,6 +54,7 @@ Node.prototype.setSource = function (source) { this.source = source; }
 Node.prototype.setDate = function (value) { this.date = value; return this; }
 Node.prototype.setDuration = function (value) { this.date = value; return this; }
 Node.prototype.getParentId = function () { return undefined; }
+Node.prototype.isBelongsToUser = function () { return this.belongsToUser; }
 
 /***************************************
  *************** BandNode **************

@@ -41,30 +41,30 @@ class UserAlbum extends BaseAlbum {
     protected $source;
 
     /**
-     * @Column(type="boolean", nullable=true, name="is_approved")
-     * @var bool
-     */
-    protected $isApproved = false;
-
-    /**
      * @ManyToOne(targetEntity="UserBand")
      * @JoinColumn(name="user_band_id", referencedColumnName="id")
      * @var UserBand 
      */
-    protected $band;
+    protected $userBand;
+
+    /**
+     * @ManyToOne(targetEntity="Album")
+     * @var Album
+     */
+    protected $album = null;
     
-    public function __construct(UserBand $band, $title, \DateTime $releaseDate, $source) {
+    public function __construct(UserBand $userBand, $title, \DateTime $releaseDate, $source) {
         parent::__construct($title, $releaseDate);
-        $this->band = $band;
+        $this->userBand = $userBand;
         $this->source = $source;
-        $this->user = $band->getUser();
+        $this->user = $userBand->getUser();
     }
 
     /**
      * @return UserBand
      */
     public function getBand() {
-        return $this->band;
+        return $this->userBand;
     }
 
     /**
@@ -78,9 +78,20 @@ class UserAlbum extends BaseAlbum {
         return $this->source;
     }
 
-    public function getIsApproved() {
-        return $this->isApproved;
+    /**
+     * Mark as approved, and set produced entity.
+     *
+     * @param Album $album
+     */
+    public function approve(Album $album) {
+        $this->album = $album;
     }
 
-
+    /**
+     * Is this user entity approved and simple entity was produced.
+     * @return bool
+     */
+    public function isApproved() {
+        return $this->album != null;
+    }
 }

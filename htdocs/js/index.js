@@ -45,9 +45,11 @@ $(document).ready(function () {
                 });
             }
         });
-        bandRepository.onLoaded(function (e, data) {
-            var oldData =  $('#bandList').combobox('getData');
-            $('#bandList').combobox('loadData', [].concat(oldData, data));
+        bandRepository.onLoaded(function (e, nodes) {
+            appendNodesToList($('#bandList'), nodes);
+        });
+        bandRepository.onRemoved(function (e, node) {
+            removeNodeFromList($('#bandList'), node);
         });
 
         $('#albumList').combobox({
@@ -59,12 +61,26 @@ $(document).ready(function () {
             }
         });
 
+        albumRepository.onLoaded(function (e, nodes) {
+            appendNodesToList($('#albumList'), nodes);
+        });
+        albumRepository.onRemoved(function (e, node) {
+            removeNodeFromList($('#albumList'), node);
+        });
+
         $('#trackList').combobox({
             onSelect: function (record) {
                 $('#trackDurationMM').val(Math.floor(record.getDurationMs() / 60));
                 $('#trackDurationSS').val(record.getDurationMs() % 60);
                 $('#trackSerial').val(record.getSerial());
             }
+        });
+
+        trackRepository.onLoaded(function (e, nodes) {
+            appendNodesToList($('#trackList'), nodes);
+        });
+        trackRepository.onRemoved(function (e, node) {
+            removeNodeFromList($('#trackList'), node);
         });
     });
     easyloader.load('form', function () {
@@ -91,6 +107,24 @@ $(document).ready(function () {
         });
     });
 });
+
+function appendNodesToList(combobox, nodes) {
+    console.log('append node to list', combobox, nodes);
+    var oldData =  $(combobox).combobox('getData');
+    $(combobox).combobox('loadData', [].concat(oldData, nodes));
+}
+
+function removeNodeFromList(combobox, node) {
+    var oldData =  $(combobox).combobox('getData');
+    var newData = [];
+    for (var index in oldData) {
+        var oldNode = oldData[index];
+        if (oldNode.getId() == node.getId())
+            continue;
+        newData.push(oldNode);
+    }
+    $(combobox).combobox('loadData', newData);
+}
 
 function getSelectedNode(combobox) {
     var value = $(combobox).combobox('getValue');

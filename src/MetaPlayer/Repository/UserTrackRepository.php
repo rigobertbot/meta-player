@@ -27,4 +27,25 @@ class UserTrackRepository extends BaseRepository {
     public function __construct($em, ClassMetadata $class) {
         parent::__construct($em, $class);
     }
+
+    /**
+     * @param \MetaPlayer\Model\User $user
+     * @param $userAlbumId
+     * @return \MetaPlayer\Model\UserTrack[]
+     */
+    public function findByUserAndAlbum(\MetaPlayer\Model\User $user, $userAlbumId) {
+        return $this->findBy(array('user' => $user, 'userAlbum' => $userAlbumId));
+    }
+
+    /**
+     * @param $entity
+     * @return UserTrackRepository
+     * @throws \MetaPlayer\MetaPlayerException
+     */
+    public function remove($entity) {
+        if ($entity->isApproved()) {
+            throw new \MetaPlayer\MetaPlayerException("Impossible to remove approved user entity.");
+        }
+        return parent::remove($entity);
+    }
 }

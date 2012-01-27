@@ -69,7 +69,7 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
      */
     private $jsonUtils;
 
-    public function listAction($bandId, $params = array()) {
+    public function listAction($bandId) {
         $userAlbum = false;
         if (strpos($bandId, BandController::$userBandIdPrefix) === 0) {
             $bandId = substr($bandId, strlen(BandController::$userBandIdPrefix));
@@ -114,6 +114,25 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
         
         $resultDto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
         return new JsonViewModel($resultDto, $this->jsonUtils);
+    }
+
+    public function removeAction($id) {
+        $id = $this->albumHelper->convertDtoToUserAlbumId($id);
+
+        $userAlbum = $this->userAlbumRepository->find($id);
+        if ($userAlbum == null) {
+            $this->logger->error("There is no user album with id $id.");
+            throw new JsonException("Invalid album id.");
+        }
+
+        if ($userAlbum->isApproved()) {
+            $this->logger->error("There was try to remove approved user album with id $id.");
+            throw new JsonException("This album has already approved.");
+        }
+
+        $this->userAlbumRepository->
+            remove($userAlbum)->
+            flush();
     }
 
     /**

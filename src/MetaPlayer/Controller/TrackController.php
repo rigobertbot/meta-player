@@ -53,6 +53,12 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
     /**
      * @Resource
+     * @var \MetaPlayer\Contract\AlbumHelper
+     */
+    private $albumHelper;
+
+    /**
+     * @Resource
      * @var \Oak\Json\JsonUtils
      */
     private $jsonUtils;
@@ -60,20 +66,16 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
     public function listAction($albumId) {
         $data = array();
-        
-        $tracks = $this->trackRepository->findByAlbum($albumId);
+        $isUser = $this->albumHelper->isDtoUserAlbumId($albumId);
+        $tracks = $isUser
+            ? $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $this->albumHelper->convertDtoToUserAlbumId($albumId))
+            : $this->trackRepository->findByAlbum($albumId);
         
         foreach ($tracks as $track) {
-            /* @var $track Track */
-            $trackDto = array(
-                'id' => $track->getId(),
-                'className' => 'TrackNode',
-                'duration' => $track->getDuration(),
-                'serial' => $track->getSerial(),
-                'albumId' => $albumId,
-                'title' => $track->getTitle(),
-                'queries' => $track->getQueries(),
-            );
+            $trackDto = $track instanceof \MetaPlayer\Model\UserTrack
+                ? $this->trackHelper->convertUserTrackToDto($track)
+                : $this->trackHelper->convertTrackToDto($track);
+
             $data[] = $trackDto;
         }
         
@@ -92,6 +94,25 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
         $resultDto = $this->trackHelper->convertUserTrackToDto($userTrack);
         return new JsonViewModel($resultDto, $this->jsonUtils);
+    }
+
+    public function removeAction($id) {
+        $id = $this->trackHelper->convertDtoToUserTrackId($id);
+
+        $userTrack = $this->userTrackRepository->find($id);
+        if ($userTrack == null) {
+            $this->logger->error("There is no user track with id $id.");
+            throw new JsonException("Invalid track id.");
+        }
+
+        if ($userTrack->isApproved()) {
+            $this->logger->error("There was try to remove approved user album with id $id.");
+            throw new JsonException("This album has already approved.");
+        }
+
+        $this->userTrackRepository->
+            remove($userTrack)->
+            flush();
     }
 
     /**

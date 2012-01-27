@@ -40,10 +40,10 @@ class UserBand extends BaseBand {
     protected $source;
     
     /**
-     * @Column(type="boolean", nullable=true, name="is_approved")
-     * @var bool
+     * @ManyToOne(targetEntity="Band")
+     * @var Band
      */
-    protected $isApproved = false;
+    protected $band = null;
     
     public function __construct(User $user, $name, \DateTime $foundDate, $source, \DateTime $endDate = null) {
         parent::__construct($name, $foundDate, $endDate);
@@ -65,5 +65,18 @@ class UserBand extends BaseBand {
 
     public function setSource($source) {
         $this->source = $source;
+    }
+
+    /**
+     * Mark as approved, and set produced entity.
+     *
+     * @param Band $band
+     */
+    public function approve(Band $band) {
+        $this->band = $band;
+    }
+
+    public function isApproved() {
+        return $this->band != null;
     }
 }

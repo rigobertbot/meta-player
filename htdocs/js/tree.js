@@ -10,8 +10,10 @@
 function Tree() {
     this.loadSuccessEvent =  "loadSuccess";//$.Event("loadSuccess");
     this.expandedEvent = "expanded";
+    this.menuNode = null;
     
     this.init = function () {
+        var that = this;
         easyloader.load('treegrid', function(){
             $.extend($.fn.treegrid.defaults, {
                 onBeforeLoad: function (row, node) {
@@ -29,8 +31,8 @@ function Tree() {
                 },
                 onContextMenu: function(e, row){
                     e.preventDefault();
-                    // $(this).treegrid('unselectAll');
-                    // $(this).treegrid('select', row.code);
+                    that.menuNode = row;
+                    $('#treeMenu').menu(row.isBelongsToUser() ? 'enableItem' : 'disableItem', $('#treeMenuEdit'));
                     $('#treeMenu').menu('show', {
                         left: e.pageX,
                         top: e.pageY
@@ -46,7 +48,6 @@ function Tree() {
             });
         });
         
-        var that = this;
         mainPlayer.onStartPlaying(function () {
             that.startPlay();
         });
@@ -54,13 +55,22 @@ function Tree() {
         bandRepository.onLoaded(function (e, data) {
             that.nodeLoaded(data);
         });
+        bandRepository.onRemoved(function (e, data) {
+            that.nodeRemoved(data);
+        });
 
-        albumRepository.onLoaded(function (e, data){
+        albumRepository.onLoaded(function (e, data) {
             that.nodeLoaded(data);
+        });
+        albumRepository.onRemoved(function (e, data) {
+            that.nodeRemoved(data);
         });
 
         trackRepository.onLoaded(function (e, data) {
             that.nodeLoaded(data);
+        });
+        trackRepository.onRemoved(function (e, data) {
+            that.nodeRemoved(data);
         });
     }
     
@@ -95,7 +105,46 @@ function Tree() {
         } else {
             $(this).trigger(this.loadSuccessEvent, [null, nodes]);
         }
+    }
 
+    /**
+     * Handles nodeRemove event.
+     * @param node
+     */
+    this.nodeRemoved = function (node) {
+        $('#metaTree').treegrid('remove', node.getId());
+    }
+
+    /**
+     * Remove node.
+     * @param node
+     */
+    this.removeNode = function (node) {
+        var type = '';
+        var repository = null;
+        if (node instanceof BandNode) {
+            type = 'группу';
+            repository = bandRepository;
+        } else if (node instanceof AlbumNode) {
+            type = 'альбом';
+            repository = albumRepository;
+        } else if (node instanceof TrackNode) {
+            type = 'композицию';
+            repository = trackRepository;
+        }
+        if (repository == null) {
+            return;
+        }
+        if (confirm('Вы уверены что хотите удалить ' + type + ' "' + node.getName() + '"?')) {
+            repository.remove(node);
+        }
+    }
+
+    /**
+     * Handles selecting remove menu item.
+     */
+    this.removeMenuNode = function () {
+        this.removeNode(this.menuNode);
     }
 }
 

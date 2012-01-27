@@ -20,11 +20,29 @@ use Doctrine\ORM\EntityRepository;
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 abstract class BaseRepository extends EntityRepository {
+
+    /**
+     * Tells the EntityManager to make an instance managed and persistent.
+     *
+     * @param $entity
+     */
     public function persist($entity) {
         $this->getEntityManager()->persist($entity);
+    }
+
+    /**
+     * Removes an entity instance.
+     *
+     * @param $entity
+     * @return \MetaPlayer\Repository\BaseRepository
+     */
+    public function remove($entity) {
+        $this->getEntityManager()->remove($entity);
+        return $this;
     }
     
     public function flush() {
         $this->getEntityManager()->flush();
+        return $this;
     }
 }

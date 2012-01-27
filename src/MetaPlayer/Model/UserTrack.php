@@ -96,14 +96,6 @@ class UserTrack extends BaseTrack
     }
 
     /**
-     * @param \MetaPlayer\Model\Track $track
-     */
-    public function setTrack(Track $track)
-    {
-        $this->track = $track;
-    }
-
-    /**
      * @return \MetaPlayer\Model\Track
      */
     public function getTrack()
@@ -125,5 +117,21 @@ class UserTrack extends BaseTrack
     public function getUserAlbum()
     {
         return $this->userAlbum;
+    }
+
+    /**
+     * Mark as approved, and set produced entity.
+     * @param \MetaPlayer\Model\Track $track
+     */
+    public function approve(Track $track) {
+        $this->track = $track;
+    }
+
+    /**
+     * Is this user entity approved and simple entity was produced.
+     * @return boolean
+     */
+    public function isApproved() {
+        return $this->track != null;
     }
 }

@@ -947,7 +947,7 @@ class ContainerImpl implements IContainer
             }
             pcntl_sigprocmask(SIG_UNBLOCK, $this->_signals);
         }
-        set_error_handler(array($this, 'errorHandler'));
+        //set_error_handler(array($this, 'errorHandler'));
         register_shutdown_function(array($this, 'shutdownHandler'));
 
         // We need a lifecycle manager.

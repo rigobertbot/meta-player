@@ -34,6 +34,18 @@ class UserAlbumRepository extends BaseRepository {
      * @return \MetaPlayer\Model\UserAlbum[]
      */
     public function findByUserAndBand(User $user, $userBandId) {
-        return $this->findBy(array('user' => $user, 'band' => $userBandId));
+        return $this->findBy(array('user' => $user, 'userBand' => $userBandId));
+    }
+
+    /**
+     * @param $entity
+     * @return UserAlbumRepository
+     * @throws \MetaPlayer\MetaPlayerException
+     */
+    public function remove($entity) {
+        if ($entity->isApproved()) {
+            throw new \MetaPlayer\MetaPlayerException("Impossible to remove approved user entity.");
+        }
+        return parent::remove($entity);
     }
 }

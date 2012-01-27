@@ -90,10 +90,19 @@ class AlbumHelper {
     }
 
     public function convertDtoToUserAlbumId($dtoUserAlbumId) {
-        if (strpos($dtoUserAlbumId, self::$userAlbumIdPrefix) !== 0) {
+        if (!$this->isDtoUserAlbumId($dtoUserAlbumId)) {
             throw new \MetaPlayer\MetaPlayerException("Argument dtoAlbumId ($dtoUserAlbumId) isn't a user album id.");
         }
         return substr($dtoUserAlbumId, strlen(self::$userAlbumIdPrefix));
+    }
+
+    /**
+     * Checks if specified id belongs to user album.
+     * @param $albumId
+     * @return bool
+     */
+    public function isDtoUserAlbumId($albumId) {
+        return strpos($albumId, self::$userAlbumIdPrefix) === 0;
     }
     
 }

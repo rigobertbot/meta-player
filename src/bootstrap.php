@@ -26,15 +26,12 @@ require_once $projectRoot . '/config/app.config.php';
 require_once 'Ding/Autoloader/Autoloader.php';
 \Ding\Autoloader\Autoloader::register();
 
-$logger = \Logger::getLogger("MetaPlayer.bootstrap");
 $config = include $projectRoot . '/config/ding.config.php';
-$container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
-$logger->debug("container initialized");
-$logger->trace("container initialized trace");
-$checkContainer = $container->getBean("container");
-if ($container != $checkContainer) {
-    $logger->error("container was not successfully self registered");
+if (isset($config['ding']['log4php.properties'])) {
+    \Logger::configure($config['ding']['log4php.properties']);
 }
+
+$logger = \Logger::getLogger("MetaPlayer.bootstrap");
 
 set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext) {
     global $logger;
@@ -43,12 +40,21 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errconte
 
 register_shutdown_function(function () {
     global $logger;
-            
+
     $last = error_get_last();
     if ($last != null) {
         $logger->fatal("Fatal error: $last");
     }
 });
+
+$container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
+$logger->debug("container initialized");
+$logger->trace("container initialized trace");
+$checkContainer = $container->getBean("container");
+if ($container != $checkContainer) {
+    $logger->error("container was not successfully self registered");
+}
+
 
 
 $logger->debug("initialize doctrine");
