@@ -65,6 +65,8 @@ class BaseBand
         return $this->name;
     }
 
+
+
     /**
      * Gets the band found date.
      * @return \DateTime
@@ -78,6 +80,30 @@ class BaseBand
      */
     public function getEndDate() {
         return $this->endDate;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param \DateTime $endDate
+     */
+    public function setEndDate($endDate)
+    {
+        $this->endDate = $endDate;
+    }
+
+    /**
+     * @param \DateTime $foundDate
+     */
+    public function setFoundDate($foundDate)
+    {
+        $this->foundDate = $foundDate;
     }
 
 

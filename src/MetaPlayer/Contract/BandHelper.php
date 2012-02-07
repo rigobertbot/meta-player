@@ -93,4 +93,27 @@ class BandHelper
         return $userBand;
     }
 
+    /**
+     * Populates the specified user band with values from the specified dto.
+     *
+     * @param \MetaPlayer\Model\UserBand $userBand
+     * @param BandDto $dto
+     */
+    public function populateUserBandWithDto(UserBand $userBand, BandDto $dto) {
+        $userBand->setName($dto->name);
+        $userBand->setFoundDate(ViewHelper::parseDate($dto->foundDate));
+        $userBand->setEndDate(ViewHelper::parseDate($dto->endDate));
+        $userBand->setSource($dto->source);
+    }
+
+    /**
+     * Checks if specified id belongs to user ифтв.
+     * @param $bandId
+     * @return bool
+     */
+    public function isDtoUserBandId($bandId) {
+        return strpos($bandId, self::$userBandIdPrefix) === 0;
+    }
+
+
 }

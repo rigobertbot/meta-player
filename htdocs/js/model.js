@@ -26,6 +26,8 @@ function Node() {
     this.source = null;
     // the flag is this node belongs to user
     this.belongsToUser = false;
+    // this node is currently edited
+    this.edited = false;
 }
 
 Node.prototype.constructor = Node;
@@ -52,7 +54,7 @@ Node.prototype.getServerId = function () { return this.serverId; }
 Node.prototype.setServerId = function (value) { this.serverId = value; return this; }
 Node.prototype.setSource = function (source) { this.source = source; }
 Node.prototype.setDate = function (value) { this.date = value; return this; }
-Node.prototype.setDuration = function (value) { this.date = value; return this; }
+Node.prototype.setDuration = function (value) { this.duration = value; return this; }
 Node.prototype.getParentId = function () { return undefined; }
 Node.prototype.isBelongsToUser = function () { return this.belongsToUser; }
 
@@ -84,9 +86,14 @@ BandNode.prototype.loadChildren = function (callback) {
 };
 BandNode.prototype.getFoundDate = function () { return this.foundDate; }
 BandNode.prototype.getEndDate = function () { return this.endDate; }
+BandNode.prototype.setDate = function (value) {
+    this.parent.prototype.setDate.call(this, value);
+    this.foundDate = value;
+    return this;
+}
 BandNode.prototype.setFoundDate = function (value) {
     this.foundDate = value;
-    this.setDate(this.foundDate);
+    this.date = value;
     return this;
 }
 BandNode.prototype.setEndDate = function (value) {
@@ -139,8 +146,26 @@ AlbumNode.prototype.loadChildren = function (callback) {
 }
 
 AlbumNode.prototype.getReleaseDate = function () { return this.releaseDate; }
-AlbumNode.prototype.setReleaseDate = function (value) { this.releaseDate = value; this.setDate(value); return this; }
-AlbumNode.prototype.setTitle = function (value) { this.title = value; this.setName(value); return this; }
+AlbumNode.prototype.setReleaseDate = function (value) {
+    this.releaseDate = value;
+    this.date = value;
+    return this;
+}
+AlbumNode.prototype.setDate = function (value) {
+    this.parent.prototype.setDate.call(this, value);
+    this.releaseDate = value;
+    return this;
+}
+AlbumNode.prototype.setTitle = function (value) {
+    this.title = value;
+    this.name = value;
+    return this;
+}
+AlbumNode.prototype.setName = function (value) {
+    this.parent.prototype.setName.call(this, value);
+    this.title = value;
+    return this;
+}
 AlbumNode.prototype.getParentId = function () { return this.bandId; }
 
 /***************************************
@@ -185,7 +210,7 @@ TrackNode.prototype._sleep = function () {
 TrackNode.prototype.getDurationMs = function () {return this.durationMs;}
 TrackNode.prototype.setDuration = function (durationMs) {
     this.durationMs = durationMs;
-    this.duration = Math.floor(durationMs / 60) + ":" + durationMs % 60;
+    this.duration = Math.floor(durationMs / 60) + ":" + new String(durationMs % 60).padLeft(2, '0');
     return this;
 }
 
@@ -204,7 +229,16 @@ TrackNode.prototype.setParentAlbum = function (album) {
     this.serverAlbumId = album.getServerId();
     return this;
 }
-TrackNode.prototype.setTitle = function (value) { this.title = value; this.setName(value); return this; }
+TrackNode.prototype.setTitle = function (value) {
+    this.title = value;
+    this.name = value;
+    return this;
+}
+TrackNode.prototype.setName = function (value) {
+    this.parent.prototype.setName.call(this, value);
+    this.title = value;
+    return this;
+}
 TrackNode.prototype.setSerial = function (value) { this.serial = value; return this; }
 TrackNode.prototype.getSerial = function () { return this.serial; }
 /**

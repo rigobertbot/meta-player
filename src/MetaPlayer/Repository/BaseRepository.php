@@ -31,6 +31,18 @@ abstract class BaseRepository extends EntityRepository {
     }
 
     /**
+     * Merges the state of a detached entity into the persistence context
+     * of this EntityManager and returns the managed copy of the entity.
+     * The entity passed to merge will not become associated/managed with this EntityManager.
+     *
+     * @param object $entity The detached entity to merge into the persistence context.
+     * @return object The managed copy of the entity.
+     */
+    public function merge($entity) {
+        return $this->getEntityManager()->merge($entity);
+    }
+
+    /**
      * Removes an entity instance.
      *
      * @param $entity

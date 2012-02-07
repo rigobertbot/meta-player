@@ -21,6 +21,6 @@ use Doctrine\ORM\EntityRepository;
 class TrackRepository extends EntityRepository
 {
     public function findByAlbum($albumId) {
-        return $this->findBy(array('album' => $albumId));
+        return $this->findBy(array('album' => $albumId), array('serial'));
     }
 }

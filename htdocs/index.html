@@ -7,7 +7,8 @@
         <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
         <link rel="stylesheet" type="text/css" href="css/blue.monday/jplayer.blue.monday.css" />        
-        <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>        
+        <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>
+        <script type="text/javascript" src="js/jPaq-1.0.6.full.js"></script>
         <script type="text/javascript" src="js/jquery-1.6.2.js"></script>
         <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
         <script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
@@ -22,6 +23,7 @@
         <script type="text/javascript" src="js/player.js"></script>
         <script type="text/javascript" src="js/vkutils.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/easy-ui-wrappers.js"></script>
     </head>
     <body>
         <div id="mainHeader">
@@ -32,17 +34,9 @@
                 <div id="bodyAccordion" class="easyui-accordion">
                     <div id="treeAccordion" selected="true" title="MetaTree">
                         <table id="metaTree" style="height: 288px"
-                               class="easyui-treegrid" url=""
+                               class="easyui-treegrid"
                                nowrap="true" rownumbers="false" animate="true" singleSelect="false"
                                idField="id" treeField="name">
-                            <thead>
-                                <tr>
-                                    <th field="name" width="250">Название</th>
-                                    <th field="checked" checkbox="true"></th>
-                                    <th field="duration" width="30">Длит.</th>
-                                    <th field="date" width="80">Дата</th>
-                                </tr>
-                            </thead>
                         </table>
                     </div>
                     <div id="playlistAccordion" title="Плейлист">
@@ -110,7 +104,8 @@
                                             <tr>
                                                 <td align="right" style="min-width: 70px">Title:</td>
                                                 <td>
-                                                    <select name="trackList" id="trackList" class="easyui-combobox" validType="checkSelected['track',trackList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название композиции."></select>
+                                                    <input type="text" name="trackList" id="trackList" class="easyui-validatebox" required="true">
+<!--                                                    <select name="trackList" id="trackList" class="easyui-combobox" validType="checkSelected['track',trackList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название композиции."></select> -->
                                                 </td>
                                             </tr>
                                             <tr>
@@ -148,12 +143,16 @@
                 <div id="treeMenu" class="easyui-menu" style="width:120px;">
                     <div onclick="play()"><b>Проигрывать</b></div>
                     <div onclick="addToPlaylist()">Добавить</div>
+                    <div class="menu-sep"></div>
                     <div id="treeMenuEdit">
                         <span>Править</span>
                         <div style="width: 120px">
-                            <div onclick="mainTree.removeMenuNode()">Удалить</div>
+                            <div iconCls="icon-edit" onclick="mainTree.editMenuNode()">Править</div>
+                            <div class="menu-sep"></div>
+                            <div iconCls="icon-remove" onclick="mainTree.removeMenuNode()">Удалить</div>
                         </div>
                     </div>
+                    <div iconCls="icon-reload" onclick="mainTree.reloadMenuNode()">Обновить</div>
                 </div>
             </div>
 

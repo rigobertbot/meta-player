@@ -66,6 +66,18 @@ class TrackHelper
     }
 
     /**
+     * Populates the specified user track with values from dto.
+     * @param \MetaPlayer\Model\UserTrack $userTrack
+     * @param TrackDto $dto
+     */
+    public function populateUserTrackWithDto(UserTrack $userTrack, TrackDto $dto) {
+        $userTrack->setTitle($dto->title);
+        $userTrack->setDuration($dto->duration);
+        $userTrack->setSerial($dto->serial);
+        $userTrack->setSource($dto->source);
+    }
+
+    /**
      * @param \MetaPlayer\Model\UserTrack $userTrack
      * @return TrackDto
      */

@@ -76,5 +76,19 @@ abstract class BaseAlbum
         return $this->releaseDate;
     }
 
+    /**
+     * @param \DateTime $releaseDate
+     */
+    public function setReleaseDate(\DateTime $releaseDate)
+    {
+        $this->releaseDate = $releaseDate;
+    }
 
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 }

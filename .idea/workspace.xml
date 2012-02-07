@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" line="100" mnemonic="4" />
+    <bookmark url="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" line="93" mnemonic="4" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/index.html" afterPath="$PROJECT_DIR$/htdocs/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/index.js" afterPath="$PROJECT_DIR$/htdocs/js/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/model.js" afterPath="$PROJECT_DIR$/htdocs/js/model.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/plugins/jquery.menu.js" afterPath="$PROJECT_DIR$/htdocs/js/plugins/jquery.menu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/plugins/jquery.datagrid.js" afterPath="$PROJECT_DIR$/htdocs/js/plugins/jquery.datagrid.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/repository.js" afterPath="$PROJECT_DIR$/htdocs/js/repository.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/tree.js" afterPath="$PROJECT_DIR$/htdocs/js/tree.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Container/Impl/ContainerImpl.php" afterPath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Container/Impl/ContainerImpl.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Dispatcher.php" afterPath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Dispatcher.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/utils.js" afterPath="$PROJECT_DIR$/htdocs/js/utils.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js_min/jquery.easyui.min.js" afterPath="$PROJECT_DIR$/htdocs/js_min/jquery.easyui.min.js" />
+    </list>
+    <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/log4php.xml" afterPath="$PROJECT_DIR$/config/log4php.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/.htaccess" afterPath="$PROJECT_DIR$/htdocs/.htaccess" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/Album.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/Album.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseAlbum.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseAlbum.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseBand.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseBand.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseTrack.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseTrack.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/UserBand.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/UserBand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/UserTrack.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/UserTrack.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/BaseRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/BaseRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserAlbumRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserAlbumRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserBandRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserBandRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/ViewHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/ViewHelper.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/bootstrap.php" afterPath="$PROJECT_DIR$/src/bootstrap.php" />
     </list>
     <ignored path="meta-player.iws" />
@@ -48,7 +54,71 @@
     <favorites_list name="meta-player" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="tree.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="358" column="30" selection-start="13336" selection-end="13336" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="jPaq-1.0.6.full.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/jPaq-1.0.6.full.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="162" column="29" selection-start="5996" selection-end="5996" vertical-scroll-proportion="0.35172415">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="198" column="20" selection-start="6607" selection-end="6607" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="model.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="232" column="51" selection-start="6944" selection-end="6944" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="106" column="0" selection-start="7320" selection-end="7320" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="easy-ui-wrappers.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="90" column="33" selection-start="1832" selection-end="1832" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="repository.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -63,22 +133,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/htdocs/index.html" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
-        <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/index.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/repository.js" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/BaseTrack.php" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
-        <option value="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Dispatcher.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/UserBand.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/BaseRepository.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
+        <option value="$PROJECT_DIR$/htdocs/js/repository.js" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/UserTrack.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/UserAlbumRepository.php" />
+        <option value="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
+        <option value="$PROJECT_DIR$/htdocs/index.html" />
+        <option value="$PROJECT_DIR$/htdocs/js/index.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/model.js" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php" />
+        <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/jPaq-1.0.6.full.js" />
       </list>
     </option>
   </component>
@@ -211,7 +281,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Repository" />
+              <option name="myItemId" value="Controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -225,15 +295,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meta-player" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meta-player" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MetaPlayer" />
+              <option name="myItemId" value="htdocs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Controller" />
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -244,23 +324,13 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="reference.webide.settings.project.settings.php.debug" />
-    <property name="GoToClass.includeJavaFiles" value="false" />
-    <property name="options.searchVisible" value="true" />
+    <property name="recentsLimit" value="5" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
   </component>
-  <component name="PublishConfig" serverName="metaplayer" serverId="f88f94f2-10ee-4d81-b22a-233b4929b824">
-    <servers>
-      <server id="f88f94f2-10ee-4d81-b22a-233b4929b824">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$/htdocs" web="/" />
-          </mappings>
-        </serverdata>
-      </server>
-    </servers>
-  </component>
+  <component name="PublishConfig" serverName="metaplayer" serverId="f88f94f2-10ee-4d81-b22a-233b4929b824" />
   <component name="RunManager" selected="PHP Web Application.localhost">
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" scope="Directory">
       <TestRunner />
@@ -277,17 +347,18 @@
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug">
+    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="apache">
+      <method>
+        <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" break_at_the_first_line="true" server_name="apache">
+      <Debug break_at_the_first_line="true" />
       <method>
         <option name="FtpUpload" enabled="false">
           <server_id />
           <server_name />
         </option>
-        <option name="PhingTarget" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="apache">
-      <method>
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
@@ -303,13 +374,6 @@
       </JSRemoteDebuggerConfigurationSettings>
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" value="chrome" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method />
-    </configuration>
     <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" server_id="f88f94f2-10ee-4d81-b22a-233b4929b824" server_name="metaplayer">
       <method>
         <option name="FtpUpload" enabled="false">
@@ -318,6 +382,13 @@
         </option>
         <option name="PhingTarget" enabled="false" />
       </method>
+    </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="chrome" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
+      <method />
     </configuration>
     <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
       <option name="VM_PARAMETERS" value="" />
@@ -376,8 +447,16 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="" />
       <created>1325071785488</created>
-      <updated>1325071785488</updated>
+      <updated>1328636152910</updated>
     </task>
+    <task id="LOCAL-00001" summary="be">
+      <changelist id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
+      <changelist id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
+      <created>1328604147922</created>
+      <updated>1328636151897</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <option name="createChangelist" value="false" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -402,25 +481,26 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1573" height="1066" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2451955" sideWeight="0.34361234" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2451955" sideWeight="0.6486784" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40369394" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4030837" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39977974" sideWeight="0.50033134" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26507622" sideWeight="0.26431718" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26507622" sideWeight="0.7279736" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24983433" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -477,106 +557,114 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Model/Album.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="6" selection-start="607" selection-end="607" vertical-scroll-proportion="0.33333334" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Model/Track.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="6" selection-start="627" selection-end="627" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="63" selection-start="1823" selection-end="1823" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BaseSecurityController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="6" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/UserBandRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="97" selection-start="1182" selection-end="1224" vertical-scroll-proportion="0.7689694">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/BaseRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="21" selection-start="735" selection-end="735" vertical-scroll-proportion="0.6342016">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="0" selection-start="3868" selection-end="4082" vertical-scroll-proportion="0.7112118">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="5" selection-start="1972" selection-end="1972" vertical-scroll-proportion="0.037372593">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Model/UserBand.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="0" selection-start="1451" selection-end="1703" vertical-scroll-proportion="0.6342016">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="0" selection-start="3415" selection-end="3415" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="5" selection-start="2072" selection-end="2072" vertical-scroll-proportion="0.8424102">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Model/UserTrack.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="134" column="27" selection-start="2778" selection-end="2778" vertical-scroll-proportion="0.82271147">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Dispatcher.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="75" selection-start="3224" selection-end="3224" vertical-scroll-proportion="0.01954023">
+        <state line="147" column="61" selection-start="4378" selection-end="4378" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="37" selection-start="1647" selection-end="1647" vertical-scroll-proportion="0.30690828">
+        <state line="125" column="61" selection-start="3761" selection-end="3761" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php">
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/JsonException.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="34" selection-start="1038" selection-end="1038" vertical-scroll-proportion="0.6919592">
+        <state line="21" column="11" selection-start="370" selection-end="370" vertical-scroll-proportion="0.40430352">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/UserAlbumRepository.php">
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="44" selection-start="802" selection-end="802" vertical-scroll-proportion="0.53793883">
+        <state line="117" column="40" selection-start="3170" selection-end="3170" vertical-scroll-proportion="0.01954023">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/UnitOfWork.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="906" column="69" selection-start="31450" selection-end="31450" vertical-scroll-proportion="0.01954023">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/Persisters/BasicEntityPersister.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="381" column="148" selection-start="14098" selection-end="14098" vertical-scroll-proportion="0.01954023">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/SQLLogger.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="59" selection-start="1079" selection-end="1079" vertical-scroll-proportion="0.5186863">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/ViewHelper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="59" selection-start="1528" selection-end="1528" vertical-scroll-proportion="0.6534541">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="74" selection-start="518" selection-end="518" vertical-scroll-proportion="0.4428086">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="358" column="30" selection-start="13336" selection-end="13336" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="198" column="20" selection-start="6607" selection-end="6607" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="232" column="51" selection-start="6944" selection-end="6944" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="0" selection-start="7320" selection-end="7320" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="33" selection-start="1832" selection-end="1832" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/jPaq-1.0.6.full.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="29" selection-start="5996" selection-end="5996" vertical-scroll-proportion="0.35172415">
           <folding />
         </state>
       </provider>

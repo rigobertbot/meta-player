@@ -1,0 +1,1 @@
+ALTER TABLE `metaplayer`.`user_band` DROP COLUMN `is_approved`;

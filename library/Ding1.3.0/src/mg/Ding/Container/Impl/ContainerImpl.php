@@ -71,7 +71,7 @@ class ContainerImpl implements IContainer
      * @var array
      */
     private $_signals = array(
-        SIGQUIT, SIGHUP, SIGINT, SIGCHLD, SIGTERM, SIGUSR1, SIGUSR2
+        //SIGQUIT, SIGHUP, SIGINT, SIGCHLD, SIGTERM, SIGUSR1, SIGUSR2
     );
     /**
      * Logger.
@@ -810,7 +810,7 @@ class ContainerImpl implements IContainer
             $bean->setBeanName($def->getName());
         }
         if ($rClass->implementsInterface('Ding\Logger\ILoggerAware')) {
-            $bean->setLogger(\Logger::getLogger($class));
+            $bean->setLogger(\Logger::getLogger(str_replace('\\', '.', $class)));
         }
         if ($rClass->implementsInterface('Ding\Container\IContainerAware')) {
             $bean->setContainer($this);

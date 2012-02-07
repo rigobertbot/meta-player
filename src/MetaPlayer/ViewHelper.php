@@ -28,7 +28,7 @@ class ViewHelper
      * @param \DateTime $date
      * @return string
      */
-    public static function formatDate(\DateTime $date) {
+    public static function formatDate(\DateTime $date = null) {
         if ($date == null) {
             return null;
         }
@@ -54,7 +54,10 @@ class ViewHelper
      * @param \DateTime $date
      * @return string
      */
-    public static function formatDateTime(\DateTime $date) {
+    public static function formatDateTime(\DateTime $date = null) {
+        if ($date == null) {
+            return null;
+        }
         return $date->format(self::$dateFormat . " " . self::$timeFormat);
     }
     
@@ -64,7 +67,10 @@ class ViewHelper
      * @param \DateTime $date
      * @return string
      */
-    public static function formatTime(\DateTime $date) {
+    public static function formatTime(\DateTime $date = null) {
+        if ($date == null) {
+            return null;
+        }
         return $date->format(self::$timeFormat);
     }
     

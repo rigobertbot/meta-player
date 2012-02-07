@@ -18,9 +18,21 @@
             return obj;
         
         var replaceObject = obj.className ? eval('new ' + obj.className + '();') : obj;
-        
-        for (var arrayIndex in obj) {
-            replaceObject[arrayIndex] = recourceParse(obj[arrayIndex]);
+
+        if ($.isArray(obj)) {
+            // through only indexes.
+            for (var arrayIndex = 0; arrayIndex < obj.length; arrayIndex ++) {
+                replaceObject[arrayIndex] = recourceParse(obj[arrayIndex]);
+            }
+        } else {
+            // through any fields except methods.
+            for (var objectField in obj) {
+                // ignore functions
+                if ($.isFunction(obj[objectField])) {
+                    continue;
+                }
+                replaceObject[objectField] = recourceParse(obj[objectField]);
+            }
         }
         
         if (obj.className && replaceObject._wakeup && typeof replaceObject._wakeup == 'function') {
@@ -59,4 +71,10 @@
         }
         return $.toJSON(object);
     }
-})(jQuery);
+    $.fn.outer = function() {
+        return $('<div></div>').append($(this)).html();
+    }
+    $.defaultDateFormatter = function (dateDate) {
+        return $.format.date(dateDate, "yyyy-MM-dd");
+    }
+})(jQuery)

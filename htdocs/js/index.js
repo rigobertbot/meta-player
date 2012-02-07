@@ -51,13 +51,16 @@ $(document).ready(function () {
         bandRepository.onRemoved(function (e, node) {
             removeNodeFromList($('#bandList'), node);
         });
+        bandRepository.onUpdated(function (e, node) {
+            refreshList($('#bandList'));
+        });
 
         $('#albumList').combobox({
             onSelect: function (record) {
                 $('#albumReleaseDate').datebox('setValue', record.getReleaseDate());
-                record.loadChildren(function (data) {
-                    $('#trackList').combobox('loadData', data);
-                });
+//                record.loadChildren(function (data) {
+//                    $('#trackList').combobox('loadData', data);
+//                });
             }
         });
 
@@ -67,21 +70,32 @@ $(document).ready(function () {
         albumRepository.onRemoved(function (e, node) {
             removeNodeFromList($('#albumList'), node);
         });
-
-        $('#trackList').combobox({
-            onSelect: function (record) {
-                $('#trackDurationMM').val(Math.floor(record.getDurationMs() / 60));
-                $('#trackDurationSS').val(record.getDurationMs() % 60);
-                $('#trackSerial').val(record.getSerial());
-            }
+        albumRepository.onUpdated(function (e, node) {
+            refreshList($('#albumList'));
         });
 
-        trackRepository.onLoaded(function (e, nodes) {
-            appendNodesToList($('#trackList'), nodes);
-        });
-        trackRepository.onRemoved(function (e, node) {
-            removeNodeFromList($('#trackList'), node);
-        });
+//        $('#trackList').combobox({
+//            onSelect: function (record) {
+//                $('#trackDurationMM').val(Math.floor(record.getDurationMs() / 60));
+//                $('#trackDurationSS').val(record.getDurationMs() % 60);
+//                $('#trackSerial').val(record.getSerial());
+//            },
+//            keyHandler: {
+//                query: function(q){
+//                    console.log("query", q);
+//                }
+//            }
+//        });
+//
+//        trackRepository.onLoaded(function (e, nodes) {
+//            appendNodesToList($('#trackList'), nodes);
+//        });
+//        trackRepository.onRemoved(function (e, node) {
+//            removeNodeFromList($('#trackList'), node);
+//        });
+//        trackRepository.onUpdated(function (e, node) {
+//            refreshList($('#trackList'));
+//        });
     });
     easyloader.load('form', function () {
         $('#editTreeForm').form({
@@ -101,9 +115,7 @@ $(document).ready(function () {
     });
     easyloader.load('datebox', function () {
         $('#bandFoundDate,#bandEndDate,#albumReleaseDate').datebox({
-            formatter: function (dateDate) {
-                return $.format.date(dateDate, "yyyy-MM-dd");
-            }
+            formatter: $.defaultDateFormatter
         });
     });
 });
@@ -112,6 +124,11 @@ function appendNodesToList(combobox, nodes) {
     console.log('append node to list', combobox, nodes);
     var oldData =  $(combobox).combobox('getData');
     $(combobox).combobox('loadData', [].concat(oldData, nodes));
+}
+
+function refreshList(combobox) {
+    var data =  $(combobox).combobox('getData');
+    $(combobox).combobox('loadData', data);
 }
 
 function removeNodeFromList(combobox, node) {
@@ -178,7 +195,8 @@ function submitForm(form) {
             repository = trackRepository;
             var album = getSelectedNode($('#albumList'));
             node.setParentAlbum(album)
-                .setTitle($('#trackList').combo('getValue'))
+//                .setTitle($('#trackList').combo('getValue'))
+                .setTitle($('#trackList').val())
                 .setDuration($('#trackDuration').val())
                 .setSerial($('#trackSerial').val());
 

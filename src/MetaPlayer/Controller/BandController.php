@@ -78,17 +78,10 @@ class BandController extends BaseSecurityController implements ILoggerAware
         
         foreach ($bands as $band) {
             /* @var $band Band */
-            $id = $band->getId();
-            if ($band instanceof UserBand) {
-                $id = self::$userBandIdPrefix . $id;
-            }
-            
-            $bandDto = new BandDto();
-            $bandDto->id = $id;
-            $bandDto->name = $band->getName();
-            $bandDto->foundDate = ViewHelper::formatDate($band->getFoundDate());
-            $bandDto->endDate = ViewHelper::formatDate($band->getEndDate());
-            
+            $bandDto = $band instanceof UserBand
+                ? $bandDto = $this->bandHelper->convertUserBandToDto($band)
+                : $bandDto = $this->bandHelper->convertBandToDto($band);
+
             $data[] = $bandDto;
         }
         
@@ -106,18 +99,67 @@ class BandController extends BaseSecurityController implements ILoggerAware
 
         return new JsonViewModel($result, $this->jsonUtils);;
     }
-    
-    public function addAction($json) {
+
+    /**
+     * @param $json
+     * @return \MetaPlayer\Contract\BandDto
+     * @throws \MetaPlayer\JsonException
+     */
+    private function convertJson($json) {
         $bandDto = $this->jsonUtils->deserialize($json);
         /* @var $bandDto BandDto */
         if (!$bandDto instanceof BandDto) {
             $this->logger->error("json shuld be instance of BandDto but got " . print_r($bandDto, true));
             throw new JsonException("Wrong json format.");
         }
+        return $bandDto;
+    }
+    
+    public function addAction($json) {
+        $bandDto = $this->convertJson($json);
 
         $userBand = $this->bandHelper->convertDtoToUserBand($bandDto);
         
         $this->userBandRepository->persist($userBand);
+        $this->userBandRepository->flush();
+
+        $resultDto = $this->bandHelper->convertUserBandToDto($userBand);
+
+        return new JsonViewModel($resultDto, $this->jsonUtils);
+    }
+
+    public function getAction($id) {
+        if ($this->bandHelper->isDtoUserBandId($id)) {
+            $id = $this->bandHelper->convertDtoToUserBandId($id);
+            $userBand = $this->userBandRepository->find($id);
+            if ($userBand == null) {
+                $this->logger->error("There is no user band with id = $id.");
+                throw new JsonException("Invalid id.");
+            }
+            $dto = $this->bandHelper->convertUserBandToDto($userBand);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        } else {
+            $band = $this->bandRepository->find($id);
+            if ($band == null) {
+                $this->logger->error("There is no band with id = $id.");
+                throw new JsonException("Invalid id.");
+            }
+            $dto = $this->bandHelper->convertBandToDto($band);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        }
+    }
+
+    /**
+     * Update user band.
+     * @param $json
+     */
+    public function updateAction($json) {
+        $bandDto = $this->convertJson($json);
+
+        $userBandId = $this->bandHelper->convertDtoToUserBandId($bandDto->id);
+        $userBand = $this->userBandRepository->find($userBandId);
+        $this->bandHelper->populateUserBandWithDto($userBand, $bandDto);
+
         $this->userBandRepository->flush();
 
         $resultDto = $this->bandHelper->convertUserBandToDto($userBand);

@@ -117,6 +117,8 @@ class HttpSession
      */
     protected function __construct()
     {
-        @session_start();
+        if (!session_id()) {
+            session_start();
+        }
     }
 }

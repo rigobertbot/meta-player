@@ -19,7 +19,7 @@ namespace MetaPlayer;
  */
 class JsonException extends MetaPlayerException
 {
-    function __construct($message = null, $code = null, $previous = null) {
+    public function __construct($message = null, $code = null, $previous = null) {
         parent::__construct($message, $code, $previous);
     }
 

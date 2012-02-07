@@ -82,14 +82,61 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
         return new JsonViewModel($data, $this->jsonUtils);
     }
 
-    public function addAction($json) {
+    /**
+     * @param $json
+     * @return TrackDto
+     * @throws \MetaPlayer\JsonException
+     */
+    private function parseJson($json) {
         $trackDto = $this->jsonUtils->deserialize($json);
         if (!$trackDto instanceof TrackDto) {
             $this->logger->error("json shuld be instance of AlbumDto but got " . print_r($trackDto, true));
             throw new JsonException("Wrong json format.");
         }
+        return $trackDto;
+    }
+
+    public function addAction($json) {
+        $trackDto = $this->parseJson($json);
         $userTrack = $this->trackHelper->convertDtoToUserTrack($trackDto);
         $this->userTrackRepository->persist($userTrack);
+        $this->userTrackRepository->flush();
+
+        $resultDto = $this->trackHelper->convertUserTrackToDto($userTrack);
+        return new JsonViewModel($resultDto, $this->jsonUtils);
+    }
+
+    public function getAction($id) {
+        if ($this->trackHelper->isDtoUserTrackId($id)) {
+            $id = $this->trackHelper->convertDtoToUserTrackId($id);
+            $userTrack = $this->userTrackRepository->find($id);
+            if ($userTrack == null) {
+                $this->logger->error("There is no user track with id = $id.");
+                throw new JsonException("Invalid id.");
+            }
+            $dto = $this->trackHelper->convertUserTrackToDto($userTrack);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        } else {
+            $track = $this->trackRepository->find($id);
+            if ($track == null) {
+                $this->logger->error("There is no track with id = $id.");
+                throw new JsonException("Invalid id.");
+            }
+            $dto = $this->trackHelper->convertTrackToDto($track);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        }
+    }
+
+    /**
+     * Update the specified data.
+     * @param $json
+     * @return \Oak\MVC\JsonViewModel
+     */
+    public function updateAction($json) {
+        $trackDto = $this->parseJson($json);
+        $userTrackId = $this->trackHelper->convertDtoToUserTrackId($trackDto->id);
+        $userTrack = $this->userTrackRepository->find($userTrackId);
+        $this->trackHelper->populateUserTrackWithDto($userTrack, $trackDto);
         $this->userTrackRepository->flush();
 
         $resultDto = $this->trackHelper->convertUserTrackToDto($userTrack);

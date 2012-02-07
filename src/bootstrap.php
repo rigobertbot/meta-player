@@ -79,6 +79,7 @@ $sqlLogger = null;
 
 if (\Oak\Common\Env::isDebug()) {
     $sqlLogger = $container->getBean("sqlLogger");
+    setcookie('XDEBUG_SESSION', 'idea');
 }
 if (\Oak\Common\Env::isTest()) {
     $sqlLogger = new \Doctrine\DBAL\Logging\EchoSQLLogger();
@@ -86,6 +87,7 @@ if (\Oak\Common\Env::isTest()) {
 if (isset($sqlLogger)) {
     $doctrineConfig->setSQLLogger($sqlLogger);
 }
+
 
 $connectionOptions = include $projectRoot . '/config/doctrine.config.php';
 

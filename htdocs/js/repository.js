@@ -32,6 +32,13 @@ BaseRepository.prototype.onRemoved = function (handler) {
     $(this).bind(this.nodeRemovedEvent, handler);
     console.log('bind', this.nodeRemovedEvent, handler);
 }
+/**
+ * Checks if this repository of the specified entity.
+ * @param entity
+ */
+BaseRepository.prototype.isRepositoryOf = function (entity) {
+    throw "All inheritance of BaseRepository must implement method isRepositoryOf."
+}
 
 BaseRepository.prototype.dispatch = function (data) {
     if (!$.isArray(data)) {
@@ -40,15 +47,18 @@ BaseRepository.prototype.dispatch = function (data) {
     var loaded = [];
     var updated = [];
 
-    for (var index in data) {
+    for (var index = 0; index < data.length; index ++) {
         var entity = data[index];
         var identity = entity.id.toString();
-        var isNew = this.identityMap[identity] == undefined;
-        this.identityMap[identity] = entity;
+        var oldEntity = this.identityMap[identity];
+        var isNew = (oldEntity == undefined);
         if (isNew) {
+            this.identityMap[identity] = entity;
             loaded.push(entity);
         } else {
-            updated.push(entity);
+            console.log("update existing entity with new data", $.extend(new Object(), oldEntity), entity);
+            $.extend(oldEntity, entity);
+            updated.push(oldEntity);
         }
     }
     if (loaded.length > 0) {
@@ -118,6 +128,20 @@ BaseRepository.prototype.remove = function (node, success) {
     })
 }
 
+BaseRepository.prototype.update = function (node, success) {
+    var url = this.url + 'update'; // &XDEBUG_SESSION=idea
+    var that = this;
+    var data = $.objectToJSON(node);
+
+    $.post(url, {"json": data}, function (result, textStatus, jqXHR) {
+        var parsedData = $.parseJSONObject(result);
+        that.dispatch(parsedData);
+        if ($.isFunction(success)) {
+            success(parsedData, node);
+        }
+    }, "json");
+}
+
 /***************************************
  *********** BandRepository ************
  ***************************************/
@@ -130,6 +154,9 @@ function BandRepository() {
 BandRepository.prototype = new BaseRepository();
 BandRepository.prototype.parent = BaseRepository;
 BandRepository.prototype.counter = 0;
+BandRepository.prototype.isRepositoryOf = function (object) {
+    return object instanceof BandNode;
+}
 var bandRepository = new BandRepository();
 
 /***************************************
@@ -142,6 +169,9 @@ function AlbumRepository() {
 
 AlbumRepository.prototype = new BaseRepository();
 AlbumRepository.prototype.parent = BaseRepository;
+AlbumRepository.prototype.isRepositoryOf = function (entity) {
+    return entity instanceof AlbumNode;
+}
 var albumRepository = new AlbumRepository();
 
 /***************************************
@@ -154,4 +184,26 @@ function TrackRepository() {
 
 TrackRepository.prototype = new BaseRepository();
 TrackRepository.prototype.parent = BaseRepository;
+TrackRepository.prototype.isRepositoryOf = function (entity) {
+    return entity instanceof TrackNode;
+}
 var trackRepository = new TrackRepository();
+
+/**
+ * Array of all repositories.
+ */
+var repositories = [bandRepository, albumRepository, trackRepository];
+
+/**
+ * Returns repository for the specified entity.
+ * @param entity
+ */
+function getRepositoryFor(entity) {
+    for (var i = 0; i < repositories.length; i ++) {
+        var repository = repositories[i];
+        if (repository.isRepositoryOf(entity)) {
+            return repository;
+        }
+    }
+    throw "There is no repository for entity " + entity;
+}

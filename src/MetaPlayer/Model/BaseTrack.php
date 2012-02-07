@@ -93,5 +93,27 @@ abstract class BaseTrack
         return $result;
     }
 
+    /**
+     * @param int $duration
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+    }
 
+    /**
+     * @param int $serial
+     */
+    public function setSerial($serial)
+    {
+        $this->serial = $serial;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 }

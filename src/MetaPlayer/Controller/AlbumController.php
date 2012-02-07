@@ -99,19 +99,63 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
 
         return new JsonViewModel($result, $this->jsonUtils);
     }
-    
-    public function addAction($json) {
+
+    /**
+     * @param $json
+     * @return AlbumDto
+     * @throws \MetaPlayer\JsonException
+     */
+    private function parseJson($json) {
         $albumDto = $this->jsonUtils->deserialize($json);
         if (!$albumDto instanceof AlbumDto) {
             $this->logger->error("json shuld be instance of AlbumDto but got " . print_r($albumDto, true));
             throw new JsonException("Wrong json format.");
         }
-      
+        return $albumDto;
+    }
+
+    public function getAction($id) {
+        if ($this->albumHelper->isDtoUserAlbumId($id)) {
+            $id = $this->albumHelper->convertDtoToUserAlbumId($id);
+            $userAlbum = $this->userAlbumRepository->find($id);
+            if ($userAlbum == null) {
+                $this->logger->error("There is no user album with id = $id.");
+                throw new JsonException("Invalid id.");
+            }
+            $dto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        } else {
+            $album = $this->albumRepository->find($id);
+            if ($album == null) {
+                $this->logger->error("There is no album with id = $id.");
+                throw new JsonException("Invalid id.");
+            }
+            $dto = $this->albumHelper->convertAlbumToDto($album);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        }
+    }
+    
+    public function addAction($json) {
+        $albumDto = $this->parseJson($json);
+
         $userAlbum = $this->albumHelper->convertDtoToUserAlbum($albumDto);
         
         $this->userAlbumRepository->persist($userAlbum);
         $this->userAlbumRepository->flush();
         
+        $resultDto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
+        return new JsonViewModel($resultDto, $this->jsonUtils);
+    }
+
+    public function updateAction($json) {
+        $albumDto = $this->parseJson($json);
+
+        $userAlbumId = $this->albumHelper->convertDtoToUserAlbumId($albumDto->id);
+        $userAlbum = $this->userAlbumRepository->find($userAlbumId);
+        $this->albumHelper->populateUserAlbumWithDto($userAlbum, $albumDto);
+
+        $this->userAlbumRepository->flush();
+
         $resultDto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
         return new JsonViewModel($resultDto, $this->jsonUtils);
     }

@@ -85,6 +85,17 @@ class AlbumHelper {
         return $userAlbum;
     }
 
+    /**
+     * Populates the specified user album with values from the specified dto.
+     * @param \MetaPlayer\Model\UserAlbum $userAlbum
+     * @param AlbumDto $dto
+     */
+    public function populateUserAlbumWithDto(UserAlbum $userAlbum, AlbumDto $dto) {
+        $userAlbum->setTitle($dto->title);
+        $userAlbum->setReleaseDate(ViewHelper::parseDate($dto->releaseDate));
+        $userAlbum->setSource($dto->source);
+    }
+
     public function convertUserAlbumIdToDto($userAlbumId) {
         return self::$userAlbumIdPrefix . $userAlbumId;
     }

@@ -12,11 +12,14 @@
     </root>
 
     <logger name="MetaPlayer">
-	<level value="trace" />
-        <appender_ref ref="MainFileAppender" />
+        <level value="trace" />
     </logger>
+
     <logger name="MetaPlayer.bootstrap">
-	<level value="debug" />
-        <appender_ref ref="MainFileAppender" />
+    	<level value="debug" />
+    </logger>
+
+    <logger name="MetaPlayer.SQLLogger">
+        <level value="debug" />
     </logger>
 </log4php:configuration>

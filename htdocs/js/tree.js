@@ -11,23 +11,93 @@ function Tree() {
     this.loadSuccessEvent =  "loadSuccess";//$.Event("loadSuccess");
     this.expandedEvent = "expanded";
     this.menuNode = null;
+    this.editedNode = null;
+    this.treegrid = null;
     
     this.init = function () {
         var that = this;
+        easyloader.load('linkbutton');
         easyloader.load('treegrid', function(){
-            $.extend($.fn.treegrid.defaults, {
-                onBeforeLoad: function (row, node) {
-                    $('#metaTree').treegrid('loading');
-                    if (row) {
-                        row.loadChildren(function () {
-                            $('#metaTree').treegrid('loaded');
-                        });
-                    } else {
-                        bandRepository.list(function () {
-                            $('#metaTree').treegrid('loaded');
-                        });
+            $.extend($.fn.datagrid.defaults.editors, {
+                duration: {
+                    init: function(container, options){
+                        var input = $('<input type="text" class="datagrid-editable-input">').appendTo(container);
+                        return input;
+                    },
+                    getValue: function(target){
+                        var value = $(target).val();
+                        var parts = value.split(':');
+                        var resultMs = 0;
+                        if (parts.length == 1) {
+                            resultMs =  parseInt(parts[0]);
+                        } else if (parts.length == 2) {
+                            resultMs = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+                        } else if (parts.length == 3) {
+                            resultMs = parseInt(parts[0]) * 60 * 60 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+                        } else {
+                            throw "wrong value";
+                        }
+                        return resultMs;
+                    },
+                    setValue: function(target, value){
+                        $(target).val(value);
+                    },
+                    resize: function(target, width){
+                        var input = $(target);
+                        if ($.boxModel == true){
+                            input.width(width - (input.outerWidth() - input.width()));
+                        } else {
+                            input.width(width);
+                        }
                     }
-                    return false;
+                },
+                editButtons: {
+                    init: function (container, options) { //' + "'" + rowData.getId() + "'" + '
+                        that.bindEditKeys();
+                        return $($('<div>').append($('<a href="#" id="editColumnSave" onclick="mainTree.getTreeGrid().endEdit(\'' + that.editedNode.getId() + '\'); event.stopPropagation();" iconCls="icon-save" plain="true" title="Применить изменения"></a>').linkbutton()).html() +
+                            $('<div>').append($('<a href="#" id="editColumnCancel" onclick="mainTree.getTreeGrid().cancelEdit(\'' + that.editedNode.getId() + '\'); event.stopPropagation();" iconCls="icon-cancel" plain="true" title="Отменить изменения"></a>').linkbutton()).html()).appendTo(container);
+                    },
+                    getValue: function (target) {
+                        return undefined;
+                    },
+                    setValue: function (target, value) {
+                    }
+                }
+            });
+
+            that.treegrid = new TreeGrid($('#metaTree'), {
+                columns: [[
+                    {field: 'name', title: 'Название', width: 250, editor: 'text'},
+                    {field: 'checked', checkbox: true},
+                    {field: 'duration', title: 'Длит.', width: 30, editor: 'duration'},
+                    {
+                        field: 'date', title: 'Дата', width: 80,
+                        editor: {
+                            type: 'datebox', options: {formatter: $.defaultDateFormatter}
+                        }
+                    },
+                    {field: 'edited', hidden: true, width: 60, formatter: function (value, rowData, rowIndex) {
+                        return '<span />';
+                        //return that.editedColumnFormatter(value, rowData, rowIndex);
+                    }, editor: 'editButtons'}
+                ]],
+                onBeforeEdit: function (row) {
+                    that.editedNode = row;
+                    that.getTreeGrid().showColumn('edited');
+                },
+                onCancelEdit: function (row) {
+                    that.unbindEditKeys();
+                    that.getTreeGrid().hideColumn('edited');
+                    that.editedNode = null;
+                },
+                onAfterEdit: function (row, changes) {
+                    that.unbindEditKeys();
+                    // fix duration value
+                    row.setDuration(row.duration).setDate(row.date).setName(row.name);
+
+                    that.updateNode(row);
+                    that.getTreeGrid().hideColumn('edited');
+                    that.editedNode = null;
                 },
                 onContextMenu: function(e, row){
                     e.preventDefault();
@@ -38,40 +108,68 @@ function Tree() {
                         top: e.pageY
                     });
                 },
-                onLoadSuccess: function (row, data) {
-                    // load is ovverided in the beforLoad method, and it has own 'loadSuccess' event.
-                    // $(mainTree).trigger(mainTree.loadSuccessEvent, [row, data]);
-                },
                 onExpand: function (row) {
-                    $(mainTree).trigger(mainTree.expandedEvent, [row]);
+                    $(that).trigger(mainTree.expandedEvent, [row]);
+                }
+            });
+            that.getTreeGrid().setOptions({
+                onBeforeLoad: function (row, node) {
+                    that.getTreeGrid().loading();
+                    if (row) {
+                        row.loadChildren(function () {
+                            that.getTreeGrid().loaded();
+                        });
+                    } else {
+                        bandRepository.list(function () {
+                            that.getTreeGrid().loaded();
+                        });
+                    }
+                    return false;
                 }
             });
         });
-        
+
+        // subscriptions
         mainPlayer.onStartPlaying(function () {
             that.startPlay();
         });
+        var repositories = [bandRepository, albumRepository, trackRepository];
 
-        bandRepository.onLoaded(function (e, data) {
-            that.nodeLoaded(data);
+        $(repositories).each(function (index, repository) {
+            repository.onLoaded(function (e, data) {
+                that.nodeLoaded(data);
+            })
+            repository.onRemoved(function (e, data) {
+                that.nodeRemoved(data);
+            });
+            repository.onUpdated(function (e, data) {
+                that.nodeUpdated(data);
+            })
         });
-        bandRepository.onRemoved(function (e, data) {
-            that.nodeRemoved(data);
-        });
+    }
 
-        albumRepository.onLoaded(function (e, data) {
-            that.nodeLoaded(data);
-        });
-        albumRepository.onRemoved(function (e, data) {
-            that.nodeRemoved(data);
-        });
+    this.editedColumnFormatter = function (value, rowData, rowIndex) {
+        // if edited is not set
+        if (!value) {
+            return '';
+        }
 
-        trackRepository.onLoaded(function (e, data) {
-            that.nodeLoaded(data);
-        });
-        trackRepository.onRemoved(function (e, data) {
-            that.nodeRemoved(data);
-        });
+        return $('<div>').append($('<a href="#" id="editColumnSave" onclick="Tree.getInstance().getTreeGrid().endEdit(' + "'" + rowData.getId() + "'" + '); event.stopPropagation();" iconCls="icon-save" plain="true" title="Применить изменения"></a>').linkbutton()).html() +
+            $('<div>').append($('<a href="#" id="editColumnCancel" onclick="Tree.getInstance().getTreeGrid().cancelEdit(' + "'" + rowData.getId() + "'" + '); event.stopPropagation();" iconCls="icon-cancel" plain="true" title="Отменить изменения"></a>').linkbutton()).html();
+    }
+
+    /**
+     * @return jQuery
+     */
+    this.getTree = function () {
+        return $('#metaTree');
+    }
+
+    /**
+     * @return TreeGrid
+     */
+    this.getTreeGrid = function () {
+        return this.treegrid;
     }
     
     this.isSelected = function () {
@@ -121,64 +219,106 @@ function Tree() {
      */
     this.removeNode = function (node) {
         var type = '';
-        var repository = null;
+        var repository = getRepositoryFor(node);
         if (node instanceof BandNode) {
             type = 'группу';
-            repository = bandRepository;
         } else if (node instanceof AlbumNode) {
             type = 'альбом';
-            repository = albumRepository;
         } else if (node instanceof TrackNode) {
             type = 'композицию';
-            repository = trackRepository;
         }
-        if (repository == null) {
-            return;
-        }
+
         if (confirm('Вы уверены что хотите удалить ' + type + ' "' + node.getName() + '"?')) {
             repository.remove(node);
         }
     }
 
     /**
+     * Handles nodeUpdated event.
+     * @param node
+     */
+    this.nodeUpdated = function (nodes) {
+        if (!nodes || !nodes.length || nodes.length == 0)
+            return;
+
+        for (var i = 0; i < nodes.length; i ++) {
+            this.getTreeGrid().refresh(nodes[i].getId());
+        }
+    }
+
+    this.updateNode = function (node) {
+        var type = '';
+        var repository = getRepositoryFor(node);
+        if (node instanceof BandNode) {
+            type = 'группы';
+        } else if (node instanceof AlbumNode) {
+            type = 'альбома';
+        } else if (node instanceof TrackNode) {
+            type = 'композиции';
+        }
+        if (repository == null) {
+            return;
+        }
+
+        repository.update(node, function () {
+            $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Изменения ' + type + ' ' + node.getName() + ' были успешно сохранены.', title: 'Успех', timeout: 0});
+        });
+    }
+
+    /**
      * Handles selecting remove menu item.
      */
     this.removeMenuNode = function () {
+        if (!this.menuNode)
+            return;
         this.removeNode(this.menuNode);
+    }
+
+    this.editMenuNode = function () {
+        if (!this.menuNode)
+            return;
+        this.getTreeGrid().beginEdit(this.menuNode.getId());
+    }
+    this.reloadMenuNode = function () {
+        if (!this.menuNode)
+            return;
+        var repository = getRepositoryFor(this.menuNode);
+        repository.get(this.menuNode.getServerId(), function () {
+            $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Успешно обновлен.', title: 'Успех', timeout: 0});
+        });
+    }
+    /**
+     * Binds keyup to edit control elements for ending or canceling editing.
+     * @param inputElements
+     */
+    this.bindEditKeys = function() {
+        var that = this;
+        $('[node-id=' + this.editedNode.getId() + '] input').bind('keyup.edited', function (event) {
+            switch (event.keyCode) {
+                case 27: //escape
+                    that.getTreeGrid().cancelEdit(that.editedNode.getId());
+                    break;
+                case 13: //enter
+                    that.getTreeGrid().endEdit(that.editedNode.getId());
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Unbinds keyup from edit control elements.
+     */
+    this.unbindEditKeys = function () {
+        $('[node-id=' + this.editedNode.getId() + '] input').unbind('keyup.edited');
     }
 }
 
 mainTree = new Tree();
 
+Tree.instance = mainTree;
+Tree.getInstance = function () { return Tree.instance; }
+console.log("Tree instance successfully created.", Tree.getInstance());
 
-function beforeLoad(row, node){
-    if (row === null) {
-        $(this).treegrid('loading');
-        new BandRepository().list(function (resultData) {
-            $('#metaTree')
-                .treegrid('loadData', resultData)
-                .treegrid('loaded');
-            //console.log("root node loaded");
-            $(mainTree).trigger(mainTree.loadSuccessEvent, [null, resultData]);
-        });
-    } else {
-        $('#metaTree').treegrid('collapse', row.getId());
-        $(this).treegrid('loading');
-        row.loadChildren(function (resultData) {
-            $('#metaTree')
-                .treegrid('append', {
-                    parent: row.getId(), 
-                    data: resultData
-                })
-                .treegrid('expand', row.getId())
-                .treegrid('loaded');
-            
-            //console.log("data appended", resultData);
-            $(mainTree).trigger(mainTree.loadSuccessEvent, [row, resultData]);
-        });
-    }
-    return false;
-}
 
 function recursePlaylist(node, selected, playlist, traverseToken) {
     if (node.traverseToken === traverseToken)
