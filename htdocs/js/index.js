@@ -45,13 +45,13 @@ $(document).ready(function () {
                 });
             }
         });
-        bandRepository.onLoaded(function (e, nodes) {
+        bandRepository.bindOnLoaded(function (e, nodes) {
             appendNodesToList($('#bandList'), nodes);
         });
-        bandRepository.onRemoved(function (e, node) {
+        bandRepository.bindOnRemoved(function (e, node) {
             removeNodeFromList($('#bandList'), node);
         });
-        bandRepository.onUpdated(function (e, node) {
+        bandRepository.bindOnUpdated(function (e, node) {
             refreshList($('#bandList'));
         });
 
@@ -64,13 +64,13 @@ $(document).ready(function () {
             }
         });
 
-        albumRepository.onLoaded(function (e, nodes) {
+        albumRepository.bindOnLoaded(function (e, nodes) {
             appendNodesToList($('#albumList'), nodes);
         });
-        albumRepository.onRemoved(function (e, node) {
+        albumRepository.bindOnRemoved(function (e, node) {
             removeNodeFromList($('#albumList'), node);
         });
-        albumRepository.onUpdated(function (e, node) {
+        albumRepository.bindOnUpdated(function (e, node) {
             refreshList($('#albumList'));
         });
 
@@ -121,7 +121,6 @@ $(document).ready(function () {
 });
 
 function appendNodesToList(combobox, nodes) {
-    console.log('append node to list', combobox, nodes);
     var oldData =  $(combobox).combobox('getData');
     $(combobox).combobox('loadData', [].concat(oldData, nodes));
 }

@@ -20,15 +20,15 @@ function BaseRepository() {
 
 BaseRepository.prototype.constructor = BaseRepository;
 
-BaseRepository.prototype.onLoaded = function (handler) {
+BaseRepository.prototype.bindOnLoaded = function (handler) {
     $(this).bind(this.nodeLoadedEvent, handler);
     console.log('bind', this.nodeLoadedEvent, this, handler);
 }
-BaseRepository.prototype.onUpdated = function (handler) {
+BaseRepository.prototype.bindOnUpdated = function (handler) {
     $(this).bind(this.nodeUpdatedEvent, handler);
     console.log('bind', this.nodeUpdatedEvent, this, handler);
 }
-BaseRepository.prototype.onRemoved = function (handler) {
+BaseRepository.prototype.bindOnRemoved = function (handler) {
     $(this).bind(this.nodeRemovedEvent, handler);
     console.log('bind', this.nodeRemovedEvent, handler);
 }

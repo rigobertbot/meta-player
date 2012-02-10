@@ -5,35 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/messager.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/index.html" afterPath="$PROJECT_DIR$/htdocs/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" afterPath="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/index.js" afterPath="$PROJECT_DIR$/htdocs/js/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/model.js" afterPath="$PROJECT_DIR$/htdocs/js/model.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/plugins/jquery.datagrid.js" afterPath="$PROJECT_DIR$/htdocs/js/plugins/jquery.datagrid.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/player.js" afterPath="$PROJECT_DIR$/htdocs/js/player.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/playlist.js" afterPath="$PROJECT_DIR$/htdocs/js/playlist.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/repository.js" afterPath="$PROJECT_DIR$/htdocs/js/repository.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/search.js" afterPath="$PROJECT_DIR$/htdocs/js/search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/tree.js" afterPath="$PROJECT_DIR$/htdocs/js/tree.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/utils.js" afterPath="$PROJECT_DIR$/htdocs/js/utils.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js_min/jquery.easyui.min.js" afterPath="$PROJECT_DIR$/htdocs/js_min/jquery.easyui.min.js" />
     </list>
     <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/log4php.xml" afterPath="$PROJECT_DIR$/config/log4php.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/.htaccess" afterPath="$PROJECT_DIR$/htdocs/.htaccess" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackDto.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackDto.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseAlbum.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseAlbum.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseBand.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseBand.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseTrack.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseTrack.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/BaseRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/BaseRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/ViewHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/ViewHelper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/bootstrap.php" afterPath="$PROJECT_DIR$/src/bootstrap.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" />
     </list>
     <ignored path="meta-player.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -55,46 +46,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="tree.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+      <file leaf-file-name="messager.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/messager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="358" column="30" selection-start="13336" selection-end="13336" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="21" column="30" selection-start="448" selection-end="448" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jPaq-1.0.6.full.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/jPaq-1.0.6.full.js">
+      <file leaf-file-name="player.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/player.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="162" column="29" selection-start="5996" selection-end="5996" vertical-scroll-proportion="0.35172415">
-              <folding />
+            <state line="75" column="52" selection-start="2075" selection-end="2075" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+      <file leaf-file-name="playlist.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/playlist.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="198" column="20" selection-start="6607" selection-end="6607" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="model.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="232" column="51" selection-start="6944" selection-end="6944" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="0" selection-start="7320" selection-end="7320" vertical-scroll-proportion="0.0">
+            <state line="26" column="24" selection-start="673" selection-end="673" vertical-scroll-proportion="0.50056624">
               <folding />
             </state>
           </provider>
@@ -103,7 +80,34 @@
       <file leaf-file-name="easy-ui-wrappers.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="33" selection-start="1832" selection-end="1832" vertical-scroll-proportion="0.0">
+            <state line="120" column="35" selection-start="2462" selection-end="2462" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="search.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="9" selection-start="322" selection-end="322" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="9" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="model.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="83" column="19" selection-start="2617" selection-end="2617" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -112,7 +116,25 @@
       <file leaf-file-name="repository.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="12" column="132" selection-start="334" selection-end="334" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/utils.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="80" column="44" selection-start="2562" selection-end="2562" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tree.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="360" column="28" selection-start="13244" selection-end="13244" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -133,22 +155,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/BaseTrack.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
         <option value="$PROJECT_DIR$/htdocs/js/repository.js" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/BandHelper.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/JsonException.php" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
-        <option value="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
-        <option value="$PROJECT_DIR$/htdocs/index.html" />
         <option value="$PROJECT_DIR$/htdocs/js/index.js" />
         <option value="$PROJECT_DIR$/htdocs/js/model.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackDto.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/BaseTrack.php" />
+        <option value="$PROJECT_DIR$/htdocs/js/search.js" />
+        <option value="$PROJECT_DIR$/htdocs/index.html" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
+        <option value="$PROJECT_DIR$/htdocs/js_min/jquery.easyui.min.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/player.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/messager.js" />
         <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/jPaq-1.0.6.full.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/playlist.js" />
       </list>
     </option>
   </component>
@@ -447,13 +469,13 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="" />
       <created>1325071785488</created>
-      <updated>1328636152910</updated>
+      <updated>1328873220565</updated>
     </task>
     <task id="LOCAL-00001" summary="be">
       <changelist id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
       <changelist id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
       <created>1328604147922</created>
-      <updated>1328636151897</updated>
+      <updated>1328873219599</updated>
     </task>
     <option name="localTasksCounter" value="2" />
     <option name="createChangelist" value="false" />
@@ -486,14 +508,14 @@
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="-1450" y="120" width="1354" height="769" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4030837" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39977974" sideWeight="0.50033134" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26507622" sideWeight="0.26431718" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26507622" sideWeight="0.7279736" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2730285" sideWeight="0.27753305" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2730285" sideWeight="0.7147577" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24983433" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -557,114 +579,118 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="61" selection-start="4378" selection-end="4378" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="61" selection-start="3761" selection-end="3761" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/JsonException.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="11" selection-start="370" selection-end="370" vertical-scroll-proportion="0.40430352">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="40" selection-start="3170" selection-end="3170" vertical-scroll-proportion="0.01954023">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/UnitOfWork.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="906" column="69" selection-start="31450" selection-end="31450" vertical-scroll-proportion="0.01954023">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/Persisters/BasicEntityPersister.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="381" column="148" selection-start="14098" selection-end="14098" vertical-scroll-proportion="0.01954023">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/SQLLogger.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="59" selection-start="1079" selection-end="1079" vertical-scroll-proportion="0.5186863">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/ViewHelper.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="59" selection-start="1528" selection-end="1528" vertical-scroll-proportion="0.6534541">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/TrackRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="74" selection-start="518" selection-end="518" vertical-scroll-proportion="0.4428086">
+        <state line="12" column="81" selection-start="219" selection-end="219" vertical-scroll-proportion="0.34235978">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+    <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="358" column="30" selection-start="13336" selection-end="13336" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="20" selection-start="6607" selection-end="6607" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="232" column="51" selection-start="6944" selection-end="6944" vertical-scroll-proportion="0.0">
+        <state line="14" column="9" selection-start="322" selection-end="322" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="0" selection-start="7320" selection-end="7320" vertical-scroll-proportion="0.0">
+        <state line="33" column="81" selection-start="1899" selection-end="1899" vertical-scroll-proportion="-0.65384614">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js">
+    <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="33" selection-start="1832" selection-end="1832" vertical-scroll-proportion="0.0">
+        <state line="83" column="19" selection-start="2617" selection-end="2617" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/repository.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="12" column="132" selection-start="334" selection-end="334" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/jPaq-1.0.6.full.js">
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavascriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="162" column="29" selection-start="5996" selection-end="5996" vertical-scroll-proportion="0.35172415">
+        <state line="915" column="19" selection-start="13963" selection-end="13963" vertical-scroll-proportion="0.46772367">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavascriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/HTML5.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1113" column="24" selection-start="18952" selection-end="18952" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="9" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js_min/jquery.easyui.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8028" column="26" selection-start="219459" selection-end="219459" vertical-scroll-proportion="0.47011495">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="120" column="35" selection-start="2462" selection-end="2462" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/jquery.jplayer.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="172" selection-start="19014" selection-end="19014" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="75" column="52" selection-start="2075" selection-end="2075" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/messager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="30" selection-start="448" selection-end="448" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="80" column="44" selection-start="2562" selection-end="2562" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="360" column="28" selection-start="13244" selection-end="13244" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/playlist.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="24" selection-start="673" selection-end="673" vertical-scroll-proportion="0.50056624">
           <folding />
         </state>
       </provider>

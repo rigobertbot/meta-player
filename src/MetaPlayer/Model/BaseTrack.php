@@ -84,7 +84,7 @@ abstract class BaseTrack
     public function getQueries() {
         $result = array();
         
-        $band = $this->album->getBand();
+        $band = $this->getAlbum()->getBand();
         
         $result[] = implode(" ", array($band->getName(), $this->getAlbum()->getTitle(), $this->getTitle()));
         $result[] = implode(" ", array($band->getName(), $this->getTitle()));

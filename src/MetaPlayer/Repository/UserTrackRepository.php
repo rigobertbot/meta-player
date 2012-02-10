@@ -34,7 +34,7 @@ class UserTrackRepository extends BaseRepository {
      * @return \MetaPlayer\Model\UserTrack[]
      */
     public function findByUserAndAlbum(\MetaPlayer\Model\User $user, $userAlbumId) {
-        return $this->findBy(array('user' => $user, 'userAlbum' => $userAlbumId));
+        return $this->findBy(array('user' => $user, 'userAlbum' => $userAlbumId), array('serial' => 'asc'));
     }
 
     /**

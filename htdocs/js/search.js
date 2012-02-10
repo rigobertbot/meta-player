@@ -7,81 +7,95 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
-var maximumSearchTries = 5;
+function Searcher() {
+    this.maximumSearchTries = 5;
+    this.searchQueue = [];
+    this.searchSuccessEvent = "searchSuccess";
 
-function search(track, it, callback) {
-    var query = track.getQuery(it);
-    if (query === false) {
-        console.log("Nothing found: all queries are runing out.");
-        return;
+    this.bindSearchSuccess = function (handler) {
+        $(this).bind(this.searchSuccessEvent, handler);
     }
-    VK.api(
-        'audio.search', {
-            q: query,
-            auto_complete: 0,
-            count: 30,
-            test_mode: 1
-        }, function(data) {
-            data = data.response;
-            if (!data || !$.isArray(data) || data.length < 2) {
-                console.log("Search failed", track, data);
-                addToSearch(track);
-                return;
-            }
+    this.triggerSearchSuccess = function (track) {
+        $(this).trigger(this.searchSuccessEvent, [track]);
+    }
 
-            var count = data.shift();
-            if (count == 0) {
-                console.log("Empty result for query", it, query);
-                search(it + 1);
-                return;
-            }
-            var nearestDelta = 4294967295;
-            var nearestResult = null;
-            for (var index in data) {
-                var result = data[index];
-                var delta =  Math.abs(result.duration - track.getDurationMs());
-                if (delta < nearestDelta) {
-                    nearestDelta = delta;
-                    nearestResult = result;
-                    if (delta === 0) {
-                        break;
-                    }
-                }
-            }
-            
-            track.setUrl(nearestResult.url);
-            track.setDuration(nearestResult.duration);
-            //track.setResult(nearestResult);
-            
-            //console.log(data);
-            //console.log(nearestResult);
-            if (callback && typeof callback === 'function') {
-                callback.call(this, track, it);
-            }
-        })
-}
+    var that = this;
 
-var searchQueue = [];
-
-setInterval(function () {
-    var track = searchQueue.shift();
-    if (track) {
-        var url = track.getUrl();
-        if (!url || url === null) {
-            search(track, 0);
+    setInterval(function () {
+        var track = that.searchQueue.shift();
+        if (track) {
+            var url = track.getUrl();
+            if (!url || url === null) {
+                that.search(track, 0);
+            }
         }
-        // track = searchQueue.shift();
-    }
-}, 500);
+    }, 500);
 
-function addToSearch (track) {
-    var url = track.getUrl();
-    if (!url || url === null) {
-        if (track.incSearchTries() > maximumSearchTries) {
-            console.log("Maximum search tries reached", track);
+    this.search = function (track, it) {
+        var query = track.getQuery(it);
+        if (query === false) {
+            console.log("Nothing found: all queries are runing out.");
             return;
         }
-        searchQueue.push(track);
+        var that = this;
+        VK.api('audio.search', {
+                q: query,
+                auto_complete: 0,
+                count: 30,
+                test_mode: 1
+            }, function(data) {
+                data = data.response;
+                if (!data || !$.isArray(data) || data.length < 2) {
+                    console.log("Search failed", track, data);
+                    that.schedule(track);
+                    return;
+                }
+
+                var count = data.shift();
+                if (count == 0) {
+                    console.log("Empty result for query", it, query);
+                    that.search(track, it + 1, callback);
+                    return;
+                }
+                var nearestDelta = 4294967295;
+                var nearestResult = null;
+                for (var index in data) {
+                    var result = data[index];
+                    var delta =  Math.abs(result.duration - track.getDurationMs());
+                    if (delta < nearestDelta) {
+                        nearestDelta = delta;
+                        nearestResult = result;
+                        if (delta === 0) {
+                            break;
+                        }
+                    }
+                }
+
+                track.setUrl(nearestResult.url);
+                track.setDuration(nearestResult.duration);
+
+                that.triggerSearchSuccess(track);
+            }
+        );
     }
-}
+
+    this.schedule = function (track) {
+        var url = track.getUrl();
+        if (!url || url === null) {
+            if (track.incSearchTries() > this.maximumSearchTries) {
+                console.log("Maximum search tries reached", track);
+                return;
+            }
+            this.searchQueue.push(track);
+        }
+    }}
+
+/**
+ * The instance of searcher singleton.
+ */
+var searcher = new Searcher();
+
+
+
+
 

@@ -10,21 +10,38 @@
 function Playlist() {
     this.playlist = [];
     this.index = [];
+    this.firstPlaying = true;
 
     this.init = function () {
         var that = this;
-        mainPlayer.onEnded(function () {
-            that.playNext();
+        mainPlayer.bindEndPlaying(function () {
+            that.playNext(true);
         });
-        mainPlayer.onNext(function () {
-            that.playNext();
+        mainPlayer.bindNext(function () {
+            that.playNext(true);
         });
-        mainPlayer.onPrevious(function () {
+        mainPlayer.bindPrevious(function () {
             that.playPrevious();
         });
-        mainPlayer.onStartPlaying(function () {
-            that.startPlay();
-        })
+        mainPlayer.bindPlay(function () {
+            that.play();
+        });
+        searcher.bindSearchSuccess(function (e, track) {
+            var index = $('#playlist').datagrid('getRowIndex', track.getId());
+            $('#playlist').datagrid('refreshRow', index);
+        });
+
+        easyloader.load('datagrid', function () {
+            $('#playlist').datagrid({
+                columns: [[
+                    {field: 'name', title: 'Название', width: 250},
+                    {field: 'duration', title: 'Длит.', width: 30}
+                ]],
+                rowStyler: function (rowIndex, rowData) {
+                    return that.getRowStyle(rowData);
+                }
+            });
+        });
     }
    
     this.push = function(track) {
@@ -33,47 +50,59 @@ function Playlist() {
         }
         this.playlist.push(track);
         this.index[track.getId()] = track;
-        addToSearch(track);
+        if (!track.getUrl()) {
+            searcher.schedule(track);
+        }
     }
     
-    this.clean = function () {
+    this.clear = function () {
         this.playlist = [];
         this.index = [];
     }
-    
-    this.play = function () {
-        $('#playlist').datagrid('loadData', this.playlist).datagrid('selectRow', 0);
-        // custom case: wait until track url loaded
-        if (this.playlist.length > 0) {
-            var firstNode = this.playlist[0];
-            if (firstNode.getUrl()) {
-                mainPlayer.play(firstNode);
-            } else {
-                var previous = firstNode.urlSetted;
-                firstNode.urlSetted = function () {
-                    mainPlayer.play(this);
-                    previous.call(this);
-                }
-            }
+
+    /**
+     * Fills playlist with the specified tracks.
+     * @param tracks
+     */
+    this.reload = function (tracks) {
+        this.clear();
+        for (var i = 0; i < tracks.length; i++) {
+            this.push(tracks[i]);
         }
+        $('#playlist').datagrid('loadData', this.playlist).datagrid('selectRow', 0);
+        this.firstPlaying = true;
     }
-    
+
+    /**
+     * Begins playing of the new playlist.
+     */
+    this.play = function () {
+    }
+
+    /**
+     * Plays selected node.
+     * @return returns true if there is selected songs, otherwise false.
+     */
     this.playSelected = function () {
         var selectedNode = $('#playlist').datagrid('getSelected');
+        if (!selectedNode) {
+            return false;
+        }
         console.log('selected ', selectedNode);
         // skip unloaded tracks
         if (!selectedNode.getUrl()) {
-            this.playNext();
-            return;
+            this.playNext(false);
+        } else {
+            mainPlayer.play(selectedNode);
         }
-        mainPlayer.play(selectedNode);
+        return true;
     }
     
     this.playPrevious = function () {
-        this.playShift(-1);
+        this.playShift(-1, true);
     }
     
-    this.playShift = function (shift) {
+    this.playShift = function (shift, cyclically) {
         if (this.playlist.length <= 0)
             return;
         
@@ -81,11 +110,15 @@ function Playlist() {
         var rowIndex = $('#playlist').datagrid('getRowIndex', selectedNode);
         $('#playlist').datagrid('unselectRow', rowIndex);
         rowIndex += shift;
-        if (rowIndex < 0) {
+        if (rowIndex < 0 && cyclically) {
             rowIndex = this.playlist.length - 1;
         }
-        if (rowIndex >= this.playlist.length) {
-            // cicle playing
+        // exit if not cyclically playing
+        if (rowIndex >= this.playlist.length && !cyclically) {
+            return;
+        }
+
+        if (rowIndex >= this.playlist.length && cyclically) {
             rowIndex = 0;
         }
         $('#playlist').datagrid('selectRow', rowIndex);
@@ -93,8 +126,8 @@ function Playlist() {
         
     }
     
-    this.playNext = function () {
-        this.playShift(+1);
+    this.playNext = function (cyclically) {
+        this.playShift(+1, cyclically);
     }
     
     this.getRowStyle = function (node) {
@@ -104,33 +137,33 @@ function Playlist() {
         }
         return node.getUrl() ? '' : 'background:red';
     }
-    
-    this.isSelected = function() {
-        var panel = $('#bodyAccordion').accordion('getSelected');
-        return panel.attr('id') == 'playlistAccordion';
-    }
-    
-    this.startPlay = function () {
-        if (this.isSelected()) {
-            this.playSelected();
+
+    /**
+     * Start playing playlist.
+     */
+    this.play = function () {
+        if (this.playlist.length == 0) {
+            messageService.showWarning('Плейлист пуст. Проигрывание с каталога еще не реализовано.');
         }
+
+        if (this.firstPlaying) {
+            this.firstPlaying = false;
+
+            // custom case: wait until track url loaded
+            var firstNode = this.playlist[0];
+            if (!firstNode.getUrl()) {
+                var that = this;
+                searcher.bindSearchSuccess(function (e, track) {
+                    if (track != firstNode)
+                        return;
+                    that.play();
+                });
+                return;
+            }
+        }
+        this.playSelected();
     }
     
 }
 
 mainPlaylist = new Playlist();
-
-easyloader.load('datagrid', function () {
-    $.extend($.fn.datagrid.defaults, {
-        rowStyler: function (rowIndex, rowData) {
-            switch ($(this).attr('id')) {
-                case 'playlist':
-                    return mainPlaylist.getRowStyle(rowData);
-                    break;
-                default:
-                    return null;
-                    break;
-            }
-        }
-    });
-});

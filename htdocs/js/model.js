@@ -217,13 +217,8 @@ TrackNode.prototype.setDuration = function (durationMs) {
 
 TrackNode.prototype.setUrl = function (url) {
     this.url = url;
-    if (url && this.urlSetted && typeof this.urlSetted == 'function') {
-        this.urlSetted.call(this);
-    }
 }
 TrackNode.prototype.getUrl = function () {return this.url;}
-TrackNode.prototype.urlSetted = function () {}
-//TrackNode.prototype.set
 TrackNode.prototype.setParentAlbum = function (album) {
     this.albumId = 'a' + album.getServerId();
     this.serverAlbumId = album.getServerId();

@@ -7,13 +7,17 @@
         <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
         <link rel="stylesheet" type="text/css" href="css/blue.monday/jplayer.blue.monday.css" />        
-        <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>
+
+        <script type="text/javascript" src="http://vk.com/js/api/xd_connection.js?2"></script>
+
         <script type="text/javascript" src="js/jPaq-1.0.6.full.js"></script>
         <script type="text/javascript" src="js/jquery-1.6.2.js"></script>
         <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
         <script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
         <script type="text/javascript" src="js/easyloader.js"></script>
         <script type="text/javascript" src="js/jquery.json-2.3.js"></script>
+
+        <script type="text/javascript" src="js/easy-ui-wrappers.js"></script>
         <script type="text/javascript" src="js/model.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/repository.js"></script>
@@ -23,7 +27,6 @@
         <script type="text/javascript" src="js/player.js"></script>
         <script type="text/javascript" src="js/vkutils.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/easy-ui-wrappers.js"></script>
     </head>
     <body>
         <div id="mainHeader">
@@ -43,12 +46,6 @@
                         <table id="playlist" class="easyui-datagrid" 
                                singleSelect="true" animate="true" rownumbers="true" 
                                idField="id">
-                            <thead>
-                                <tr>
-                                    <th field="name" width="250">Название</th>
-                                    <th field="duration" width="30">Длит.</th>
-                                </tr>
-                            </thead>
                         </table>
                     </div>
                     <div id="editTreeAccordion" title="Редактировать">
@@ -141,7 +138,7 @@
                     </div>
                 </div>
                 <div id="treeMenu" class="easyui-menu" style="width:120px;">
-                    <div onclick="play()"><b>Проигрывать</b></div>
+                    <div onclick="mainTree.playMenuNode()"><b>Проигрывать</b></div>
                     <div onclick="addToPlaylist()">Добавить</div>
                     <div class="menu-sep"></div>
                     <div id="treeMenuEdit">

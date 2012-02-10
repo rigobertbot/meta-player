@@ -95,9 +95,11 @@ class TrackHelper
      */
     private function convertBaseTrackToDto(\MetaPlayer\Model\BaseTrack $baseTrack) {
         $dto = new TrackDto();
+        $dto->id = $baseTrack->getId();
         $dto->title = $baseTrack->getTitle();
         $dto->duration = $baseTrack->getDuration();
         $dto->serial = $baseTrack->getSerial();
+        $dto->queries = $baseTrack->getQueries();
         return $dto;
     }
 

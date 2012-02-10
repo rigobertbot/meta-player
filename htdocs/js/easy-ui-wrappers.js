@@ -20,6 +20,7 @@ function TreeGrid(element, options) {
      */
     this.setOptions = function (options) {
         this.element.treegrid(options);
+        return this;
     }
 
     if (options) {
@@ -39,6 +40,7 @@ function TreeGrid(element, options) {
      */
     this.endEdit = function (nodeId) {
         this.element.treegrid('endEdit', nodeId);
+        return this;
     }
 
     /**
@@ -47,6 +49,7 @@ function TreeGrid(element, options) {
      */
     this.cancelEdit = function (nodeId) {
         this.element.treegrid('cancelEdit', nodeId);
+        return this;
     }
 
     /**
@@ -55,6 +58,7 @@ function TreeGrid(element, options) {
      */
     this.beginEdit = function (nodeId) {
         this.element.treegrid('beginEdit', nodeId);
+        return this;
     }
 
     /**
@@ -63,6 +67,7 @@ function TreeGrid(element, options) {
      */
     this.refresh = function (nodeId) {
         this.element.treegrid('refresh', nodeId);
+        return this;
     }
 
     /**
@@ -70,6 +75,7 @@ function TreeGrid(element, options) {
      */
     this.loading = function () {
         this.element.treegrid('loading');
+        return this;
     }
 
     /**
@@ -77,6 +83,7 @@ function TreeGrid(element, options) {
      */
     this.loaded = function () {
         this.element.treegrid('loaded');
+        return this;
     }
 
     /**
@@ -85,6 +92,7 @@ function TreeGrid(element, options) {
      */
     this.showColumn = function (field) {
         this.element.treegrid('showColumn', field);
+        return this;
     }
 
     /**
@@ -93,5 +101,31 @@ function TreeGrid(element, options) {
      */
     this.hideColumn = function (field) {
         this.element.treegrid('hideColumn', field);
+        return this;
+    }
+
+    /**
+     * Collapse a node.
+     * @param nodeId
+     */
+    this.collapse = function (nodeId) {
+        this.element.treegrid('collapse', nodeId);
+        return this;
+    }
+
+    /**
+     * Expand a node.
+     * @param nodeId
+     */
+    this.expand = function (nodeId) {
+        this.element.treegrid('expand', nodeId);
+        return this;
+    }
+
+    /**
+     * Get all selected nodes.
+     */
+    this.getSelections = function () {
+        return this.element.treegrid('getSelections');
     }
 }

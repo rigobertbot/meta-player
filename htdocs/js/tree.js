@@ -8,15 +8,22 @@
  * 
  */
 function Tree() {
-    this.loadSuccessEvent =  "loadSuccess";//$.Event("loadSuccess");
+    /**
+     * Causes when any number of nodes were laoded.
+     */
+    this.nodeLoadedEvent =  "nodeLoaded";
+    /**
+     * Causes after expanding node, when all children were loaded.
+     */
+    this.childrenLoadedEvent = "childrenLoaded";
     this.expandedEvent = "expanded";
     this.menuNode = null;
     this.editedNode = null;
     this.treegrid = null;
+    this.loadingCounter = 0;
     
     this.init = function () {
         var that = this;
-        easyloader.load('linkbutton');
         easyloader.load('treegrid', function(){
             $.extend($.fn.datagrid.defaults.editors, {
                 duration: {
@@ -76,6 +83,7 @@ function Tree() {
                             type: 'datebox', options: {formatter: $.defaultDateFormatter}
                         }
                     },
+                    {field: 'serial', title: '№', width: 50, editor: 'numberbox'},
                     {field: 'edited', hidden: true, width: 60, formatter: function (value, rowData, rowIndex) {
                         return '<span />';
                         //return that.editedColumnFormatter(value, rowData, rowIndex);
@@ -114,48 +122,75 @@ function Tree() {
             });
             that.getTreeGrid().setOptions({
                 onBeforeLoad: function (row, node) {
-                    that.getTreeGrid().loading();
                     if (row) {
+                        that.getTreeGrid().loading();
+                        that.loadingCounter ++;
                         row.loadChildren(function () {
-                            that.getTreeGrid().loaded();
-                        });
-                    } else {
-                        bandRepository.list(function () {
-                            that.getTreeGrid().loaded();
+                            that.loadingCounter --;
+                            if (that.loadingCounter == 0) {
+                                that.getTreeGrid().loaded();
+                            }
+                            if (!row.children) {
+                                row.children = [];
+                            }
+                            that.triggerChildrenLoaded(row);
                         });
                     }
                     return false;
                 }
             });
+            that.getTreeGrid().loading();
+            bandRepository.list(function () {
+                that.getTreeGrid().loaded();
+            });
         });
 
         // subscriptions
-        mainPlayer.onStartPlaying(function () {
-            that.startPlay();
-        });
-        var repositories = [bandRepository, albumRepository, trackRepository];
-
+//        mainPlayer.bindStartPlaying(function () {
+//            that.startPlay();
+//        });
         $(repositories).each(function (index, repository) {
-            repository.onLoaded(function (e, data) {
+            repository.bindOnLoaded(function (e, data) {
                 that.nodeLoaded(data);
             })
-            repository.onRemoved(function (e, data) {
+            repository.bindOnRemoved(function (e, data) {
                 that.nodeRemoved(data);
             });
-            repository.onUpdated(function (e, data) {
+            repository.bindOnUpdated(function (e, data) {
                 that.nodeUpdated(data);
             })
         });
+
+
     }
 
-    this.editedColumnFormatter = function (value, rowData, rowIndex) {
-        // if edited is not set
-        if (!value) {
-            return '';
-        }
+    this.bind = function (eventName, handler, ns) {
+        ns = ns ? '.' + ns : '';
+        $(this).bind(eventName + ns, handler);
+    }
+    this.unbind = function (eventName, ns) {
+        ns = ns ? '.' + ns : '';
+        $(this).unbind(eventName + ns);
+    }
 
-        return $('<div>').append($('<a href="#" id="editColumnSave" onclick="Tree.getInstance().getTreeGrid().endEdit(' + "'" + rowData.getId() + "'" + '); event.stopPropagation();" iconCls="icon-save" plain="true" title="Применить изменения"></a>').linkbutton()).html() +
-            $('<div>').append($('<a href="#" id="editColumnCancel" onclick="Tree.getInstance().getTreeGrid().cancelEdit(' + "'" + rowData.getId() + "'" + '); event.stopPropagation();" iconCls="icon-cancel" plain="true" title="Отменить изменения"></a>').linkbutton()).html();
+    this.bindNodeLoaded =  function (handler, ns) {
+        this.bind(this.nodeLoadedEvent, handler, ns);
+    }
+    this.unbindNodeLoaded = function (ns) {
+        this.unbind(this.nodeLoadedEvent, ns);
+    }
+    this.triggerNodeLoaded = function (parentNode, nodes) {
+        $(this).trigger(this.nodeLoadedEvent, [parentNode, nodes]);
+    }
+
+    this.bindChildrenLoaded = function (handler, ns) {
+        this.bind(this.childrenLoadedEvent, handler, ns);
+    }
+    this.unbindChildrenLoaded = function (ns) {
+        this.unbind(this.childrenLoadedEvent, ns);
+    }
+    this.triggerChildrenLoaded = function (parentNode) {
+        $(this).trigger(this.childrenLoadedEvent, [parentNode]);
     }
 
     /**
@@ -177,14 +212,9 @@ function Tree() {
         return panel.attr('id') == 'treeAccordion';
     }
     
-    this.startPlay = function () {
-        if (this.isSelected()) {
-            play();
-        }
-    }
-
     this.nodeLoaded = function (nodes) {
         if (!nodes.length || nodes.length < 1) {
+            this.triggerNodeLoaded(null, []);
             return;
         }
         var parentId = nodes[0].getParentId();
@@ -199,9 +229,9 @@ function Tree() {
 
         if (parentNode) {
             $('#metaTree').treegrid('toggle', parentNode.getId()); // treegrid('toggle', parentNode.getId()).
-            $(this).trigger(this.loadSuccessEvent, [parentNode, nodes]);
+            this.triggerNodeLoaded(parentNode, nodes);
         } else {
-            $(this).trigger(this.loadSuccessEvent, [null, nodes]);
+            this.triggerNodeLoaded(null, nodes);
         }
     }
 
@@ -266,28 +296,6 @@ function Tree() {
     }
 
     /**
-     * Handles selecting remove menu item.
-     */
-    this.removeMenuNode = function () {
-        if (!this.menuNode)
-            return;
-        this.removeNode(this.menuNode);
-    }
-
-    this.editMenuNode = function () {
-        if (!this.menuNode)
-            return;
-        this.getTreeGrid().beginEdit(this.menuNode.getId());
-    }
-    this.reloadMenuNode = function () {
-        if (!this.menuNode)
-            return;
-        var repository = getRepositoryFor(this.menuNode);
-        repository.get(this.menuNode.getServerId(), function () {
-            $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Успешно обновлен.', title: 'Успех', timeout: 0});
-        });
-    }
-    /**
      * Binds keyup to edit control elements for ending or canceling editing.
      * @param inputElements
      */
@@ -311,6 +319,108 @@ function Tree() {
     this.unbindEditKeys = function () {
         $('[node-id=' + this.editedNode.getId() + '] input').unbind('keyup.edited');
     }
+
+    /**
+     * Handles selecting remove menu item.
+     */
+    this.removeMenuNode = function () {
+        if (!this.menuNode)
+            return;
+        this.removeNode(this.menuNode);
+    }
+
+    this.editMenuNode = function () {
+        if (!this.menuNode)
+            return;
+        this.getTreeGrid().beginEdit(this.menuNode.getId());
+    }
+    this.reloadMenuNode = function () {
+        if (!this.menuNode)
+            return;
+        var repository = getRepositoryFor(this.menuNode);
+        repository.get(this.menuNode.getServerId(), function () {
+            $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Успешно обновлен.', title: 'Успех', timeout: 0});
+        });
+    }
+    this.playMenuNode = function () {
+        console.log('begin playing...');
+        var nodes = this.getTreeGrid().getSelections();
+        if (!nodes || nodes.length == 0) {
+            console.log('there is no selection, use menuNode.');
+            nodes = [this.menuNode];
+        }
+
+        var that = this;
+        var loader = new NodeLoader(nodes, this);
+        loader.load(function () {
+            console.log('all nodes loaded, build pl');
+            var playlist = that.buildPlaylist(nodes);
+            console.log('list built with songs', playlist);
+            mainPlaylist.reload(playlist);
+            console.log('begin play');
+            mainPlaylist.play();
+            $('#bodyAccordion').accordion('select', 'Плейлист');
+        });
+    }
+    /**
+     * Gets all tracks from the specified node.
+     */
+    this.buildPlaylist = function (selectedNodes) {
+        var playlist = [];
+
+        var traverseToken = new Date().getTime();
+
+        for (var index in selectedNodes) {
+            var node = selectedNodes[index];
+            console.log('try to add ', node);
+            if (node.isLeaf()) {
+                console.log('it is a leaf, so just add it ');
+                node.traverseToken = traverseToken;
+                playlist.push(node);
+                continue;
+            }
+            console.log('it is a node, so parse it');
+            this.recursiveBuildPlaylist(node, selectedNodes, playlist, traverseToken);
+        }
+
+        return playlist;
+    }
+
+    this.recursiveBuildPlaylist = function (node, selected, playlist, traverseToken) {
+        if (node.traverseToken === traverseToken) {
+            console.log("this node already traversed!", node);
+            return null;
+        }
+        node.traverseToken = traverseToken;
+        var noSelected = true;
+        console.log('go throug children', node.children);
+        if ($.isArray(node.children) && node.children.length > 0) {
+            for (var childIndex in node.children) {
+                var child = node.children[childIndex];
+                var childNoSelected = this.recursiveBuildPlaylist(child, selected, playlist, traverseToken);
+                if (childNoSelected === null) {
+                    continue;
+                }
+                if (!childNoSelected && child.isLeaf()) {
+                    playlist.push(child);
+                }
+                noSelected &= childNoSelected;
+            }
+
+            // adds all child nodes if no one node selected and if children are TrackNode
+            if (noSelected && node.children[0].isLeaf()) {
+                $(node.children).each(function (index, child) {
+                    playlist.push(child);
+                });
+            }
+        }
+
+        if (!noSelected) {
+            return false;
+        }
+
+        return $.inArray(node, selected) === -1; // it means no selected = true
+    }
 }
 
 mainTree = new Tree();
@@ -319,112 +429,103 @@ Tree.instance = mainTree;
 Tree.getInstance = function () { return Tree.instance; }
 console.log("Tree instance successfully created.", Tree.getInstance());
 
+/**
+ * The class NodeLoader provide methods for loading all subnodes of the specified nodes recursively from the specified tree.
+ * @param nodes
+ * @param mainTree
+ */
+function NodeLoader(nodes, mainTree) {
+    this.nodeLoadedEvent = "loaded";
+    this.loadingCounter = 0;
+    this.nodes = $.isArray(nodes) ? nodes : [nodes];
+    this.treeGrid = mainTree.getTreeGrid();
+    this.mainTree = mainTree;
 
-function recursePlaylist(node, selected, playlist, traverseToken) {
-    if (node.traverseToken === traverseToken)
-        return null;
-    node.traverseToken = traverseToken;
-    var noSelected = true;
-    if (node.children && $.isArray(node.children) && node.children.length > 0) {
-        for (var childIndex in node.children) {
-            var child = node.children[childIndex];
-            var childNoSelected = recursePlaylist(child, selected, playlist, traverseToken); 
-            if (childNoSelected === null) {
-                continue;
-            }
-            if (!childNoSelected && child.isLeaf()) {
-                playlist.push(child);
-            }
-            noSelected &= childNoSelected;
-        }
-        
-        // adds all child nodes if no one node selected and if it TrackNode
-        if (noSelected && node.children[0].isLeaf()) {
-            $(node.children).each(function (index, child) {
-                playlist.push(child);
-            });
-        }
-    } 
-
-    if (!noSelected) {
-        return false;
+    /**
+     * Subscribes to load event the specified handler.
+     * @param handler
+     */
+    this.bindLoaded = function (handler) {
+        $(this).bind(this.nodeLoadedEvent, handler);
     }
 
-    return $.inArray(node, selected) === -1; // it means no selected = true
-}
+    /**
+     * Invokes loaded event.
+     */
+    this.triggerLoaded = function () {
+        $(this).trigger(this.nodeLoadedEvent);
+    }
 
-function fillPlaylist(playlist) {
-    var selected = $('#metaTree').treegrid('getSelections');
-    var traverseToken = new Date().getTime();
-    for (var index in selected) {
-        var node = selected[index];
-        //$('#metaTree').treegrid('expandAll', node.getId());
+    /**
+     * Begin loading of the specified nodes.
+     */
+    this.load = function (callback) {
+        if ($.isFunction(callback)) {
+            this.bindLoaded(callback);
+        }
+
+        if (this.nodes.length == 0) {
+            this.triggerLoaded();
+            return;
+        }
+
+        this.loadingCounter = 0;
+        console.log('begin recursive loading nodes: ', this.nodes);
+        for (var i = 0; i < this.nodes.length; i ++) {
+            this.loadingCounter ++;
+            this.recursiveLoad(this.nodes[i]);
+            this.loadingCounter --;
+        }
+        this.triggerLoadedIfCounter();
+    }
+
+    this.triggerLoadedIfCounter = function() {
+        if (this.loadingCounter === 0) {
+            console.log('loadingCounter is 0, so that is it');
+            this.triggerLoaded();
+        }
+    }
+
+    this.recursiveLoad = function(node) {
         if (node.isLeaf()) {
-            node.traverseToken = traverseToken;
-            playlist.push(node);
-            continue;
+            console.log('node does not have children at all', node);
+            return;
         }
-        recursePlaylist(node, selected, playlist, traverseToken);
-    }
-}
 
-var loadingCounter = 0;
+        if (node.children && $.isArray(node.children)) {
+            console.log('the children of the node aldready loaded', node);
+            for (var i in node.children) {
+                var child = node.children[i];
+                this.loadingCounter ++;
+                console.log('lest go dipper');
+                this.recursiveLoad(child);
+                this.loadingCounter --;
+            }
+            this.triggerLoadedIfCounter();
+        } else {
+            var that = this;
+            this.mainTree.bindChildrenLoaded(
+                function (event, parent) {
+                    // i want catch only event's of top context node
+                    if (parent !== node) {
+                        return;
+                    }
+                    console.log('children of the node loaded', parent);
+                    that.loadingCounter --;
+                    that.mainTree.unbindChildrenLoaded('recursiveExpand' + node.getId())
 
-function recurseLoad(node, onLoadedCallback) {
-    if (node.isLeaf())
-        return;
-    
-    if (node.children && $.isArray(node.children)) {
-        $(node.children).each(function (i, child) {
-            loadingCounter ++;
-            recurseLoad(child, onLoadedCallback);
-            loadingCounter --;
-        });
-        if (loadingCounter === 0) {
-            onLoadedCallback();
+                    //console.log("collapse ", node.getId());
+                    that.treeGrid.collapse(node.getId());
+
+                    console.log('children loaded, so go dipper');
+                    that.recursiveLoad(parent);
+                },
+                'recursiveExpand' + node.getId()
+            );
+
+            this.loadingCounter ++;
+            console.log('begin load children, expand node ', node);
+            this.treeGrid.expand(node.getId());
         }
-    } else {
-        $(mainTree).bind(mainTree.loadSuccessEvent + ".recurseExpand" + node.getId(), function (event, parent, loadedNodes) {
-            // i want catch only event's of top context node
-            if (parent !== node) {
-                return;
-            }
-            loadingCounter --;
-            
-            //console.log("collapse ", node.getId());
-            $('#metaTree').treegrid('collapse', node.getId());
-
-            $(loadedNodes).each(function (i, child) {
-                recurseLoad(child, onLoadedCallback);
-            });
-            $(mainTree).unbind(mainTree.loadSuccessEvent + ".recurseExpand" + node.getId());
-
-            if (loadingCounter === 0) {
-                onLoadedCallback();
-            }
-        });
-        //console.log("expand ", node.getId());
-        loadingCounter ++;
-        $('#metaTree').treegrid('expand', node.getId());
     }
-    
-    
-}
-
-function loadSelected(onLoadedCallback) {
-    loadingCounter = 0;
-    var selected = $('#metaTree').treegrid('getSelections');
-    $(selected).each(function(i, node) {
-        recurseLoad(node, onLoadedCallback);
-    });
-}
-
-function play() {
-    // enshure that all child nodes loaded
-    loadSelected(function() {
-        mainPlaylist.clean();
-        fillPlaylist(mainPlaylist);
-        mainPlaylist.play();
-        $('#bodyAccordion').accordion('select', 'Плейлист');
-    });
 }

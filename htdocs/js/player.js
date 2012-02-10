@@ -7,8 +7,19 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
+
+/**
+ * Player facade.
+ */
 function Player() {
-    this.onStartPlayingEvent = "startPlaying";
+    /**
+     * When player started playing.
+     */
+    this.startPlayingEvent = "startPlaying";
+    /**
+     * When user clicks play.
+     */
+    this.playEvent = "play";
     
     this.paused = false;
     
@@ -17,21 +28,20 @@ function Player() {
         $('#mainPlayer').jPlayer({
             ready: function () {
                 console.log("player ready");
-                $('.jp-play').bind('click', function () {
-                    that.paused = false;
-                });
-                $('.jp-pluse').bind('click', function () {
+                $('.jp-pause').bind('click', function () {
                     that.paused = true;
-                })
+                    console.log("pause caught, paused", that.paused);
+                });
                 $('.jp-play').bind('click', function () {
-                    console.log("click cought, paused", that.paused);
+                    console.log("click caught, paused", that.paused);
                     if (!that.paused) {
-                        $(that).trigger(that.onStartPlayingEvent, []);
+                        $(that).trigger(that.playEvent, []);
                     }
+                    that.paused = false;
                 });
                 $('.jp-stop').bind('click', function () {
                     that.paused = false; 
-                    console.log('media cleared, paused', that.paused);
+                    console.log('media cleared, sopped', that.paused);
                     $(this).jPlayer('clearMedia');
                 });
             },
@@ -39,27 +49,55 @@ function Player() {
             supplied: "mp3"
         });
     }
-    
+
+    /**
+     * Start playing the specified node.
+     * @param node
+     */
     this.play = function (node) {
         $('#mainPlayer').jPlayer("setMedia", {mp3: node.getUrl()})
                         .jPlayer("play");
         $('.jp-title').text(node.getName());
     }
-    
-    this.onEnded = function (callback) {
+
+    /**
+     * Subscribes to end playing.
+     * @param callback
+     */
+    this.bindEndPlaying = function (callback) {
         $('#mainPlayer').bind($.jPlayer.event.ended, callback);
     }
-    
-    this.onStartPlaying = function (callback) {
-        $(this).bind(this.onStartPlayingEvent, callback);
+
+    /**
+     * Subscribe to start playing.
+     * @param handler
+     */
+    this.bindStartPlaying = function (handler) {
+        $(this).bind($.jPlayer.event.play, handler);
     }
-    
-    this.onNext = function (callback) {
-        $('.jp-next').bind('click', callback);
+
+    /**
+     * Subscribe to event caused when user click 'next'.
+     * @param handler
+     */
+    this.bindNext = function (handler) {
+        $('.jp-next').bind('click', handler);
     }
-    
-    this.onPrevious = function (callback) {
-        $('.jp-previous').bind('click', callback);
+
+    /**
+     * Subscribe to event caused when user click 'previous'.
+     * @param handler
+     */
+    this.bindPrevious = function (handler) {
+        $('.jp-previous').bind('click', handler);
+    }
+
+    /**
+     * Subscribe to event caused when user click 'play'.
+     * @param handler
+     */
+    this.bindPlay = function (handler) {
+        $(this).bind(this.playEvent, handler);
     }
 }
 

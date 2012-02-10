@@ -23,4 +23,5 @@ class TrackDto
     public $duration;
     public $albumId;
     public $source;
+    public $queries;
 }
