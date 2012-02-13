@@ -21,7 +21,7 @@ VK.init(function() {
     VK.Widgets.Comments('vk_comments', {
         limit: 25, 
         width: mainWidth, 
-        attach: '*'
+        autoPublish: 0
     });
     
 //    VK.Widgets.Group("vk_groups", {

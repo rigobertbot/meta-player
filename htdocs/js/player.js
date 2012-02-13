@@ -24,10 +24,11 @@ function Player() {
     this.paused = false;
     
     this.init = function () {
+        bodyLoading.setStatus('initializing player');
         var that = this;
         $('#mainPlayer').jPlayer({
             ready: function () {
-                console.log("player ready");
+                bodyLoading.resetStatus('player is ready');
                 $('.jp-pause').bind('click', function () {
                     that.paused = true;
                     console.log("pause caught, paused", that.paused);

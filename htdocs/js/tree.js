@@ -24,7 +24,8 @@ function Tree() {
     
     this.init = function () {
         var that = this;
-        easyloader.load('treegrid', function(){
+        bodyLoading.setStatus('initializing tree');
+        new QueueLoader(['treegrid', 'easy-ui-wrappers.js'], function() {
             $.extend($.fn.datagrid.defaults.editors, {
                 duration: {
                     init: function(container, options){
@@ -120,6 +121,7 @@ function Tree() {
                     $(that).trigger(mainTree.expandedEvent, [row]);
                 }
             });
+
             that.getTreeGrid().setOptions({
                 onBeforeLoad: function (row, node) {
                     if (row) {
@@ -135,6 +137,9 @@ function Tree() {
                             }
                             that.triggerChildrenLoaded(row);
                         });
+                    } else {
+                        // it means loading root node.
+                        bodyLoading.resetStatus('tree is ready');
                     }
                     return false;
                 }
@@ -143,7 +148,7 @@ function Tree() {
             bandRepository.list(function () {
                 that.getTreeGrid().loaded();
             });
-        });
+        }).load();
 
         // subscriptions
 //        mainPlayer.bindStartPlaying(function () {
@@ -160,8 +165,6 @@ function Tree() {
                 that.nodeUpdated(data);
             })
         });
-
-
     }
 
     this.bind = function (eventName, handler, ns) {

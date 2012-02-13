@@ -7,19 +7,19 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
+using('vkutils.js');
 
-var obj = new Object();
-$(document).ready(function () {
-    mainPlayer.init();
-    mainTree.init();
-    mainPlaylist.init();
-    easyloader.load('messager', function () {
+var indexInit = function () {
+    bodyLoading.setStatus('main initializing');
+    new QueueLoader(['player.js', 'tree.js', 'playlist.js', 'messager', 'combobox', 'form', 'datebox'], function (){
+        mainPlayer.init();
+        mainTree.init();
+        mainPlaylist.init();
+
         $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
             $.messager.show({msg: '<div class=\"messager-icon messager-error\"></div>Произошла ошибка на сервере:<br />' + thrownError, title: 'Ошибка', timeout: 0});
         });
-    });
 
-    easyloader.load('combobox', function(){
         $.extend($.fn.validatebox.defaults.rules, {
             checkSelected: {
                 validator: function(value, param){
@@ -96,8 +96,7 @@ $(document).ready(function () {
 //        trackRepository.onUpdated(function (e, node) {
 //            refreshList($('#trackList'));
 //        });
-    });
-    easyloader.load('form', function () {
+
         $('#editTreeForm').form({
             onSubmit: function () {
                 // clean wrong values
@@ -112,13 +111,14 @@ $(document).ready(function () {
             }
         });
         editTypeChanged($('#editTypeBand'));
-    });
-    easyloader.load('datebox', function () {
+
         $('#bandFoundDate,#bandEndDate,#albumReleaseDate').datebox({
             formatter: $.defaultDateFormatter
         });
-    });
-});
+
+        bodyLoading.resetStatus('ready');
+    }).load();
+}
 
 function appendNodesToList(combobox, nodes) {
     var oldData =  $(combobox).combobox('getData');
@@ -199,7 +199,7 @@ function submitForm(form) {
                 .setDuration($('#trackDuration').val())
                 .setSerial($('#trackSerial').val());
 
-            $('#trackSerial').val(parseInt($('#trackSerial').val()) + 1);
+            $('#trackSerial').numberspinner('setValue', parseInt($('#trackSerial').val()) + 1);
             break;
     }
     var source = $('#editSource').val();

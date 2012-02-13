@@ -70,6 +70,7 @@ function Searcher() {
                         }
                     }
                 }
+                console.log('search binding complete, delta:', nearestDelta, 'result:', nearestResult, 'but results were:', data);
 
                 track.setUrl(nearestResult.url);
                 track.setDuration(nearestResult.duration);

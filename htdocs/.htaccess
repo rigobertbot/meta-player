@@ -5,7 +5,6 @@ RewriteEngine On
 
 # debug rules
 RewriteRule ^js/easyloader\.js$ js/easyloader_src.js
-RewriteRule ^js/plugins/ js/plugins_src/
 RewriteRule ^(.*)$ $1 [CO=XDEBUG_SESSION:idea:metaplayer.local]
 
 # front controller ruels
