@@ -15,6 +15,7 @@ namespace MetaPlayer\Contract;
 use MetaPlayer\Model\BaseBand;
 use MetaPlayer\Model\UserBand;
 use MetaPlayer\ViewHelper;
+use MetaPlayer\Model\Band;
 
 /**
  * The class BandHelper provides methods for converting dto to model and vice versa
