@@ -79,7 +79,7 @@ $sqlLogger = null;
 
 if (\Oak\Common\Env::isDebug()) {
     $sqlLogger = $container->getBean("sqlLogger");
-    setcookie('XDEBUG_SESSION', 'idea');
+    //setcookie('XDEBUG_SESSION', 'idea');
 }
 if (\Oak\Common\Env::isTest()) {
     $sqlLogger = new \Doctrine\DBAL\Logging\EchoSQLLogger();
