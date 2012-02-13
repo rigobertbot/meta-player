@@ -128,4 +128,26 @@ function TreeGrid(element, options) {
     this.getSelections = function () {
         return this.element.treegrid('getSelections');
     }
+
+    /**
+     * Load the treegrid data.
+     * @param data
+     */
+    this.loadData = function (nodes) {
+        this.element.treegrid('loadData', nodes);
+        return this;
+    }
+
+    /**
+     * Append nodes to a parent node.
+     * @param parentId Might be null.
+     * @param nodes
+     */
+    this.append = function (parentId, nodes) {
+        this.element.treegrid('append', {
+            parent: parentId,
+            data: nodes
+        });
+        return this;
+    }
 }

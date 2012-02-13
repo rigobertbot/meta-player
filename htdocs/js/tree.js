@@ -25,7 +25,7 @@ function Tree() {
     this.init = function () {
         var that = this;
         bodyLoading.setStatus('initializing tree');
-        new QueueLoader(['treegrid', 'easy-ui-wrappers.js'], function() {
+        new QueueLoader(['treegrid', 'easy-ui-wrappers.js', 'accordion'], function() {
             $.extend($.fn.datagrid.defaults.editors, {
                 duration: {
                     init: function(container, options){
@@ -148,6 +148,15 @@ function Tree() {
             bandRepository.list(function () {
                 that.getTreeGrid().loaded();
             });
+
+            // quick fix, http://code.google.com/p/meta-player/issues/detail?id=15
+            $('#bodyAccordion').accordion({onSelect: function (title) {
+                var selected = $(this).accordion('getSelected');
+                var id = $(selected).attr('id');
+                if (id == 'treeAccordion') {
+                    that.getTreeGrid().append(null, []);
+                }
+            }});
         }).load();
 
         // subscriptions
