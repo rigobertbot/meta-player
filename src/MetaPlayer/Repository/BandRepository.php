@@ -21,5 +21,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class BandRepository extends EntityRepository
 {
+    /**
+     * @param $id
+     * @param $lockMode
+     * @param $lockVersion
+     * @return \MetaPlayer\Model\Band
+     */
+    public function find($id, $lockMode = \Doctrine\DBAL\LockMode::NONE, $lockVersion = null) {
+        return parent::find($id, $lockMode, $lockVersion);
+    }
 
 }

@@ -41,9 +41,9 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errconte
 register_shutdown_function(function () {
     global $logger;
 
-    $last = error_get_last();
-    if ($last != null) {
-        $logger->fatal("Fatal error: $last");
+    list($type, $message, $file, $line) = error_get_last();
+    if ($type != null) {
+        $logger->fatal("Fatal error: $message on $file ($line)");
     }
 });
 

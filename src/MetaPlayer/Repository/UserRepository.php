@@ -23,13 +23,13 @@ class UserRepository extends BaseRepository {
     public function findOneByVkId($vkId) {
         return $this->findOneBy(array('vkId' => $vkId));
     }
-    
+
     /**
      * Adds user entity to session.
      *
      * @param User $user 
      */
-    public function persistAndFlush(User $user) {
+    public function persistAndFlush($user) {
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }

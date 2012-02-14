@@ -284,6 +284,11 @@ function Tree() {
             return;
 
         for (var i = 0; i < nodes.length; i ++) {
+            var node = nodes[i];
+            // append if not exists
+            if (!this.getTreeGrid().find(node.getId())) {
+                this.getTreeGrid().append(node.getParentId(), [node]);
+            }
             this.getTreeGrid().refresh(nodes[i].getId());
         }
     }
@@ -349,9 +354,18 @@ function Tree() {
     this.reloadMenuNode = function () {
         if (!this.menuNode)
             return;
+        if ($.isArray(this.menuNode.children)) {
+            for (var index = 0; index < this.menuNode.children.length; index ++ ){
+                var child = this.menuNode.children[index];
+                this.getTreeGrid().remove(child.getId());
+            }
+        }
+        var updatedNode = this.menuNode;
         var repository = getRepositoryFor(this.menuNode);
         repository.get(this.menuNode.getServerId(), function () {
-            $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Успешно обновлен.', title: 'Успех', timeout: 0});
+            updatedNode.loadChildren(function () {
+                $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Успешно обновлен.', title: 'Успех', timeout: 0});
+            });
         });
     }
     this.playMenuNode = function () {

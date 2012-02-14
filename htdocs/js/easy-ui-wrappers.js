@@ -71,6 +71,23 @@ function TreeGrid(element, options) {
     }
 
     /**
+     * Remove a node and it's children nodes.
+     * @param nodeId
+     */
+    this.remove = function (nodeId) {
+        this.element.treegrid('remove', nodeId);
+        return this;
+    }
+    /**
+     * Find the specifed node and return the node data.
+     * @param nodeId
+     * @return Node|null
+     */
+    this.find = function (nodeId) {
+        return this.element.treegrid('find', nodeId);
+    }
+
+    /**
      * Display loading status.
      */
     this.loading = function () {

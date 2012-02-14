@@ -41,6 +41,17 @@ class UserBandRepository extends BaseRepository {
     }
 
     /**
+     * Find approved user's band.
+     *
+     * @param \MetaPlayer\Model\User $user
+     * @param int $bandId
+     * @return UserBand
+     */
+    public function findOneByBandAndUser(User $user, $bandId) {
+        return $this->findOneBy(array('user' => $user, 'band' => $bandId));
+    }
+
+    /**
      * @param \MetaPlayer\Model\UserBand $entity
      * @throws \MetaPlayer\MetaPlayerException
      */

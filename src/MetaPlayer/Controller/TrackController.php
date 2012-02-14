@@ -47,6 +47,18 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
     /**
      * @Resource
+     * @var \MetaPlayer\Repository\UserAlbumRepository
+     */
+    private $userAlbumRepository;
+
+    /**
+     * @Resource
+     * @var \MetaPlayer\Repository\AlbumRepository
+     */
+    private $albumRepository;
+
+    /**
+     * @Resource
      * @var \MetaPlayer\Contract\TrackHelper
      */
     private $trackHelper;
@@ -63,14 +75,28 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
      */
     private $jsonUtils;
 
+    /**
+     * @Resource
+     * @var \MetaPlayer\Manager\AlbumManager
+     */
+    private $albumManager;
+
 
     public function listAction($albumId) {
         $data = array();
-        $isUser = $this->albumHelper->isDtoUserAlbumId($albumId);
-        $tracks = $isUser
-            ? $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $this->albumHelper->convertDtoToUserAlbumId($albumId))
-            : $this->trackRepository->findByAlbum($albumId);
-        
+        $isUserTrack = $this->albumHelper->isDtoUserAlbumId($albumId);
+
+        if ($isUserTrack) {
+            $tracks = $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $this->albumHelper->convertDtoToUserAlbumId($albumId));
+        } else {
+            $tracks = $this->trackRepository->findByAlbum($albumId);
+            $userAlbum = $this->userAlbumRepository->findOneByUserAndAlbum($this->securityManager->getUser(), $albumId);
+            if ($userAlbum != null) {
+                $userTracks = $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $userAlbum);
+                $tracks = array_merge($tracks, $userTracks);
+            }
+        }
+
         foreach ($tracks as $track) {
             $trackDto = $track instanceof \MetaPlayer\Model\UserTrack
                 ? $this->trackHelper->convertUserTrackToDto($track)
@@ -98,6 +124,19 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
     public function addAction($json) {
         $trackDto = $this->parseJson($json);
+        if (!$this->albumHelper->isDtoUserAlbumId($trackDto->albumId)) {
+            $album = $this->albumRepository->find($trackDto->albumId);
+            if ($album == null) {
+                $this->logger->error("There is no album with id = $trackDto->albumId.");
+                throw new JsonException("Invalid albumId.");
+            }
+            $userAlbum = $this->userAlbumRepository->findOneByUserAndAlbum($this->securityManager->getUser(), $trackDto->albumId);
+            if ($userAlbum == null) {
+                $userAlbum = $this->albumManager->createUserAlbumByAlbum($album, $trackDto->source);
+            }
+            $trackDto->albumId = $this->albumHelper->convertUserAlbumIdToDto($userAlbum->getId());
+        }
+
         $userTrack = $this->trackHelper->convertDtoToUserTrack($trackDto);
         $this->userTrackRepository->persist($userTrack);
         $this->userTrackRepository->flush();

@@ -15,6 +15,7 @@ namespace MetaPlayer\Contract;
 use MetaPlayer\Model\BaseBand;
 use MetaPlayer\Model\UserBand;
 use MetaPlayer\ViewHelper;
+use MetaPlayer\Model\Band;
 
 /**
  * The class BandHelper provides methods for converting dto to model and vice versa
@@ -37,10 +38,10 @@ class BandHelper
     }
     
     public function convertDtoToUserBandId($dtoBandId) {
-        if (strpos($dtoBandId, self::$userBandIdPrefix) === 0) {
-            return substr($dtoBandId, strlen(self::$userBandIdPrefix));
+        if (!$this->isDtoUserBandId($dtoBandId)) {
+            throw new \MetaPlayer\MetaPlayerException('The specified id is not a user band id!');
         }
-        return null;
+        return substr($dtoBandId, strlen(self::$userBandIdPrefix));
     }
 
     /**

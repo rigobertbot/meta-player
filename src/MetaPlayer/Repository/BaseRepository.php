@@ -31,6 +31,19 @@ abstract class BaseRepository extends EntityRepository {
     }
 
     /**
+     * Tells the EntityManager to make an instance managed and persistent.
+     * Then flush EM.
+     *
+     * @param $entity
+     * @return BaseRepository
+     */
+    public function persistAndFlush($entity) {
+        $this->getEntityManager()->persist($entity);
+        $this->flush();
+        return $this;
+    }
+
+    /**
      * Merges the state of a detached entity into the persistence context
      * of this EntityManager and returns the managed copy of the entity.
      * The entity passed to merge will not become associated/managed with this EntityManager.
@@ -52,7 +65,12 @@ abstract class BaseRepository extends EntityRepository {
         $this->getEntityManager()->remove($entity);
         return $this;
     }
-    
+
+    /**
+     * Flushes all changes to objects that have been queued up to now to the database.
+     *
+     * @return BaseRepository
+     */
     public function flush() {
         $this->getEntityManager()->flush();
         return $this;

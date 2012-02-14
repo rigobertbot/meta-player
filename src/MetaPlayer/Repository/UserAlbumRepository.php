@@ -33,8 +33,17 @@ class UserAlbumRepository extends BaseRepository {
      * @param $userBandId
      * @return \MetaPlayer\Model\UserAlbum[]
      */
-    public function findByUserAndBand(User $user, $userBandId) {
+    public function findByUserAndUserBand(User $user, $userBandId) {
         return $this->findBy(array('user' => $user, 'userBand' => $userBandId));
+    }
+
+    /**
+     * @param \MetaPlayer\Model\User $user
+     * @param $albumId
+     * @return UserAlbum|null
+     */
+    public function  findOneByUserAndAlbum(User $user, $albumId) {
+        return $this->findOneBy(array('user' => $user, 'album' => $albumId));
     }
 
     /**

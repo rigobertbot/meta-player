@@ -34,7 +34,6 @@ use MetaPlayer\Contract\BandHelper;
  */
 class BandController extends BaseSecurityController implements ILoggerAware
 {
-    public static $userBandIdPrefix = "user_";
     /**
      * @Resource
      * @var BandRepository
@@ -97,7 +96,7 @@ class BandController extends BaseSecurityController implements ILoggerAware
             $result[] = $dto;
         }
 
-        return new JsonViewModel($result, $this->jsonUtils);;
+        return new JsonViewModel($result, $this->jsonUtils);
     }
 
     /**

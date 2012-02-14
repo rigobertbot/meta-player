@@ -56,6 +56,18 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
      * @var UserBandRepository
      */
     private $userBandRepository;
+
+    /**
+     * @Resource
+     * @var \MetaPlayer\Contract\BandHelper
+     */
+    private $bandHelper;
+
+    /**
+     * @Resource
+     * @var \MetaPlayer\Repository\BandRepository
+     */
+    private $bandRepository;
     
     /**
      * @Resource
@@ -65,21 +77,34 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
 
     /**
      * @Resource
+     * @var \MetaPlayer\Manager\BandManager
+     */
+    private $bandManager;
+
+    /**
+     * @Resource
      * @var JsonUtils
      */
     private $jsonUtils;
 
     public function listAction($bandId) {
-        $userAlbum = false;
-        if (strpos($bandId, BandController::$userBandIdPrefix) === 0) {
-            $bandId = substr($bandId, strlen(BandController::$userBandIdPrefix));
-            $userAlbum = true;
+        $isUserAlbum = $this->bandHelper->isDtoUserBandId($bandId);
+
+        $albums = array();
+
+        if ($isUserAlbum) {
+            $albums =  $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $bandId);
+        } else {
+            $albums = $this->albumRepository->findByBand($bandId);
+            // gets user's albums if these are
+
+            $userBand = $this->userBandRepository->findOneByBandAndUser($this->securityManager->getUser(), $bandId);
+            if ($userBand != null) {
+                $userAlbums = $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $userBand);
+                $albums = array_merge($albums, $userAlbums);
+            }
         }
-        
-        $albums = $userAlbum ? 
-            $this->userAlbumRepository->findByUserAndBand($this->securityManager->getUser(), $bandId) :
-            $this->albumRepository->findByBand($bandId);
-        
+
         $data = array();
         foreach ($albums as $album) {
             /* @var $album Album */
@@ -92,7 +117,7 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
 
     public function listUserAction($bandId) {
         $result = array();
-        $albums = $this->userAlbumRepository->findByUserAndBand($this->securityManager->getUser(), $bandId);
+        $albums = $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $bandId);
         foreach ($albums as $album) {
             $result[] = array('id' => $album->getId(), 'name' => $album->getTitle());
         }
@@ -137,6 +162,19 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     
     public function addAction($json) {
         $albumDto = $this->parseJson($json);
+
+        // if is not a user band, replace id with existing or new user band.
+        if (!$this->bandHelper->isDtoUserBandId($albumDto->bandId)) {
+            // checks if there is user's band
+            $userBand = $this->userBandRepository->findOneByBandAndUser($this->securityManager->getUser(), $albumDto->bandId);
+            if ($userBand == null) {
+                // if no, create it already approved
+                $band = $this->bandRepository->find($albumDto->bandId);
+                $userBand = $this->bandManager->createUserBandByBand($band, $albumDto->source);
+            }
+            // replace id
+            $albumDto->bandId = $this->bandHelper->convertUserBandIdToDto($userBand->getId());
+        }
 
         $userAlbum = $this->albumHelper->convertDtoToUserAlbum($albumDto);
         
