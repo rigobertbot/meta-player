@@ -19,7 +19,7 @@ use MetaPlayer\Manager\SecurityManager;
  * @author Val Dubrava <valery.dubrava@gmail.com>
  * @PreDispatchMethod(method=preDispatch)
  */
-class BaseSecurityController 
+abstract class BaseSecurityController
 {
     /**
      * @Resource

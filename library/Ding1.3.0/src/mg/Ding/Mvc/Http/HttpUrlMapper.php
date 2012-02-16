@@ -155,17 +155,18 @@ class HttpUrlMapper implements IMapper, IContainerAware, ILoggerAware, IReflecti
         $url = explode('?', $url);
         $url = $url[0];
         
-        // parce url to controller, action and parameters
-        $parts = explode('/', $url);
-        array_shift($parts);
-        $requestController = isset($parts[0]) && !empty($parts[0]) ? array_shift($parts) : self::$_defaultController;
-        $requestController = "/$requestController/";
-
-        $requestAction = isset($parts[0]) && !empty($parts[0]) ? array_shift($parts) : self::$_defaultAction;
-
-        $params = $parts; // TODO: parse paramters like /controller/action/id/123/...
-
-        $this->_logger->debug('Trying to match: ' . $requestController . $requestAction);
+        // parse url to controller, action and parameters
+//        $parts = explode('/', $url);
+//        array_shift($parts);
+//        $requestController = isset($parts[0]) && !empty($parts[0]) ? array_shift($parts) : self::$_defaultController;
+//        $requestController = "/$requestController/";
+//
+//        $requestAction = isset($parts[0]) && !empty($parts[0]) ? array_shift($parts) : self::$_defaultAction;
+//
+//        $params = $parts; // TODO: parse paramters like /controller/action/id/123/...
+//
+//        $this->_logger->debug('Trying to match: ' . $requestController . $requestAction);
+        $this->_logger->debug('Trying to match: ' . $url);
         
         // Lookup a controller that can handle this url.
         $try = array_merge($this->_map, self::$_annotatedControllers);
@@ -184,9 +185,17 @@ class HttpUrlMapper implements IMapper, IContainerAware, ILoggerAware, IReflecti
                 if ($controllerUrl[$len - 1] != '/') {
                     $controllerUrl = $controllerUrl . '/';
                 }
-                if ($controllerUrl != $requestController) {
+//                if ($controllerUrl != $requestController) {
+//                    continue;
+//                }
+                if (strpos($url, $controllerUrl) !== 0) {
                     continue;
                 }
+
+                $tail = substr($url, $len); // gets tails
+
+                $parts = explode('/', $tail);
+                $requestAction = isset($parts[0]) && !empty($parts[0]) ? array_shift($parts) : self::$_defaultAction;
 
                 $controllerName = $controller;
                 if (!is_object($controller)) {
@@ -200,7 +209,7 @@ class HttpUrlMapper implements IMapper, IContainerAware, ILoggerAware, IReflecti
                     $candidates[$len] = array();
                 }
                 $result = array($controller, $requestAction . 'Action');
-                $this->populateWithPrePostDispathers($result, $controllerName);
+                $this->populateWithPrePostDispatchers($result, $controllerName);
                 $candidates[$len][] = $result;
             }
         }
@@ -217,10 +226,10 @@ class HttpUrlMapper implements IMapper, IContainerAware, ILoggerAware, IReflecti
      * TODO: replace array with mapInfo
      *
      * @param array $result
-     * @param string $contollerName 
+     * @param string $controllerName
      */
-    private function populateWithPrePostDispathers(array &$result, $contollerName) {
-        $definition = $this->container->getBeanDefinition($contollerName);
+    private function populateWithPrePostDispatchers(array &$result, $controllerName) {
+        $definition = $this->container->getBeanDefinition($controllerName);
         $annotations = $this->reflectionFactory->getClassAnnotations($definition->getName());
         $annotations = $annotations['class'];
 

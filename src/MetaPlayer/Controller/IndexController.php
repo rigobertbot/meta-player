@@ -34,16 +34,16 @@ class IndexController implements ILoggerAware
 
     public function indexAction($api_id, $viewer_id, $auth_key) 
     {
-	$this->logger->debug("index/index with arguments $api_id, $viewer_id, $auth_key");
+	    $this->logger->debug("index/index with arguments $api_id, $viewer_id, $auth_key");
         //TODO: move this code to SecurityManager
         $view = new ModelAndView("Index/index");
         if ($api_id != \MPConfig::$VKApiId) {
-            $this->logger->error("The VK API Id is wrong: excpected " . \MPConfig::$VKApiId . ", got $api_id");
+            $this->logger->error("The VK API Id is wrong: expected " . \MPConfig::$VKApiId . ", got $api_id");
             return new ModelAndView("Index/no_vk");
         }
         $expectedAuth = md5($api_id . '_' . $viewer_id . '_' . \MPConfig::$VKSecret);
         if ($auth_key != $expectedAuth) {
-            $this->logger->error("The VK auth_key is wrong: excpected $expectedAuth, but got $auth_key");
+            $this->logger->error("The VK auth_key is wrong: expected $expectedAuth, but got $auth_key");
             return new ModelAndView("Index/no_vk");
         }
         $this->logger->debug("authenticate $viewer_id");

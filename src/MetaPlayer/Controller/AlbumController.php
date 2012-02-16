@@ -93,6 +93,7 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
         $albums = array();
 
         if ($isUserAlbum) {
+            $bandId = $this->bandHelper->convertDtoToUserBandId($bandId);
             $albums =  $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $bandId);
         } else {
             $albums = $this->albumRepository->findByBand($bandId);
@@ -108,7 +109,10 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
         $data = array();
         foreach ($albums as $album) {
             /* @var $album Album */
-            $albumDto = $album instanceof UserAlbum ? $this->albumHelper->convertUserAlbumToDto($album) : $this->albumHelper->convertAlbumToDto($album);
+            $albumDto = $album instanceof UserAlbum
+                ? $this->albumHelper->convertUserAlbumToDto($album)
+                : $this->albumHelper->convertAlbumToDto($album);
+
             $data[] = $albumDto;
         }
         

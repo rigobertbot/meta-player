@@ -79,4 +79,12 @@ class UserBand extends BaseBand {
     public function isApproved() {
         return $this->band != null;
     }
+
+    /**
+     * Gets approved band or null.
+     * @return \MetaPlayer\Model\Band|null
+     */
+    public function getApprovedBand() {
+        return $this->band;
+    }
 }

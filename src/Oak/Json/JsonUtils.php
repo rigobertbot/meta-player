@@ -17,7 +17,7 @@ namespace Oak\Json;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class JsonUtils {
+class JsonUtils implements ISerializer{
     private static $classNameNotice = "className";
     
     /**

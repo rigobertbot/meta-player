@@ -96,6 +96,14 @@ class UserAlbum extends BaseAlbum {
     }
 
     /**
+     * Gets approved album.
+     * @return Album|null
+     */
+    public function getApprovedAlbum() {
+        return $this->album;
+    }
+
+    /**
      * @param string $source
      */
     public function setSource($source)

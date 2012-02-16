@@ -70,11 +70,18 @@ class SecurityManager implements ILoggerAware
     
     /**
      * Checks is current session authenticated.
-     *
-     * @return bool
+     * @return boolean
      */
     public function isAuthenticated() {
         return array_key_exists(self::USER_ID, $_SESSION);
+    }
+
+    /**
+     * Checks if current user is admin.
+     * @return boolean
+     */
+    public function isAdmin() {
+        return $this->getUser()->isAdmin();
     }
     
     /**

@@ -18,6 +18,7 @@ use Oak\MVC\JsonViewModel;
 use MetaPlayer\ViewHelper;
 use MetaPlayer\Repository\TrackRepository;
 use MetaPlayer\Model\Track;
+use \MetaPlayer\Model\UserTrack;
 
 /**
  * Description of TrackController

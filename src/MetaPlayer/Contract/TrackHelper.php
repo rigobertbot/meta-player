@@ -84,7 +84,13 @@ class TrackHelper
     public function convertUserTrackToDto(\MetaPlayer\Model\UserTrack $userTrack) {
         $dto = $this->convertBaseTrackToDto($userTrack);
         $dto->id = $this->convertUserTrackIdToDto($userTrack->getId());
-        $dto->albumId = $this->albumHelper->convertUserAlbumIdToDto($userTrack->getUserAlbum()->getId());
+
+        if ($userTrack->getAlbum()->isApproved()) {
+            $dto->albumId = $userTrack->getAlbum()->getApprovedAlbum()->getId();
+        } else {
+            $dto->albumId = $this->albumHelper->convertUserAlbumIdToDto($userTrack->getUserAlbum()->getId());
+        }
+
         $dto->source = $userTrack->getSource();
         return $dto;
     }

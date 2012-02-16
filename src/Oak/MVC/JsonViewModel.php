@@ -21,7 +21,7 @@ use Ding\Mvc\ModelAndView;
  */
 class JsonViewModel extends ModelAndView
 {
-    public function __construct($object, \Oak\Json\JsonUtils $jsonUtils, array $headers = array()) {
+    public function __construct($object, \Oak\Json\ISerializer $jsonUtils, array $headers = array()) {
         $options = array(
             'json' => $jsonUtils->serialize($object),
             'headers' => \array_merge(array(

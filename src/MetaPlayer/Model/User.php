@@ -41,6 +41,12 @@ class User {
      */
     protected $vkId;
 
+    /**
+     * @Column(type="boolean", name="is_admin")
+     * @var boolean
+     */
+    protected $isAdmin;
+
     public function getId() {
         return $this->id;
     }
@@ -56,5 +62,11 @@ class User {
         $this->vkId = $vkId;
     }
 
-
+    /**
+     * Flag means is this user admin.
+     * @return boolean
+     */
+    public function isAdmin() {
+        return $this->isAdmin;
+    }
 }

@@ -20,4 +20,5 @@
             </array>
         </property>
     </bean>
+    <bean id="jsonNativeSerializer" class="Oak\Json\NativeSerializer" scope="singleton" />
 </beans>

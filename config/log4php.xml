@@ -10,7 +10,7 @@
         <level value="info" />
         <appender_ref ref="MainFileAppender" />
     </root>
-
+<!-- 
     <logger name="MetaPlayer">
         <level value="trace" />
     </logger>
@@ -22,4 +22,5 @@
     <logger name="MetaPlayer.SQLLogger">
         <level value="debug" />
     </logger>
+    -->
 </log4php:configuration>

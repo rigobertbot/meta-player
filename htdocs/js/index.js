@@ -10,8 +10,12 @@
 using('vkutils.js');
 
 var indexInit = function () {
+    $.ajaxSetup({
+        timeout: 30000 //30 seconds
+    });
+
     bodyLoading.setStatus('main initializing');
-    new QueueLoader(['player.js', 'tree.js', 'playlist.js', 'messager', 'combobox', 'form', 'datebox'], function (){
+    new QueueLoader(['player.js', 'tree.js', 'playlist.js', 'messager', 'combobox', 'form', 'datebox', 'messager.js'], function (){
         mainPlayer.init();
         mainTree.init();
         mainPlaylist.init();
@@ -116,13 +120,28 @@ var indexInit = function () {
             formatter: $.defaultDateFormatter
         });
 
+        $('#editTreeForm input').bind('keyup', function () {
+            if (event.keyCode == 13) {
+                $('#editSubmit').click();
+            }
+        });
+
         bodyLoading.resetStatus('ready');
     }).load();
 }
 
 function appendNodesToList(combobox, nodes) {
+    if (!nodes.length) {
+        return;
+    }
     var oldData =  $(combobox).combobox('getData');
+    var selectedId = $(combobox).combobox('getValue');
     $(combobox).combobox('loadData', [].concat(oldData, nodes));
+    if (nodes.length == 1) {
+        selectedId = nodes[0].getId();
+    }
+
+    $(combobox).combobox('select', selectedId);
 }
 
 function refreshList(combobox) {
@@ -207,22 +226,23 @@ function submitForm(form) {
 
     //console.log("save", mode, node);
     repository.add(node, successfulAdded);
+    messageService.showNotification(getEntityName(node).toProperCase() + '"' + node.getName() + '" поставлен(а) в очередь на добавление...');
+}
+
+function getEntityName(node) {
+    switch (node.className) {
+        case 'BandNode':
+            return 'группа';
+        case 'AlbumNode':
+            return 'альбом';
+        case 'TrackNode':
+            return 'композиция';
+    }
 }
 
 function successfulAdded(result, node) {
-    var message = null;
-    switch (node.className) {
-        case 'BandNode':
-            message = 'Группа "' + node.getName() + '" была успешно добавлена!';
-            break;
-        case 'AlbumNode':
-            message = 'Альбом "' + node.getName() + '" был успешно добавлен!';
-            break;
-        case 'TrackNode':
-            message = 'Композиция "' + node.getName() + '" была успешно добавлена!';
-            break;
-    }
-    $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>' + message, title: 'Успех', timeout: 0});
+    var message = getEntityName(node).toProperCase() + '"' + node.getName() + '" был(а) успешно добавлен(а)!';
+    messageService.showNotification(message, 'Успех');
     console.log("added", node, result);
 }
 

@@ -119,6 +119,9 @@ function Tree() {
                 },
                 onExpand: function (row) {
                     $(that).trigger(mainTree.expandedEvent, [row]);
+                },
+                onDblClickRow: function (row) {
+                    that.playNodes([row]);
                 }
             });
 
@@ -359,6 +362,7 @@ function Tree() {
                 var child = this.menuNode.children[index];
                 this.getTreeGrid().remove(child.getId());
             }
+            this.menuNode.children = undefined;
         }
         var updatedNode = this.menuNode;
         var repository = getRepositoryFor(this.menuNode);
@@ -375,7 +379,14 @@ function Tree() {
             console.log('there is no selection, use menuNode.');
             nodes = [this.menuNode];
         }
+        this.playNodes(nodes);
+    }
 
+    /**
+     * Begin playing the specified nodes through playlist.
+     * @param nodes
+     */
+    this.playNodes = function (nodes) {
         var that = this;
         var loader = new NodeLoader(nodes, this);
         loader.load(function () {
@@ -387,7 +398,8 @@ function Tree() {
             mainPlaylist.play();
             $('#bodyAccordion').accordion('select', 'Плейлист');
         });
-    }
+    }   
+     
     /**
      * Gets all tracks from the specified node.
      */

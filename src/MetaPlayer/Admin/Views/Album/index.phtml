@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>MetaPlayer - Admin - Album</title>
+    <link rel="stylesheet" type="text/css" href="/css/mp.css">
+    <link rel="stylesheet" type="text/css" href="/css/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/css/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/css/blue.monday/jplayer.blue.monday.css" />
+
+    <script type="text/javascript" src="http://vk.com/js/api/xd_connection.js?2"></script>
+
+    <script type="text/javascript" src="/js/jPaq-1.0.6.full.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.6.2.js"></script>
+    <script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.dateFormat-1.0.js"></script>
+    <script type="text/javascript" src="/js/easyloader.js"></script>
+    <script type="text/javascript" src="/js/jquery.json-2.3.js"></script>
+    <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            easyloader.load('datagrid', function () {
+                $('#albumGrid').datagrid({
+                    idField: 'id',
+                    url: '/admin/album/list',
+                    columns: [[
+                        {field: 'id', title: '#'},
+                        {field: 'name', title: 'name'}
+                    ]]
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Albums</h1>
+<table id="albumGrid" style="width:800px;">
+
+</table>
+</body>
