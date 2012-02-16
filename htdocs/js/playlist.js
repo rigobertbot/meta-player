@@ -39,6 +39,10 @@ function Playlist() {
                 ]],
                 rowStyler: function (rowIndex, rowData) {
                     return that.getRowStyle(rowData);
+                },
+                onDblClickRow: function (rowIndex, rowData) {
+                    $('#playlist').datagrid('selectRow', rowIndex);
+                    that.playSelected();
                 }
             });
         });
