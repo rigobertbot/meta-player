@@ -5,43 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
-      <change type="DELETED" beforePath="D:\projects\MetaPlayer\meta-player\htdocs\index.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/index.js" afterPath="$PROJECT_DIR$/htdocs/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/messager.js" afterPath="$PROJECT_DIR$/htdocs/js/messager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/tree.js" afterPath="$PROJECT_DIR$/htdocs/js/tree.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" afterPath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
     </list>
-    <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/admin.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Admin/Controller/AlbumController.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Admin/Controller/BaseAdminController.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Admin/Controller/IndexController.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Admin/Views/Album/index.phtml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Admin/Views/Index/index.phtml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Admin/Views/json/common.phtml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Oak/Json/ISerializer.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Oak/Json/NativeSerializer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/beans.xml" afterPath="$PROJECT_DIR$/config/beans.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/.htaccess" afterPath="$PROJECT_DIR$/htdocs/.htaccess" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/index.php" afterPath="$PROJECT_DIR$/htdocs/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpUrlMapper.php" afterPath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpUrlMapper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/AlbumHelper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Contract/TrackHelper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/BaseSecurityController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/BaseSecurityController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/UserAlbum.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/UserBand.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/UserBand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Oak/Json/JsonUtils.php" afterPath="$PROJECT_DIR$/src/Oak/Json/JsonUtils.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php" afterPath="$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php" />
-    </list>
+    <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
     <ignored path="meta-player.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="$PROJECT_DIR$/htdocs/.htaccess" changelist="af28bc77-43ea-438b-9dbe-225f8b8b5606" time="1329394983177" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,19 +37,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tree.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="tree.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="565" column="21" selection-start="20346" selection-end="20350" vertical-scroll-proportion="0.8045977">
+            <state line="565" column="21" selection-start="20346" selection-end="20350" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.phtml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="index.phtml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="112" selection-start="1982" selection-end="1982" vertical-scroll-proportion="0.0">
+            <state line="15" column="115" selection-start="941" selection-end="941" vertical-scroll-proportion="0.29310346">
               <folding />
             </state>
           </provider>
@@ -114,10 +82,10 @@
         <option value="$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php" />
         <option value="$PROJECT_DIR$/htdocs/js/messager.js" />
         <option value="$PROJECT_DIR$/htdocs/index.html" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
         <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
         <option value="$PROJECT_DIR$/htdocs/js/index.js" />
         <option value="$PROJECT_DIR$/htdocs/.htaccess" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
       </list>
     </option>
   </component>
@@ -650,13 +618,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="112" selection-start="1982" selection-end="1982" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/.htaccess">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="1" selection-start="155" selection-end="155" vertical-scroll-proportion="0.13869464">
@@ -673,7 +634,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="565" column="21" selection-start="20346" selection-end="20350" vertical-scroll-proportion="0.8045977">
+        <state line="565" column="21" selection-start="20346" selection-end="20350" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="115" selection-start="941" selection-end="941" vertical-scroll-proportion="0.29310346">
           <folding />
         </state>
       </provider>
