@@ -45,7 +45,7 @@ class User {
      * @Column(type="boolean", name="is_admin")
      * @var boolean
      */
-    protected $isAdmin;
+    protected $isAdmin = false;
 
     public function getId() {
         return $this->id;
