@@ -57,4 +57,11 @@ class UserAlbumRepository extends BaseRepository {
         }
         return parent::remove($entity);
     }
+
+    /**
+     * @return UserAlbum[]
+     */
+    public function findAll() {
+        return parent::findAll();
+    }
 }
