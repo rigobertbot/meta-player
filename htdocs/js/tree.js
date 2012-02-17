@@ -153,13 +153,13 @@ function Tree() {
             });
 
             // quick fix, http://code.google.com/p/meta-player/issues/detail?id=15
-            $('#bodyAccordion').accordion({onSelect: function (title) {
+            $('#bodyAccordion').bind('onSelect', function (event, title) {
                 var selected = $(this).accordion('getSelected');
                 var id = $(selected).attr('id');
                 if (id == 'treeAccordion') {
                     that.getTreeGrid().append(null, []);
                 }
-            }});
+            });
         }).load();
 
         // subscriptions

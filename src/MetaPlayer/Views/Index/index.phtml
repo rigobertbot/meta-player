@@ -41,92 +41,110 @@
                        idField="id">
                 </table>
             </div>
-            <div id="editTreeAccordion" title="Редактировать">
-                <form id="editTreeForm" action="" method="post">
-                    <table>
-                        <tr valign="top">
-                            <td align="right">
-                                <label for="editTypeBand">Группа</label>
-                                <input type="radio" id="editTypeBand" name="editType" value="band" checked="checked" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td align="right" style="min-width: 70px">Название:</td>
-                                        <td><select id="bandList" name="name" class="easyui-combobox" validType="checkSelected['band',bandList]" valueField="id" textField="name" mode="local" required="true" missingMessage="Выберите или введите название группы."></select></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Дата основания:</td>
-                                        <td><input type="text" id="bandFoundDate" name="foundDate" required="true"></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Дата распада:</td>
-                                        <td><input type="text" id="bandEndDate" name="endDate"></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr valign="top" id="editRowAlbum">
-                            <td align="right">
-                                <label for="editTypeAlbum">Альбом</label>
-                                <input id="editTypeAlbum" type="radio" name="editType" value="album" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
-                            </td>
-                            <td id="editCellAlbum">
-                                <table>
-                                    <tr>
-                                        <td align="right" style="min-width: 70px">Название:</td>
-                                        <td><select name="albumList" id="albumList" class="easyui-combobox" validType="checkSelected['album',albumList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название альбома."></select></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Дата выпуска:</td>
-                                        <td><input type="text" id="albumReleaseDate" name="releaseDate" required="true"></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr valign="top" id="editRowTrack">
-                            <td align="right">
-                                <label for="editTypeTrack">Композиция</label>
-                                <input id="editTypeTrack" type="radio" name="editType" value="track" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
-                            </td>
-                            <td id="editCellTrack">
-                                <table>
-                                    <tr>
-                                        <td align="right" style="min-width: 70px">Название:</td>
-                                        <td>
-                                            <input type="text" name="trackList" id="trackList" class="easyui-validatebox" required="true">
-                                            <!--                                                    <select name="trackList" id="trackList" class="easyui-combobox" validType="checkSelected['track',trackList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название композиции."></select> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Продолжительность:</td>
-                                        <td>
-                                            <input type="text" name="trackDurationMM" id="trackDurationMM" size="2" maxlength="3" class="easyui-numberspinner" required="true" min="0" max="999" value="0" editable="true">:
-                                            <input type="text" name="trackDurationSS" id="trackDurationSS" size="2" class="easyui-numberspinner" required="true" min="1" value="0" max="60" editable="true">
-                                            <input type="hidden" name="trackDuration" id="trackDuration">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Порядк. №:</td>
-                                        <td><input type="text" name="trackSerial" id="trackSerial" size="3" class="easyui-numberspinner" min="1" value="1" required="true" missingMessage="Укажите порядковый номер композиции в альбоме."></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right">Источник:</td>
-                            <td><input type="text" name="editSource" id="editSource" class="easyui-validatebox" required="true" missingMessage="Укажите источник информации (адрес сайта, название книги и т.п.)"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <div id="editMessages"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><input id="editSubmit" type="button" name="submit" onclick="$('#editTreeForm').submit();" value="Добавить"></td>
-                        </tr>
-                    </table>
-                </form>
+            <div id="editTreeAccordion" title="Пополнить">
+                <div id="editModeAccordion" style="height: 288px"> <!-- class="easyui-accordion" -->
+                    <div id="editExport" title="Экспорт" selected="true" style="height: 15px">
+                        <table>
+                            <tr>
+                                <td colspan="2"><h3>Cервис <a href="http://musicbrainz.org">musicbrainz.org</a>:</h3></td>
+                            </tr>
+                            <tr>
+                                <td align="left" valign="top">Группа:</td>
+                                <td>
+                                    <input type="text" name="bandSearch" id="editBandSearch"><br />
+                                    <select id="editBandSearchVariant"></select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="editManual" title="Ручной ввод">
+                        <form id="editTreeForm" action="" method="post">
+                            <table>
+                                <tr valign="top">
+                                    <td align="right">
+                                        <label for="editTypeBand">Группа</label>
+                                        <input type="radio" id="editTypeBand" name="editType" value="band" checked="checked" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td align="right" style="min-width: 70px">Название:</td>
+                                                <td><select id="bandList" name="name" class="easyui-combobox" validType="checkSelected['band',bandList]" valueField="id" textField="name" mode="local" required="true" missingMessage="Выберите или введите название группы."></select></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">Дата основания:</td>
+                                                <td><input type="text" id="bandFoundDate" name="foundDate" required="true"></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">Дата распада:</td>
+                                                <td><input type="text" id="bandEndDate" name="endDate"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr valign="top" id="editRowAlbum">
+                                    <td align="right">
+                                        <label for="editTypeAlbum">Альбом</label>
+                                        <input id="editTypeAlbum" type="radio" name="editType" value="album" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
+                                    </td>
+                                    <td id="editCellAlbum">
+                                        <table>
+                                            <tr>
+                                                <td align="right" style="min-width: 70px">Название:</td>
+                                                <td><select name="albumList" id="albumList" class="easyui-combobox" validType="checkSelected['album',albumList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название альбома."></select></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">Дата выпуска:</td>
+                                                <td><input type="text" id="albumReleaseDate" name="releaseDate" required="true"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr valign="top" id="editRowTrack">
+                                    <td align="right">
+                                        <label for="editTypeTrack">Композиция</label>
+                                        <input id="editTypeTrack" type="radio" name="editType" value="track" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
+                                    </td>
+                                    <td id="editCellTrack">
+                                        <table>
+                                            <tr>
+                                                <td align="right" style="min-width: 70px">Название:</td>
+                                                <td>
+                                                    <input type="text" name="trackList" id="trackList" class="easyui-validatebox" required="true">
+                                                    <!--                                                    <select name="trackList" id="trackList" class="easyui-combobox" validType="checkSelected['track',trackList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название композиции."></select> -->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">Продолжительность:</td>
+                                                <td>
+                                                    <input type="text" name="trackDurationMM" id="trackDurationMM" size="2" maxlength="3" class="easyui-numberspinner" required="true" min="0" max="999" value="0" editable="true">:
+                                                    <input type="text" name="trackDurationSS" id="trackDurationSS" size="2" class="easyui-numberspinner" required="true" min="1" value="0" max="60" editable="true">
+                                                    <input type="hidden" name="trackDuration" id="trackDuration">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">Порядк. №:</td>
+                                                <td><input type="text" name="trackSerial" id="trackSerial" size="3" class="easyui-numberspinner" min="1" value="1" required="true" missingMessage="Укажите порядковый номер композиции в альбоме."></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right">Источник:</td>
+                                    <td><input type="text" name="editSource" id="editSource" class="easyui-validatebox" required="true" missingMessage="Укажите источник информации (адрес сайта, название книги и т.п.)"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div id="editMessages"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><input id="editSubmit" type="button" name="submit" onclick="$('#editTreeForm').submit();" value="Добавить"></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
                 <div id="hiddenFormElements" style="display: none"></div>
             </div>
         </div>

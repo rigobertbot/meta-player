@@ -15,7 +15,7 @@ var indexInit = function () {
     });
 
     bodyLoading.setStatus('main initializing');
-    new QueueLoader(['player.js', 'tree.js', 'playlist.js', 'messager', 'combobox', 'form', 'datebox', 'messager.js'], function (){
+    new QueueLoader(['player.js', 'tree.js', 'playlist.js', 'messager', 'combobox', 'form', 'datebox', 'messager.js', 'accordion'], function (){
         mainPlayer.init();
         mainTree.init();
         mainPlaylist.init();
@@ -126,8 +126,120 @@ var indexInit = function () {
             }
         });
 
+        $('#bodyAccordion').accordion({onSelect: function (title) {
+            $(this).trigger('onSelect', [title]);
+        }});
+
+        $('#bodyAccordion').bind('onSelect', function (event, title) {
+            var panel = $('#bodyAccordion').accordion('getPanel', title);
+            if ($(panel).attr('id') == 'editTreeAccordion') {
+                $('#editModeAccordion').accordion({});
+            }
+        });
+
+        $('#editBandSearch').keyup(function (event) {
+            var value = $('#editBandSearch').val();
+            if (!value || value.length < 3) {
+                return;
+            }
+            $.get('http://musicbrainz.org/ws/2/artist', {query: value, limit: 30}, function (data) {
+                $('#editBandSearchVariant').empty();
+                $('#editBandSearchVariant').append('<option value="null">Выберите</option>');
+                $(data).find('artist[type=Group]').each(function (index, value) {
+                    $('#editBandSearchVariant').append('<option value="' + $(value).attr('id') + '">' + $(value).find('name:first').text() + '</option>');
+                });
+            }, 'xml');
+        });
+
+        $('#editBandSearchVariant').change(function () {
+            var name = $('#editBandSearchVariant option:selected').text();
+            if (confirm('Вы уверены что хотите загрузить группу "' + name + '", все ее альбомы и композиции?')) {
+                var extLoading = new Loading($('#editExport'));
+                var value = $('#editBandSearchVariant').val();
+                extUploadBand(value, extLoading);
+            }
+        });
+
         bodyLoading.resetStatus('ready');
     }).load();
+}
+
+function extUploadBand(id, loader) {
+    loader.setStatus('загрузка альбомов...');
+    var source = 'http://musicbrainz.org/ws/2/artist/' + id;
+
+    $.get(source, {inc: 'releases'}, function (artist) {
+        loader.resetStatus('альбомы загружены');
+        var band = new BandNode();
+        band.setName($(artist).find('name:first').text())
+            .setFoundDate($.defaultDateFormatter(new Date($(artist).find('life-span begin').text())))
+            .setEndDate($(artist).find('life-span end').length != 0 ? $.defaultDateFormatter(new Date($(artist).find('life-span end').text())) : null)
+            .setSource(source);
+
+        loader.setStatus('сохраняем группу "' + band.getName() + '" на сервер...');
+        bandRepository.add(band, function (loadedBand) {
+            loader.resetStatus('группа успешно сохранена');
+            console.log('loaded to the server', loadedBand);
+
+            albumQueue = $(artist).find('release').toArray();
+
+            var album = albumQueue.pop();
+            extUploadAlbum(loadedBand, album, loader);
+
+//            $(artist).find('release').each(function (index, release) {
+//                extUploadAlbum(loadedBand, release, loader);
+//            });
+        });
+    }, 'xml');
+}
+
+var albumQueue = [];
+
+function extUploadAlbum(band, release, loader) {
+    var album = new AlbumNode();
+    var id = $(release).attr('id');
+    var source = 'http://musicbrainz.org/ws/2/release/' + id;
+    album.setTitle($(release).find('title:first').text())
+        .setReleaseDate($.defaultDateFormatter(new Date($(release).find('date:first').text())))
+        .setParentBand(band)
+        .setSource(source);
+    loader.setStatus('сохраняем альбом "' + album.getName() + '" на сервер...');
+    albumRepository.add(album, function (loadedAlbum) {
+        loader.resetStatus('альбом успешно сохранен');
+
+        $.get(source, {inc: 'recordings'}, function (data) {
+            trackQueue = $(data).find('track').toArray();
+
+            var track = trackQueue.pop();
+            extUploadTrack(band, loadedAlbum, track, loader, source);
+
+//            $(data).find('track').each (function (index, track) {
+//                extUploadTrack(loadedAlbum, track, loader, source);
+//            });
+        }, 'xml');
+    });
+}
+
+var trackQueue = [];
+
+function extUploadTrack(band, album, track, loader, source) {
+    var trackNode = new TrackNode();
+    trackNode.setTitle($(track).find('title:first').text())
+        .setParentAlbum(album)
+        .setDuration(Math.floor(parseInt($(track).find('length:first').text()) / 1000))
+        .setSerial($(track).find('position:first').text())
+        .setSource(source);
+    loader.setStatus('сохраняем композицию "' + trackNode.getName() + '" на сервер...');
+    trackRepository.add(trackNode, function () {
+        loader.resetStatus('композиция успешно сохранена');
+        if (trackQueue.length > 0) {
+            var nextTrack = trackQueue.pop();
+            extUploadTrack(band, album, nextTrack, loader, source);
+        } else if (albumQueue.length > 0) {
+            var nextAlbum = albumQueue.pop();
+            extUploadAlbum(band, nextAlbum, loader);
+        }
+    });
 }
 
 function appendNodesToList(combobox, nodes) {
@@ -135,13 +247,11 @@ function appendNodesToList(combobox, nodes) {
         return;
     }
     var oldData =  $(combobox).combobox('getData');
-    var selectedId = $(combobox).combobox('getValue');
+    //var selectedId = $(combobox).combobox('getValue');
     $(combobox).combobox('loadData', [].concat(oldData, nodes));
-    if (nodes.length == 1) {
-        selectedId = nodes[0].getId();
-    }
-
-    $(combobox).combobox('select', selectedId);
+//    if (nodes.length == 1) {
+//        selectedId = nodes[0].getId();
+//    }
 }
 
 function refreshList(combobox) {
@@ -243,6 +353,16 @@ function getEntityName(node) {
 function successfulAdded(result, node) {
     var message = getEntityName(node).toProperCase() + '"' + node.getName() + '" был(а) успешно добавлен(а)!';
     messageService.showNotification(message, 'Успех');
+
+    switch (node.className) {
+        case 'BandNode':
+            $('#bandList').combobox('select', node.getId());
+            break;
+        case 'AlbumNode':
+            $('#albumList').combobox('select', node.getId());
+            break;
+    }
+
     console.log("added", node, result);
 }
 
