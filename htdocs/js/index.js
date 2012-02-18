@@ -42,13 +42,135 @@ var indexInit = function () {
         });
         $('#bandList').combobox({
             onSelect: function (record) {
+                console.log('onSelect', record);
                 $('#bandFoundDate').datebox('setValue', record.getFoundDate());
                 $('#bandEndDate').datebox('setValue', record.getEndDate());
                 record.loadChildren(function (data) {
                     $('#albumList').combobox('loadData', data);
                 });
+
+                if (record.getSource() &&
+                    record.getSource().length > 0 &&
+                    record.getSource().indexOf('http://musicbrainz.org/ws/2/artist/') == 0
+                    ) {
+                    extLoadAlbums(record.getSource());
+                }
             }
         });
+        $('#bandSearch').combobox({
+            delay: 1000,
+            onSelect: function (value) {
+                console.log(value);
+                $('#bandFoundDate').datebox('setValue', value.foundDate);
+                $('#bandEndDate').datebox('setValue', value.endDate);
+                $('#editSource').val(value.source);
+
+                extLoadAlbums(value.source);
+                $('#editLoadTracks').attr('disabled', 'true');
+            },
+            onChange: function (newValue, oldValue) {
+                if (newValue == oldValue)
+                    return;
+
+                var oldData = $(this).combobox('getData');
+
+                for (var i = 0; i < oldData.length; i ++ ){
+                    if (oldData[i].id == newValue) {
+                        return;
+                    }
+                }
+
+                q = newValue;
+                console.log('query', q);
+                if (q.length >= 3) {
+                    $.get('http://musicbrainz.org/ws/2/artist', {query: q}, function (data) {
+                        var result = [];
+                        $(data).find('artist[type=Group]').each(function (index, artist) {
+                            result.push({
+                                id: $(artist).attr('id'),
+                                name: $(artist).find('name:first').text(),
+                                source: 'http://musicbrainz.org/ws/2/artist/' + $(artist).attr('id'),
+                                foundDate: $.defaultDateFormatter(new Date($(artist).find('life-span begin').text())),
+                                endDate: $.defaultDateFormatter(new Date($(artist).find('life-span end').text()))
+                            });
+                        });
+                        $('#bandSearch').combobox('loadData', result)
+                            .combobox('setValue', q);
+                    }, 'xml');
+                } else {
+                    $(this).combobox('hidePanel');
+                }
+            }
+        });
+
+        $('#albumSearch').combobox({
+            onSelect: function (value) {
+                console.log(value);
+                $('#albumReleaseDate').datebox('setValue', value.releaseDate);
+                $('#editSource').val(value.source);
+                $('#editLoadTracks').removeAttr('disabled');
+
+                $('#editCellTrackList').append($('#editDivTrackSearch'));
+                $('#hiddenFormElements').append($('#editDivTrackList'));
+
+                extLoadTracks(value.source);
+            },
+            onChange: function (newValue, oldValue) {
+
+            }
+        });
+
+        $('#albumList').combobox({
+            onSelect: function (record) {
+                $('#albumReleaseDate').datebox('setValue', record.getReleaseDate());
+
+                console.log('selected', record);
+                if (record.getSource() &&
+                    record.getSource().length > 0 &&
+                    record.getSource().indexOf('http://musicbrainz.org/ws/2/release/') == 0
+                    ) {
+                    $('#editSource').val(record.getSource());
+                    $('#editCellTrackList').append($('#editDivTrackSearch'));
+                    $('#hiddenFormElements').append($('#editDivTrackList'));
+
+                    extLoadTracks(record.getSource(), function (data) {
+                        var result = [];
+                        $(data).find('track').each(function (index, track) {
+                            result.push({
+                                id: $(track).find('recording:first').attr('id'),
+                                title: $(track).find('title:first').text(),
+                                duration: Math.floor(parseInt($(track).find('length:first').text()) / 1000),
+                                serial: $(track).find('position:first').text(),
+                                source: record.getSource()
+                            });
+                        });
+
+                        console.log('load tracks', result);
+                        $('#trackSearch').combobox('loadData', result);
+                    });
+                } else {
+                    $('#editCellTrackList').append($('#editDivTrackList'));
+                    $('#hiddenFormElements').append($('#editDivTrackSearch'));
+                }
+            }
+        });
+
+        $('#trackSearch').combobox({
+            onSelect: function (record) {
+
+                console.log('selected', record);
+                $('#trackDurationMM').numberspinner('setValue', Math.floor(parseInt(record.duration) / 60));
+                $('#trackDurationSS').numberspinner('setValue', Math.floor(parseInt(record.duration) % 60));
+                $('#trackDuration').val(record.duration);
+                $('#trackList').val(record.title);
+
+                $('#trackSerial').numberspinner('setValue', record.serial);
+            }
+        });
+
+        $('#editCellTrackList').append($('#editDivTrackList'));
+        $('#hiddenFormElements').append($('#editDivTrackSearch'));
+
         bandRepository.bindOnLoaded(function (e, nodes) {
             appendNodesToList($('#bandList'), nodes);
         });
@@ -57,15 +179,6 @@ var indexInit = function () {
         });
         bandRepository.bindOnUpdated(function (e, node) {
             refreshList($('#bandList'));
-        });
-
-        $('#albumList').combobox({
-            onSelect: function (record) {
-                $('#albumReleaseDate').datebox('setValue', record.getReleaseDate());
-//                record.loadChildren(function (data) {
-//                    $('#trackList').combobox('loadData', data);
-//                });
-            }
         });
 
         albumRepository.bindOnLoaded(function (e, nodes) {
@@ -77,29 +190,6 @@ var indexInit = function () {
         albumRepository.bindOnUpdated(function (e, node) {
             refreshList($('#albumList'));
         });
-
-//        $('#trackList').combobox({
-//            onSelect: function (record) {
-//                $('#trackDurationMM').val(Math.floor(record.getDurationMs() / 60));
-//                $('#trackDurationSS').val(record.getDurationMs() % 60);
-//                $('#trackSerial').val(record.getSerial());
-//            },
-//            keyHandler: {
-//                query: function(q){
-//                    console.log("query", q);
-//                }
-//            }
-//        });
-//
-//        trackRepository.onLoaded(function (e, nodes) {
-//            appendNodesToList($('#trackList'), nodes);
-//        });
-//        trackRepository.onRemoved(function (e, node) {
-//            removeNodeFromList($('#trackList'), node);
-//        });
-//        trackRepository.onUpdated(function (e, node) {
-//            refreshList($('#trackList'));
-//        });
 
         $('#editTreeForm').form({
             onSubmit: function () {
@@ -114,6 +204,7 @@ var indexInit = function () {
                 return false;
             }
         });
+
         editTypeChanged($('#editTypeBand'));
 
         $('#bandFoundDate,#bandEndDate,#albumReleaseDate').datebox({
@@ -136,6 +227,8 @@ var indexInit = function () {
                 $('#editModeAccordion').accordion({});
             }
         });
+
+        // auto export
 
         $('#editBandSearch').keyup(function (event) {
             var value = $('#editBandSearch').val();
@@ -164,6 +257,39 @@ var indexInit = function () {
     }).load();
 }
 
+function extLoadAlbums(source) {
+    $.get(source, {inc: 'releases'}, function (data) {
+        var result = [];
+        $(data).find('release').each(function (index, release) {
+            result.push({
+                id: $(release).attr('id'),
+                title: $(release).find('title:first').text(),
+                releaseDate: $.defaultDateFormatter(new Date($(release).find('date:first').text())),
+                source: 'http://musicbrainz.org/ws/2/release/' + $(release).attr('id')
+            });
+        });
+        console.log('album load', result);
+        $('#albumSearch').combobox('loadData', result);
+    }, "xml");
+}
+
+function extLoadTracks(source, callback) {
+    $.get(source, {inc: 'recordings'}, function (data) {
+        // medium correction: some tracks has several 'mediums'. Inside mediums tracks have the quals positions.
+        $(data).find('medium').each(function (index, medium) {
+            var pos = $(medium).find('position:first').text();
+            $(medium).find('track').each (function (index2, track) {
+                // prepand medium id to position
+                $(track).find('position').text(pos + $(track).find('position').text()); //string concutination
+            });
+        });
+
+        if ($.isFunction(callback)) {
+            callback(data);
+        }
+    }, 'xml');
+}
+
 function extUploadBand(id, loader) {
     loader.setStatus('загрузка альбомов...');
     var source = 'http://musicbrainz.org/ws/2/artist/' + id;
@@ -185,61 +311,65 @@ function extUploadBand(id, loader) {
 
             var album = albumQueue.pop();
             extUploadAlbum(loadedBand, album, loader);
-
-//            $(artist).find('release').each(function (index, release) {
-//                extUploadAlbum(loadedBand, release, loader);
-//            });
         });
     }, 'xml');
 }
 
 var albumQueue = [];
 
-function extUploadAlbum(band, release, loader) {
-    var album = new AlbumNode();
-    var id = $(release).attr('id');
-    var source = 'http://musicbrainz.org/ws/2/release/' + id;
-    album.setTitle($(release).find('title:first').text())
-        .setReleaseDate($.defaultDateFormatter(new Date($(release).find('date:first').text())))
-        .setParentBand(band)
-        .setSource(source);
-    loader.setStatus('сохраняем альбом "' + album.getName() + '" на сервер...');
-    albumRepository.add(album, function (loadedAlbum) {
-        loader.resetStatus('альбом успешно сохранен');
+function extUploadAlbum(band, loader) {
+    if (albumQueue.length > 0) {
+        var release = albumQueue.shift();
+        var album = new AlbumNode();
+        var id = $(release).attr('id');
+        var source = 'http://musicbrainz.org/ws/2/release/' + id;
+        album.setTitle($(release).find('title:first').text())
+            .setReleaseDate($.defaultDateFormatter(new Date($(release).find('date:first').text())))
+            .setParentBand(band)
+            .setSource(source);
+        loader.setStatus('сохраняем альбом "' + album.getName() + '" на сервер...');
+        albumRepository.add(album, function (loadedAlbum) {
+            loader.resetStatus('альбом успешно сохранен');
 
-        $.get(source, {inc: 'recordings'}, function (data) {
-            trackQueue = $(data).find('track').toArray();
-
-            var track = trackQueue.pop();
-            extUploadTrack(band, loadedAlbum, track, loader, source);
-
-//            $(data).find('track').each (function (index, track) {
-//                extUploadTrack(loadedAlbum, track, loader, source);
-//            });
-        }, 'xml');
-    });
+            loader.setStatus('загрузка композиций...');
+            extLoadTracks(source, function (data) {
+                loader.resetStatus('композиции загружены');
+                trackQueue = $(data).find('track').toArray();
+                console.log('tracks loaded', data, trackQueue);
+                extUploadTrack(band, loadedAlbum, loader, source);
+            });
+        });
+    }
 }
 
 var trackQueue = [];
 
-function extUploadTrack(band, album, track, loader, source) {
-    var trackNode = new TrackNode();
-    trackNode.setTitle($(track).find('title:first').text())
-        .setParentAlbum(album)
-        .setDuration(Math.floor(parseInt($(track).find('length:first').text()) / 1000))
-        .setSerial($(track).find('position:first').text())
-        .setSource(source);
-    loader.setStatus('сохраняем композицию "' + trackNode.getName() + '" на сервер...');
-    trackRepository.add(trackNode, function () {
-        loader.resetStatus('композиция успешно сохранена');
-        if (trackQueue.length > 0) {
-            var nextTrack = trackQueue.pop();
-            extUploadTrack(band, album, nextTrack, loader, source);
-        } else if (albumQueue.length > 0) {
-            var nextAlbum = albumQueue.pop();
-            extUploadAlbum(band, nextAlbum, loader);
+function extUploadTrack(band, album, loader, source) {
+    if (trackQueue.length > 0) {
+        var track = trackQueue.shift();
+        console.log('exporting', track);
+        var trackNode = new TrackNode();
+        if ($(track).find('title').length == 0 || $(track).find('length').length == 0) {
+            messageService.showWarning('Композиция "' + $(track).find('title:first').text() + '" (' + $(track).find('recording').attr('id') + ') не содержит необходимых полей и не будет добавлена.');
+            extUploadTrack(band, album, loader, source);
+            return;
         }
-    });
+
+        trackNode.setTitle($(track).find('title:first').text())
+            .setParentAlbum(album)
+            .setDuration(Math.floor(parseInt($(track).find('length:first').text()) / 1000))
+            .setSerial($(track).find('position:first').text())
+            .setSource(source);
+        loader.setStatus('сохраняем композицию "' + trackNode.getName() + '" на сервер...');
+        trackRepository.add(trackNode, function () {
+            loader.resetStatus('композиция успешно сохранена');
+            extUploadTrack(band, album, loader, source);
+        });
+    } else if (albumQueue.length > 0) {
+        extUploadAlbum(band, loader);
+    } else {
+        loader.loaded();
+    }
 }
 
 function appendNodesToList(combobox, nodes) {
@@ -247,11 +377,8 @@ function appendNodesToList(combobox, nodes) {
         return;
     }
     var oldData =  $(combobox).combobox('getData');
-    //var selectedId = $(combobox).combobox('getValue');
     $(combobox).combobox('loadData', [].concat(oldData, nodes));
-//    if (nodes.length == 1) {
-//        selectedId = nodes[0].getId();
-//    }
+    console.log('nodes appended', nodes, combobox);
 }
 
 function refreshList(combobox) {
@@ -307,16 +434,15 @@ function submitForm(form) {
 
             node.setFoundDate($('#bandFoundDate').combo('getValue'))
                 .setEndDate($('#bandEndDate').combo('getValue'))
-                .setName($('#bandList').combo('getText'));
+                .setName($('#bandSearch').combo('getText'));
             break;
         case 'album':
             node = new AlbumNode();
             repository = albumRepository;
             var band = getSelectedNode($('#bandList'));
             node.setParentBand(band)
-                .setTitle($('#albumList').combo('getValue'))
+                .setTitle($('#albumSearch').combo('getText'))
                 .setReleaseDate($('#albumReleaseDate').combo('getValue'));
-
             break;
         case 'track':
             node = new TrackNode();
@@ -354,12 +480,27 @@ function successfulAdded(result, node) {
     var message = getEntityName(node).toProperCase() + '"' + node.getName() + '" был(а) успешно добавлен(а)!';
     messageService.showNotification(message, 'Успех');
 
-    switch (node.className) {
+    switch (result.className) {
         case 'BandNode':
-            $('#bandList').combobox('select', node.getId());
+            $('#bandList').combobox('select', result.getId());
             break;
         case 'AlbumNode':
-            $('#albumList').combobox('select', node.getId());
+            $('#albumList').combobox('select', result.getId());
+            console.log('album uploaded');
+            if ($('#editLoadTracks').is(':checked')) {
+                console.log('ready to load tracks');
+                var loader = new Loading($('#editTreeAccordion'));
+                loader.setStatus('загрузка композиций...');
+
+                extLoadTracks(result.getSource(), function (data) {
+                    loader.setStatus('композиции загружены'); // note: I did set status special
+
+                    trackQueue = $(data).find('track').toArray();
+                    console.log('tracks loaded', data);
+
+                    extUploadTrack(null, result, loader, result.getSource());
+                });
+            }
             break;
     }
 
@@ -369,6 +510,9 @@ function successfulAdded(result, node) {
 function editTypeChanged(radio) {
     switch ($(radio).val()) {
         case 'band':
+            $('#hiddenFormElements').append($('#editDivBandList'));
+            $('#editCellBandList').append($('#editDivBandSearch'));
+
             $('#editCellAlbum').fadeOut(function () {
                 $('#hiddenFormElements').append($('#editCellAlbum'));
             });
@@ -377,6 +521,12 @@ function editTypeChanged(radio) {
             });
             break;
         case 'album':
+            $('#hiddenFormElements').append($('#editDivBandSearch'));
+            $('#editCellBandList').append($('#editDivBandList'));
+
+            $('#hiddenFormElements').append($('#editDivAlbumList'));
+            $('#editCellAlbumList').append($('#editDivAlbumSearch'));
+
             $('#editRowAlbum').append($('#editCellAlbum'));
             $('#editCellAlbum').fadeIn();
             $('#editCellTrack').fadeOut(function() {
@@ -384,6 +534,11 @@ function editTypeChanged(radio) {
             });
             break;
         case 'track':
+            $('#hiddenFormElements').append($('#editDivBandSearch'));
+            $('#editCellBandList').append($('#editDivBandList'));
+            $('#hiddenFormElements').append($('#editDivAlbumSearch'));
+            $('#editCellAlbumList').append($('#editDivAlbumList'));
+
             $('#editRowAlbum').append($('#editCellAlbum'));
             $('#editCellAlbum').fadeIn();
             $('#editRowTrack').append($('#editCellTrack'));

@@ -52,7 +52,8 @@ Node.prototype.setName = function (value) {
 }
 Node.prototype.getServerId = function () { return this.serverId; }
 Node.prototype.setServerId = function (value) { this.serverId = value; return this; }
-Node.prototype.setSource = function (source) { this.source = source; }
+Node.prototype.setSource = function (source) { this.source = source; return this; }
+Node.prototype.getSource = function () { return this.source; }
 Node.prototype.setDate = function (value) { this.date = value; return this; }
 Node.prototype.setDuration = function (value) { this.duration = value; return this; }
 Node.prototype.getParentId = function () { return undefined; }
@@ -239,8 +240,8 @@ TrackNode.prototype.getSerial = function () { return this.serial; }
 /**
  * Increment and return previous value.
  */
-TrackNode.prototype.incSearchTries = function() { return this.searchTries ++; }
-
+TrackNode.prototype.incSearchTries = function() { return ++ this.searchTries; }
+TrackNode.prototype.getSearchTries = function () { return this.searchTries; }
 
 TrackNode.prototype.getQuery = function (strictLevel) {
     if (!this.queries || this.queries.length <= strictLevel) {

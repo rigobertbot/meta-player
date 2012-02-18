@@ -8,7 +8,7 @@
  * 
  */
 function Searcher() {
-    this.maximumSearchTries = 5;
+    this.maximumSearchTries = 3;
     this.searchQueue = [];
     this.searchSuccessEvent = "searchSuccess";
 
@@ -32,7 +32,7 @@ function Searcher() {
     }, 500);
 
     this.search = function (track, it) {
-        var query = track.getQuery(it);
+        var query = track.getQuery(track.getSearchTries() - 1);
         if (query === false) {
             console.log("Nothing found: all queries are runing out.");
             return;
@@ -44,23 +44,23 @@ function Searcher() {
                 count: 30,
                 test_mode: 1
             }, function(data) {
-                data = data.response;
-                if (!data || !$.isArray(data) || data.length < 2) {
+                var response = data.response;
+                if (!response || !$.isArray(response) || response.length < 2) {
                     console.log("Search failed", track, data);
                     that.schedule(track);
                     return;
                 }
 
-                var count = data.shift();
+                var count = response.shift();
                 if (count == 0) {
                     console.log("Empty result for query", it, query);
-                    that.search(track, it + 1, callback);
+                    that.schedule(track);
                     return;
                 }
                 var nearestDelta = 4294967295;
                 var nearestResult = null;
-                for (var index in data) {
-                    var result = data[index];
+                for (var index in response) {
+                    var result = response[index];
                     var delta =  Math.abs(result.duration - track.getDurationMs());
                     if (delta < nearestDelta) {
                         nearestDelta = delta;
@@ -70,7 +70,7 @@ function Searcher() {
                         }
                     }
                 }
-                console.log('search binding complete, delta:', nearestDelta, 'result:', nearestResult, 'but results were:', data);
+                console.log('search binding complete, delta:', nearestDelta, 'result:', nearestResult, 'but results were:', response);
 
                 track.setUrl(nearestResult.url);
                 track.setDuration(nearestResult.duration);
@@ -83,7 +83,7 @@ function Searcher() {
     this.schedule = function (track) {
         var url = track.getUrl();
         if (!url || url === null) {
-            if (track.incSearchTries() > this.maximumSearchTries) {
+            if (!track.getQuery(track.incSearchTries() - 1)) {
                 console.log("Maximum search tries reached", track);
                 return;
             }
