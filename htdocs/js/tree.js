@@ -25,7 +25,7 @@ function Tree() {
     this.init = function () {
         var that = this;
         bodyLoading.setStatus('initializing tree');
-        new QueueLoader(['treegrid', 'easy-ui-wrappers.js', 'accordion'], function() {
+        new QueueLoader(['treegrid', 'easy-ui-wrappers.js', 'accordion', 'messager.js'], function() {
             $.extend($.fn.datagrid.defaults.editors, {
                 duration: {
                     init: function(container, options){
@@ -274,7 +274,9 @@ function Tree() {
         }
 
         if (confirm('Вы уверены что хотите удалить ' + type + ' "' + node.getName() + '"?')) {
-            repository.remove(node);
+            repository.remove(node, function () {
+                messageService.showNotification(type.toProperCase() + ' "' + node.getName() + '" успешно удален(а).');
+            });
         }
     }
 
@@ -311,7 +313,7 @@ function Tree() {
         }
 
         repository.update(node, function () {
-            $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Изменения ' + type + ' ' + node.getName() + ' были успешно сохранены.', title: 'Успех', timeout: 0});
+            messageService.showNotification('Изменения ' + type + ' ' + node.getName() + ' были успешно сохранены.');
         });
     }
 
@@ -368,7 +370,7 @@ function Tree() {
         var repository = getRepositoryFor(this.menuNode);
         repository.get(this.menuNode.getServerId(), function () {
             updatedNode.loadChildren(function () {
-                $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>Успешно обновлен.', title: 'Успех', timeout: 0});
+                messageService.showNotification('Успешно обновлено.');
             });
         });
     }

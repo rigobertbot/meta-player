@@ -21,7 +21,7 @@ var indexInit = function () {
         mainPlaylist.init();
 
         $(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
-            $.messager.show({msg: '<div class=\"messager-icon messager-error\"></div>Произошла ошибка на сервере:<br />' + thrownError, title: 'Ошибка', timeout: 0});
+            messageService.showError('Произошла ошибка на сервере:<br />' + thrownError);
         });
 
         $.extend($.fn.validatebox.defaults.rules, {
@@ -51,7 +51,7 @@ var indexInit = function () {
 
                 if (record.getSource() &&
                     record.getSource().length > 0 &&
-                    record.getSource().indexOf('http://musicbrainz.org/ws/2/artist/') == 0
+                    record.getSource().indexOf('http://musicbrainz.org/ws/2/') == 0
                     ) {
                     extLoadAlbums(record.getSource());
                 }
@@ -83,9 +83,18 @@ var indexInit = function () {
                 q = newValue;
                 console.log('query', q);
                 if (q.length >= 3) {
-                    $.get('http://musicbrainz.org/ws/2/artist', {query: q}, function (data) {
+                    q = q.toLowerCase();
+                    if (q.indexOf('*') === -1) {
+                        q = q + '*';
+                    }
+                    if (q.indexOf('the') === -1) {
+                        q += ' AND the ' + q;
+                    }
+                    q = 'artist:' + q;
+
+                    $.get('http://musicbrainz.org/ws/2/artist/', {query: q}, function (data) {
                         var result = [];
-                        $(data).find('artist[type=Group]').each(function (index, artist) {
+                        $(data).find('artist').each(function (index, artist) {
                             result.push({
                                 id: $(artist).attr('id'),
                                 name: $(artist).find('name:first').text(),
@@ -94,11 +103,11 @@ var indexInit = function () {
                                 endDate: $.defaultDateFormatter(new Date($(artist).find('life-span end').text()))
                             });
                         });
-                        $('#bandSearch').combobox('loadData', result)
-                            .combobox('setValue', q);
+                        $('#bandSearch').combobox('loadData', result);
+                            //.combobox('setValue', q);
                     }, 'xml');
                 } else {
-                    $(this).combobox('hidePanel');
+                    //$(this).combobox('hidePanel');
                 }
             }
         });
@@ -127,7 +136,7 @@ var indexInit = function () {
                 console.log('selected', record);
                 if (record.getSource() &&
                     record.getSource().length > 0 &&
-                    record.getSource().indexOf('http://musicbrainz.org/ws/2/release/') == 0
+                    record.getSource().indexOf('http://musicbrainz.org/ws/2/') == 0
                     ) {
                     $('#editSource').val(record.getSource());
                     $('#editCellTrackList').append($('#editDivTrackSearch'));
@@ -258,14 +267,17 @@ var indexInit = function () {
 }
 
 function extLoadAlbums(source) {
-    $.get(source, {inc: 'releases'}, function (data) {
+
+    var bandId = source.substr('http://musicbrainz.org/ws/2/artist/'.length);
+
+    $.get('http://musicbrainz.org/ws/2/release-group', {artist: bandId, type: 'album', limit: 100}, function (data) {
         var result = [];
-        $(data).find('release').each(function (index, release) {
+        $(data).find('release-group').each(function (index, release) {
             result.push({
                 id: $(release).attr('id'),
-                title: $(release).find('title:first').text(),
-                releaseDate: $.defaultDateFormatter(new Date($(release).find('date:first').text())),
-                source: 'http://musicbrainz.org/ws/2/release/' + $(release).attr('id')
+                title: $(release).find('title').text(),
+                releaseDate: $.defaultDateFormatter(new Date($(release).find('first-release-date').text())),
+                source: 'http://musicbrainz.org/ws/2/release-group/' + $(release).attr('id')
             });
         });
         console.log('album load', result);
@@ -274,9 +286,11 @@ function extLoadAlbums(source) {
 }
 
 function extLoadTracks(source, callback) {
-    $.get(source, {inc: 'recordings'}, function (data) {
+    var albumId = source.substr('http://musicbrainz.org/ws/2/release-group/'.length);
+
+    $.get('http://musicbrainz.org/ws/2/release/', {'release-group': albumId, inc: 'recordings', limit: 1}, function (data) {
         // medium correction: some tracks has several 'mediums'. Inside mediums tracks have the quals positions.
-        $(data).find('medium').each(function (index, medium) {
+        $(data).find('medium-list[count!=1] medium').each(function (index, medium) {
             var pos = $(medium).find('position:first').text();
             $(medium).find('track').each (function (index2, track) {
                 // prepand medium id to position

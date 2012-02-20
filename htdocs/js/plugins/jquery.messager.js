@@ -91,7 +91,10 @@ _f.children("div.messager-button").children("a:first").focus();
 return _f;
 };
 $.messager={show:function(_11){
-var _12=$.extend({showType:"slide",showSpeed:600,width:250,height:100,msg:"",title:"",timeout:4000},_11||{});
+var _12=$.extend({showType:"slide",showSpeed:600,width:250,height:100,msg:"",title:"",timeout:4000,
+		bottom: 0,
+                top: false
+},_11||{});
 var win=$("<div class=\"messager-body\"></div>").html(_12.msg).appendTo("body");
 win.window({title:_12.title,width:_12.width,height:_12.height,collapsible:false,minimizable:false,maximizable:false,shadow:false,draggable:false,resizable:false,closed:true,onBeforeOpen:function(){
 _1(this,_12.showType,_12.showSpeed,_12.timeout);
@@ -100,7 +103,13 @@ return false;
 _7(this,_12.showType,_12.showSpeed);
 return false;
 }});
-win.window("window").css({left:"",top:"",right:0,zIndex:$.fn.window.defaults.zIndex++,bottom:-document.body.scrollTop-document.documentElement.scrollTop});
+win.window("window").css({
+				left: '',
+				top: opts.top !== false ? opts.top - (opts.height) : '',
+				right: 0,
+				zIndex: $.fn.window.defaults.zIndex++,
+				bottom: opts.bottom !== false ? opts.bottom -document.body.scrollTop-document.documentElement.scrollTop : ''
+});
 win.window("open");
 },alert:function(_13,msg,_14,fn){
 var _15="<div>"+msg+"</div>";
