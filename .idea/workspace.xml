@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/.htaccess" afterPath="$PROJECT_DIR$/htdocs/.htaccess" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/index.js" afterPath="$PROJECT_DIR$/htdocs/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/messager.js" afterPath="$PROJECT_DIR$/htdocs/js/messager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/tree.js" afterPath="$PROJECT_DIR$/htdocs/js/tree.js" />
     </list>
     <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
     <ignored path="meta-player.iws" />
@@ -32,10 +28,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="index.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="115" selection-start="450" selection-end="461" vertical-scroll-proportion="0.0">
+            <state line="178" column="46" selection-start="7335" selection-end="7335" vertical-scroll-proportion="0.69305557">
               <folding />
             </state>
           </provider>
@@ -77,10 +73,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jquery.messager.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="jquery.messager.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/plugins_src/jquery.messager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="157" column="62" selection-start="3183" selection-end="3183" vertical-scroll-proportion="-2.7571623">
+            <state line="157" column="62" selection-start="3183" selection-end="3183" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -122,10 +118,10 @@
         <option value="$PROJECT_DIR$/htdocs/js/search.js" />
         <option value="$PROJECT_DIR$/htdocs/js/model.js" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
-        <option value="$PROJECT_DIR$/htdocs/js/index.js" />
         <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
         <option value="$PROJECT_DIR$/htdocs/js/messager.js" />
         <option value="$PROJECT_DIR$/htdocs/js/plugins_src/jquery.messager.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/index.js" />
       </list>
     </option>
   </component>
@@ -667,13 +663,6 @@
         <state line="10" column="9" selection-start="190" selection-end="190" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="115" selection-start="450" selection-end="461" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="277" column="97" selection-start="10926" selection-end="10926" vertical-scroll-proportion="0.0">
@@ -697,7 +686,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/plugins_src/jquery.messager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="157" column="62" selection-start="3183" selection-end="3183" vertical-scroll-proportion="-2.7571623">
+        <state line="157" column="62" selection-start="3183" selection-end="3183" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="178" column="46" selection-start="7335" selection-end="7335" vertical-scroll-proportion="0.69305557">
           <folding />
         </state>
       </provider>

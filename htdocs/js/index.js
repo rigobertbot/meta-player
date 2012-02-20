@@ -174,6 +174,9 @@ var indexInit = function () {
                 $('#trackList').val(record.title);
 
                 $('#trackSerial').numberspinner('setValue', record.serial);
+            },
+            onChange: function (newValue, oldValue) {
+                $('#trackList').val(newValue);
             }
         });
 
