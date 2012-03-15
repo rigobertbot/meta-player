@@ -88,7 +88,7 @@ var indexInit = function () {
                         q = q + '*';
                     }
                     if (q.indexOf('the') === -1) {
-                        q += ' AND the ' + q;
+                        q += ' OR the ' + q;
                     }
                     q = 'artist:' + q;
 
