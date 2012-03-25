@@ -34,7 +34,7 @@ class UserAlbumRepository extends BaseRepository {
      * @return \MetaPlayer\Model\UserAlbum[]
      */
     public function findByUserAndUserBand(User $user, $userBandId) {
-        return $this->findBy(array('user' => $user, 'userBand' => $userBandId));
+        return $this->findBy(array('user' => $user, 'userBand' => $userBandId), array('releaseDate' => 'asc'));
     }
 
     /**
