@@ -4,33 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" line="92" mnemonic="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/myutils.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/MyUser.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/SocialNetwork.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/VkUser.php" />
-      <change type="DELETED" beforePath="D:\projects\MetaPlayer\meta-player\database\2012_02_14_is_admin.sql" afterPath="" />
-      <change type="DELETED" beforePath="D:\projects\MetaPlayer\meta-player\htdocs\meta\album\list.php" afterPath="" />
-      <change type="DELETED" beforePath="D:\projects\MetaPlayer\meta-player\htdocs\meta\band\list" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/meta-player.iml" afterPath="$PROJECT_DIR$/.idea/meta-player.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/app.config.php" afterPath="$PROJECT_DIR$/config/app.config.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/ding.config.php" afterPath="$PROJECT_DIR$/config/ding.config.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/.htaccess" afterPath="$PROJECT_DIR$/htdocs/.htaccess" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/index.js" afterPath="$PROJECT_DIR$/htdocs/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/search.js" afterPath="$PROJECT_DIR$/htdocs/js/search.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/vkutils.js" afterPath="$PROJECT_DIR$/htdocs/js/vkutils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpUrlMapper.php" afterPath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpUrlMapper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpViewRender.php" afterPath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpViewRender.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" afterPath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/no_vk.phtml" afterPath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/no_vk.phtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/bootstrap.php" afterPath="$PROJECT_DIR$/src/bootstrap.php" />
-    </list>
+    <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities" />
     <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
     <ignored path="meta-player.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -617,7 +591,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1488" height="916" extended-state="6" />
+    <frame x="-8" y="-8" width="1488" height="916" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
