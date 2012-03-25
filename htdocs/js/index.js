@@ -83,13 +83,13 @@ var indexInit = function () {
                 q = newValue;
                 console.log('query', q);
                 if (q.length >= 3) {
-                    q = q.toLowerCase();
-                    if (q.indexOf('*') === -1) {
-                        q = q + '*';
-                    }
-                    if (q.indexOf('the') === -1) {
-                        q += ' OR the ' + q;
-                    }
+//                    q = q.toLowerCase();
+//                    if (q.indexOf('*') === -1) {
+//                        q = $.trim(q) + '*';
+//                    }
+//                    if (q.indexOf('the') === -1) {
+//                        q += ' OR the ' + q;
+//                    }
                     q = 'artist:' + q;
 
                     $.get('http://musicbrainz.org/ws/2/artist/', {query: q}, function (data) {
