@@ -165,6 +165,7 @@ var indexInit = function () {
         });
 
         $('#trackSearch').combobox({
+            delay: 2148456,
             onSelect: function (record) {
 
                 console.log('selected', record);

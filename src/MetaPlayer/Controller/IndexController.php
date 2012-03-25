@@ -52,6 +52,10 @@ class IndexController implements ILoggerAware
         return $view;
     }
 
+    public function myAction($app_id, $vid, $sig) {
+
+    }
+
     public function setLogger(\Logger $logger) {
         $this->logger = $logger;
     }
