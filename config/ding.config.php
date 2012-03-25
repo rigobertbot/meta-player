@@ -12,7 +12,7 @@ use Oak\Common\Env;
 
 $CACHE_IMPL = Env::isDebug() || Env::isTest() ? array() : array('impl' => 'file', 'directory' => realpath(__DIR__ . '/../data/cache'));
 $SCAN_DIRS = array();
-$SCAN_DIRS[] = realpath(__DIR__ . '/../src');
+$SCAN_DIRS[] = realpath(__DIR__ . '/../src/MetaPlayer');
 //if (Env::isTest()) {
 //    $SCAN_DIRS[] = realpath(__DIR__ . '/../tests/src');
 //}

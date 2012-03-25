@@ -5,9 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/myutils.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/MyUser.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/SocialNetwork.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/VkUser.php" />
+      <change type="DELETED" beforePath="D:\projects\MetaPlayer\meta-player\database\2012_02_14_is_admin.sql" afterPath="" />
+      <change type="DELETED" beforePath="D:\projects\MetaPlayer\meta-player\htdocs\meta\album\list.php" afterPath="" />
+      <change type="DELETED" beforePath="D:\projects\MetaPlayer\meta-player\htdocs\meta\band\list" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/meta-player.iml" afterPath="$PROJECT_DIR$/.idea/meta-player.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/app.config.php" afterPath="$PROJECT_DIR$/config/app.config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/ding.config.php" afterPath="$PROJECT_DIR$/config/ding.config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/.htaccess" afterPath="$PROJECT_DIR$/htdocs/.htaccess" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/index.js" afterPath="$PROJECT_DIR$/htdocs/js/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/search.js" afterPath="$PROJECT_DIR$/htdocs/js/search.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/vkutils.js" afterPath="$PROJECT_DIR$/htdocs/js/vkutils.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpUrlMapper.php" afterPath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpUrlMapper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpViewRender.php" afterPath="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpViewRender.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" afterPath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/no_vk.phtml" afterPath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/no_vk.phtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/bootstrap.php" afterPath="$PROJECT_DIR$/src/bootstrap.php" />
     </list>
     <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
     <ignored path="meta-player.iws" />
@@ -30,73 +52,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="IndexController.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="40" column="0" selection-start="827" selection-end="827" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SecurityManager.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="61" column="84" selection-start="1523" selection-end="1523" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="search.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="63" column="23" selection-start="1720" selection-end="1720" vertical-scroll-proportion="0.5151515">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vkutils.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/vkutils.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="0" selection-start="681" selection-end="767" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="myutils.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/htdocs/js/myutils.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="39" selection-start="1042" selection-end="1042" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="180" column="89" selection-start="7377" selection-end="7377" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TrackController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IndexController.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="8" selection-start="1583" selection-end="1583" vertical-scroll-proportion="0.7209302">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="private.config.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/private.config.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="40" selection-start="439" selection-end="439" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="model.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="243" column="0" selection-start="7305" selection-end="7305" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="loading.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/loading.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="9" selection-start="190" selection-end="190" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="messager.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/messager.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="11" selection-start="1912" selection-end="1912" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jquery.messager.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/plugins_src/jquery.messager.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="157" column="62" selection-start="3183" selection-end="3183" vertical-scroll-proportion="0.0">
+            <state line="341" column="44" selection-start="13706" selection-end="13728" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -105,7 +109,34 @@
       <file leaf-file-name="index.phtml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="17" selection-start="1280" selection-end="1288" vertical-scroll-proportion="0.0">
+            <state line="240" column="130" selection-start="15425" selection-end="15425" vertical-scroll-proportion="-21.384615">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HttpViewRender.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpViewRender.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="8" selection-start="1306" selection-end="1306" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BasicEntityPersister.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/Persisters/BasicEntityPersister.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="991" column="55" selection-start="39652" selection-end="39652" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserRepository.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/UserRepository.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="95" selection-start="864" selection-end="864" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -125,22 +156,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Admin/Controller/AlbumController.php" />
-        <option value="$PROJECT_DIR$/src/Oak/MVC/JsonViewModel.php" />
-        <option value="$PROJECT_DIR$/htdocs/index.html" />
-        <option value="$PROJECT_DIR$/htdocs/.htaccess" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/SocialNetwork.php" />
+        <option value="$PROJECT_DIR$/src/bootstrap.php" />
+        <option value="$PROJECT_DIR$/config/ding.config.php" />
+        <option value="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpUrlMapper.php" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" />
-        <option value="$PROJECT_DIR$/htdocs/js/playlist.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/plugins_src/jquery.combo.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/search.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/model.js" />
-        <option value="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
-        <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/messager.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/plugins_src/jquery.messager.js" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/VkUser.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Model/MyUser.php" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Repository/UserRepository.php" />
+        <option value="$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpViewRender.php" />
         <option value="$PROJECT_DIR$/htdocs/js/index.js" />
-        <option value="$PROJECT_DIR$/config/private.config.php" />
+        <option value="$PROJECT_DIR$/htdocs/js/vkutils.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/myutils.js" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
+        <option value="$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php" />
+        <option value="$PROJECT_DIR$/htdocs/js/search.js" />
       </list>
     </option>
   </component>
@@ -152,6 +183,8 @@
           <path_mapping local_path="$PROJECT_DIR$/library" remote_path="metaplyaer.local" />
         </path_mappings>
       </server>
+      <server host="vk.metaplayer.local" name="vk.metaplayer.local" />
+      <server host="my.metaplayer.local" name="my.metaplayer.local" />
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP" />
@@ -338,6 +371,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meta-player" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meta-player" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MetaPlayer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -366,6 +421,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meta-player" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meta-player" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -378,7 +451,7 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="project.propVCSSupport.VCSs.Git" />
+    <property name="options.lastSelected" value="preferences.sourceCode.PHP" />
     <property name="recentsLimit" value="5" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -387,14 +460,16 @@
   <component name="PublishConfig" serverName="metaplayer" serverId="f88f94f2-10ee-4d81-b22a-233b4929b824" />
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\MetaPlayer\meta-player\htdocs\js" />
+      <recent name="D:\projects\MetaPlayer\meta-player\src\MetaPlayer\Model" />
       <recent name="D:\projects\MetaPlayer\meta-player\src\MetaPlayer\Views" />
       <recent name="D:\projects\MetaPlayer\meta-player\config" />
       <recent name="D:\projects\MetaPlayer\meta-player\src\MetaPlayer\Manager" />
     </key>
   </component>
-  <component name="RunManager" selected="PHP Web Application.localhost">
+  <component name="RunManager" selected="PHP Remote Debug.remote">
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
-      <TestRunner />
+      <TestRunner directory="$PROJECT_DIR$/src/MetaPlayer/Model" />
       <method>
         <option name="PhingTarget" enabled="false" />
       </method>
@@ -422,7 +497,7 @@
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php">
       <method>
         <option name="PhingTarget" enabled="false" />
       </method>
@@ -549,9 +624,10 @@
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20926966" sideWeight="0.41137567" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20926966" sideWeight="0.5793651" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26431718" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="522" y="427" width="1130" height="633" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21348314" sideWeight="0.23809524" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21348314" sideWeight="0.33597884" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41666666" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39977974" sideWeight="0.50033134" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -559,7 +635,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="522" y="427" width="1130" height="633" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24983433" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -622,92 +697,114 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/htdocs/js/easyloader.js">
+    <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/Persisters/SingleTablePersister.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="8" selection-start="2786" selection-end="2786" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/plugins_src/jquery.resizable.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="0" selection-start="2397" selection-end="2397" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/jPaq-1.0.6.full.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1035" column="17" selection-start="42917" selection-end="42934" vertical-scroll-proportion="4.917037" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="26" selection-start="1197" selection-end="1197" vertical-scroll-proportion="0.744884" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/plugins_src/jquery.combo.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="389" column="2" selection-start="9739" selection-end="9739" vertical-scroll-proportion="0.7638889" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="277" column="97" selection-start="10926" selection-end="10926" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="243" column="0" selection-start="7305" selection-end="7305" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/loading.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="9" selection-start="190" selection-end="190" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/messager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="11" selection-start="1912" selection-end="1912" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/plugins_src/jquery.messager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="157" column="62" selection-start="3183" selection-end="3183" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="17" selection-start="1280" selection-end="1288" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="180" column="89" selection-start="7377" selection-end="7377" vertical-scroll-proportion="0.0">
+        <state line="47" column="49" selection-start="1811" selection-end="1811" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php">
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/UserRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="95" selection-start="864" selection-end="864" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Mvc/Http/HttpViewRender.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="8" selection-start="1306" selection-end="1306" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/loading.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/app.config.php">
+    <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/EntityManager.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="88" selection-start="525" selection-end="525" vertical-scroll-proportion="0.31082982">
+        <state line="680" column="0" selection-start="20483" selection-end="20483" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/private.config.php">
+    <entry file="file://$PROJECT_DIR$/library/Doctrine/lib/Doctrine/ORM/UnitOfWork.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="40" selection-start="439" selection-end="439" vertical-scroll-proportion="0.0">
+        <state line="2683" column="0" selection-start="95595" selection-end="95595" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/loader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.65759313">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/vkutils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="0" selection-start="681" selection-end="767" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/myutils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="39" selection-start="1042" selection-end="1042" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Ding1.3.0/src/mg/Ding/Autoloader/Autoloader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="130" column="0" selection-start="3287" selection-end="3287" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="341" column="44" selection-start="13706" selection-end="13728" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="240" column="130" selection-start="15425" selection-end="15425" vertical-scroll-proportion="-21.384615">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Manager/SecurityManager.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="84" selection-start="1523" selection-end="1523" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="8" selection-start="1583" selection-end="1583" vertical-scroll-proportion="0.7209302">
+        <state line="40" column="0" selection-start="827" selection-end="827" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="23" selection-start="1720" selection-end="1720" vertical-scroll-proportion="0.5151515">
           <folding />
         </state>
       </provider>

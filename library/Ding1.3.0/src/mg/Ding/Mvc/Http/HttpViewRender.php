@@ -46,7 +46,7 @@ use Ding\Mvc\View;
  * @license  http://marcelog.github.com/ Apache License 2.0
  * @link     http://marcelog.github.com/
  */
-class HttpViewRender implements IViewRender, IMessageSourceAware
+class   HttpViewRender implements IViewRender, IMessageSourceAware
 {
     /**
      * @var IMessageSource

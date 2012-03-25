@@ -204,12 +204,13 @@ class HttpUrlMapper implements IMapper, IContainerAware, ILoggerAware, IReflecti
                     	"Found as annotated controller: "
                     	. "$controllerUrl in " . get_class($controller)
                     );
+                } else {
+                    $controllerName = get_class($controller);
                 }
                 if (!isset($candidates[$len])) {
                     $candidates[$len] = array();
                 }
-                $result = array($controller, $requestAction . 'Action');
-                $this->populateWithPrePostDispatchers($result, $controllerName);
+                $result = array($controller, $requestAction . 'Action', $controllerName);
                 $candidates[$len][] = $result;
             }
         }
@@ -218,7 +219,9 @@ class HttpUrlMapper implements IMapper, IContainerAware, ILoggerAware, IReflecti
         }
         krsort($candidates);
         $controllers = array_shift($candidates);
-        return array_shift($controllers);
+        $target = array_shift($controllers);
+        $this->populateWithPrePostDispatchers($target, $target[2]);
+        return $target;
     }
     
     /**

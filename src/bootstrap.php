@@ -99,6 +99,8 @@ if ($checkEm != $em) {
     $logger->error("entity manager was not successfull register");
 }
 
+\Doctrine\DBAL\Types\Type::addType(\Oak\ORM\EnumDatatype::$typeName, 'Oak\ORM\EnumDatatype');
+
 // init session
 $session = $container->getBean("securityManager");
 

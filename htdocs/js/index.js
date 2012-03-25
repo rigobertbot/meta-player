@@ -7,7 +7,6 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
-using('vkutils.js');
 
 var indexInit = function () {
     $.ajaxSetup({

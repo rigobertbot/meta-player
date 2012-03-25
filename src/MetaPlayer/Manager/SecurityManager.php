@@ -11,6 +11,7 @@
  */
 
 namespace MetaPlayer\Manager;
+use \MetaPlayer\Model\SocialNetwork;
 use Ding\Logger\ILoggerAware;
 use MetaPlayer\Repository\UserRepository;
 use MetaPlayer\Model\User;
@@ -47,27 +48,32 @@ class SecurityManager implements ILoggerAware
     /**
      * Authenticates the specified user in session.
      *
-     * @param int $viewerId 
+     * @param int $viewerId
+     * @param \MetaPlayer\Model\SocialNetwork|null $socialNetwork
      */
-    public function authenticate($viewerId) {
+    public function authenticate($viewerId, SocialNetwork $socialNetwork = null) {
+        if ($socialNetwork == null) {
+            $socialNetwork = SocialNetwork::$VK;
+        }
         $user = $this->getUser();
         if ($user != null) {
-            if ($user->getVkId() != $viewerId) {
-                $currentUserId = $user->getVkId();
+            if ($user->getSocialId() != $viewerId) {
+                $currentUserId = $user->getSocialId();
                 $this->logger->warn("User $currentUserId replaced with $viewerId.");
             }
         } else {
-            $user = $this->userRepository->findOneByVkId($viewerId);
+            $user = $this->userRepository->findOneBySocialId($viewerId, $socialNetwork);
         }
         
         if ($user == null) {
-            $user = new User($viewerId);
+            $user = $this->userRepository->createUser($viewerId, $socialNetwork);
             $this->userRepository->persistAndFlush($user);
         }
         
         $_SESSION[self::USER_ID] = $user->getId();
     }
-    
+
+
     /**
      * Checks is current session authenticated.
      * @return boolean

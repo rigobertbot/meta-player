@@ -18,15 +18,21 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
 
 /**
  * The class User represents User.
  *
  * @Entity(repositoryClass="MetaPlayer\Repository\UserRepository")
+ * @InheritanceType("SINGLE_TABLE")
  * @Table(name="user")
+ * @DiscriminatorColumn(name="type", type="string")
+ * @DiscriminatorMap({"MetaPlayer\Model\SocialNetwork::vk" = "MetaPlayer\Model\VkUser", "MetaPlayer\Model\SocialNetwork::my" = "MetaPlayer\Model\MyUser"})
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class User {
+abstract class User {
 
     /**
      * @Id @Column(type="bigint")
@@ -34,13 +40,13 @@ class User {
      * @var int
      */
     protected $id;
-    
-    /**
-     * @Column(type="bigint", name="vk_id")
-     * @var int
-     */
-    protected $vkId;
 
+    /**
+     * @Column(name="social_id")
+     * @var string
+     */
+    protected $socialId;
+    
     /**
      * @Column(type="boolean", name="is_admin")
      * @var boolean
@@ -50,16 +56,28 @@ class User {
     public function getId() {
         return $this->id;
     }
-    
-    public function getVkId() {
-        return $this->vkId;
+
+    /**
+     * Gets social id.
+     * @abstract
+     * @return string
+     */
+    public function getSocialId() {
+        return $this->socialId;
     }
 
     /**
-     * @param int $vkId 
+     * Gets social network type.
+     * @abstract
+     * @return SocialNetwork
      */
-    public function __construct($vkId) {
-        $this->vkId = $vkId;
+    public abstract function getSocialNetwork();
+
+    /**
+     * @param $socialId
+     */
+    public function __construct($socialId) {
+        $this->socialId = $socialId;
     }
 
     /**

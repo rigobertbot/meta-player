@@ -13,11 +13,13 @@ include 'private.config.php';
 if (!class_exists('MPPrivateConfig')) {
     class MPPrivateConfig {
         public static $VKSecret = "vk_secret";
-        public static $VKApiId = 12345678;
+        public static $VKAppId = 12345678;
+        public static $MySecret = "my_secret";
+        public static $MyAppId = 12345678;
     }
 }
 
 class MPConfig extends MPPrivateConfig {
     public static $ProjectName = "MetaPlayer";
-    public static $VersionName = "Demo";
+    public static $VersionName = "Demo 2";
 }

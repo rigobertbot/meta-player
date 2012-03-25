@@ -1,3 +1,8 @@
+<?php
+use MetaPlayer\Model\SocialNetwork;
+$socialNetwork = $objects['socialNetwork'];
+/** @var $socialNetwork \MetaPlayer\Model\SocialNetwork  */
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,7 +13,13 @@
     <link rel="stylesheet" type="text/css" href="/css/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/css/blue.monday/jplayer.blue.monday.css" />
 
+    <?php if ($socialNetwork == SocialNetwork::$VK): ?>
     <script type="text/javascript" src="http://vk.com/js/api/xd_connection.js?2"></script>
+    <script type="text/javascript" src="/js/vkutils.js"></script>
+    <?php elseif ($socialNetwork == SocialNetwork::$MY): ?>
+    <script type="text/javascript" src="http://cdn.connect.mail.ru/js/loader.js"></script>
+    <script type="text/javascript" src="/js/myutils.js"></script>
+    <?php endif; ?>
 
     <script type="text/javascript" src="/js/jPaq-1.0.6.full.js"></script>
     <script type="text/javascript" src="/js/jquery-1.6.2.js"></script>
@@ -88,7 +99,7 @@
                                             </div>
                                             <div id="editDivAlbumSearch">
                                                 <select name="albumSearch" style="width: 200px" id="albumSearch" class="easyui-combobox" valueField="id" textField="title" mode="local" required="true" missingMessage="Введите название альбома."></select><br />
-                                                <input type="checkbox" id="editLoadTracks" alt="Загрузить все композиции альбома." disabled="true"><label for="editLoadTracks">Загрузить все композиции альбома.</label>
+                                                <input type="checkbox" id="editLoadTracks" alt="Загрузить все композиции альбома." checked="true" disabled="true"><label for="editLoadTracks">Загрузить все композиции альбома.</label>
                                             </div>
                                         </td>
                                     </tr>
@@ -214,13 +225,20 @@
     </div>
 </div>
 
+<?php if ($socialNetwork == SocialNetwork::$VK): ?>
+
 <div id="vk_comments"></div>
 <div id="vk_groups"></div>
+
+<?php endif; ?>
 
 
 <div id="mainFooter" style="float: left; width: 650px; font-size: 11px; font-family: tahoma, arial, verdana, sans-serif, 'Lucida Sans';text-align: center;">
     Для реализации MetaPlayer были использованы:<br />
-    <a href="http://marcelog.github.com/Ding/">Ding Framework</a>, special thanks to <a href="mailto://marcelog@gmail.com">Marcelo Gornstein</a>; <a href="http://www.doctrine-project.org/">doctrine</a>; <a href="http://www.jeasyui.com/">jQuery EasyUI</a>; <a href="http://jplayer.org/">jPlayer</a><br />
+    <a href="http://marcelog.github.com/Ding/" target="_blank">Ding Framework</a>, special thanks to <a href="mailto://marcelog@gmail.com" target="_blank">Marcelo Gornstein</a>;
+    <a href="http://www.doctrine-project.org/" target="_blank">doctrine</a>;
+    <a href="http://www.jeasyui.com/" target="_blank">jQuery EasyUI</a>;
+    <a href="http://jplayer.org/">jPlayer</a>;<a href="http://musicbrainz.org" target="_blank">the catalogue MusicBrainz</a><br />
     MetaPlayer (c) by Oak Software 2011<br />
 </div>
 </body>
