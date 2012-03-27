@@ -42,12 +42,6 @@ abstract class User {
     protected $id;
 
     /**
-     * @Column(name="social_id")
-     * @var string
-     */
-    protected $socialId;
-    
-    /**
      * @Column(type="boolean", name="is_admin")
      * @var boolean
      */
@@ -62,9 +56,7 @@ abstract class User {
      * @abstract
      * @return string
      */
-    public function getSocialId() {
-        return $this->socialId;
-    }
+    public abstract function getSocialId();
 
     /**
      * Gets social network type.
@@ -76,8 +68,7 @@ abstract class User {
     /**
      * @param $socialId
      */
-    public function __construct($socialId) {
-        $this->socialId = $socialId;
+    public function __construct() {
     }
 
     /**

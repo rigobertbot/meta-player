@@ -27,6 +27,12 @@ use Doctrine\ORM\Mapping\ManyToOne;
  */
 class MyUser extends User {
     /**
+     * @Column(name="my_social_id")
+     * @var string
+     */
+    protected $socialId;
+
+    /**
      * Gets social network type.
      * @return SocialNetwork
      */
@@ -35,6 +41,10 @@ class MyUser extends User {
     }
 
     public function __construct($socialId) {
-        parent::__construct($socialId);
+        $this->socialId = $socialId;
+    }
+
+    public function getSocialId() {
+        return $this->socialId;
     }
 }
