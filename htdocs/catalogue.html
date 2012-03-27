@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+
+    <script type="text/javascript" src="/js/jquery-1.6.2.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.js"></script>
+    <script type="text/javascript" src="/js/plugins_src/jquery.parser.js"></script>
+    <script type="text/javascript" src="/js/plugins_src/jquery.panel.js"></script>
+    <script type="text/javascript" src="/js/plugins_src/jquery.resizable.js"></script>
+    <script type="text/javascript" src="/js/plugins_src/jquery.linkbutton.js"></script>
+    <script type="text/javascript" src="/js/plugins_src/jquery.pagination.js"></script>
+    <script type="text/javascript" src="/js/plugins_src/jquery.datagrid.js"></script>
+    <script type="text/javascript" src="/js/plugins_src/jquery.treegrid.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/css/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/css/blue.monday/jplayer.blue.monday.css" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#catalogue').treegrid({
+                loadFilter: function (data) {
+                    var result = {total: 0, rows: [{name: 'test'}]};
+                    console.log(data);
+                    return result;
+                }
+            });
+        });
+
+        function doSearch() {
+            var q = $('#searchArtist').val();
+            $('#catalogue').treegrid({
+                url: 'http://www.musicbrainz.org/ws/2/artist/',
+                queryParams: {query: 'artist:' + q},
+                method: 'get',
+                dataType: 'xml'
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="search">
+        Artist: <input id="searchArtist" class="easyui-validatebox" value="queen"> or
+        Release: <input class="easyui-validatebox">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Search</a>
+    </div>
+    <table id="catalogue" treeField="name" animate="true" idField="id" toolbar="#search" method="get">
+        <thead>
+        <tr>
+            <th field="name" width="260">Title</th>
+        </tr>
+        </thead>
+    </table>
+</body>
+</html>
