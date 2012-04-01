@@ -5,6 +5,7 @@
     <title></title>
 
     <script type="text/javascript" src="/js/jquery-1.6.2.js"></script>
+    <script type="text/javascript" src="/js/jquery.xml2json.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.js"></script>
     <script type="text/javascript" src="/js/plugins_src/jquery.parser.js"></script>
     <script type="text/javascript" src="/js/plugins_src/jquery.panel.js"></script>
@@ -13,27 +14,177 @@
     <script type="text/javascript" src="/js/plugins_src/jquery.pagination.js"></script>
     <script type="text/javascript" src="/js/plugins_src/jquery.datagrid.js"></script>
     <script type="text/javascript" src="/js/plugins_src/jquery.treegrid.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="/css/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/css/blue.monday/jplayer.blue.monday.css" />
 
     <script type="text/javascript">
+        var baseUrl = 'http://www.musicbrainz.org/ws/2';
+
+        function durationFormatter(value) {
+            if (!value) {
+                return value;
+            }
+            var i = parseInt(value) / 1000;
+            var seconds = Math.ceil(i % 60);
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+
+            return Math.floor(i / 60) + ':' + seconds;
+        }
+
+        function replaceNameWithTitle(element) {
+            replaceAttrWithNode(element, 'name', 'title');
+        }
+
+        function replaceAttrWithNode(element, attrName, nodeName) {
+            $(element).attr(attrName, $(element).find(nodeName).text());
+            $(element).find(nodeName).remove();
+        }
+
+        function appendEtc(data, listName, elementName) {
+            var count = parseInt($(data).find(listName).attr('count'));
+            var more = count - $(data).find(listName + '>' + elementName).length;
+            if (more > 0) {
+                $(data).find(listName).append($('<' + elementName + '><title>' + more + ' more...</title></' + elementName + '>').setUid());
+            }
+        }
+
+        function filterArtists(data, parentId) {
+            var artists = $(data).find('artist')
+                    .attr('state', 'closed')
+                    .attr('inner_type', 'artist');
+            if (parentId) {
+                artists.attr('_parentId', parentId);
+            }
+            $('<children name="albums" url="release-group?type=album"></children>' +
+                    '<children name="singles" url="release-group?type=single"></children>' +
+                    '')
+//                    '<children name="works" url="work"></children>')
+                    .attr('state', 'closed')
+                    .attr('inner_type', 'artist-child').appendTo(artists);
+            $(artists).find('children')
+                    .setUid()
+                    .each(function (i, e) {
+                        $(e).attr('parentId', $(e).parent().attr('id'));
+                        $(e).attr('date', $(e).find('begin').text());
+                    });
+        }
+
+        function filterRecording(data, parentId) {
+            $(data).find('recording').each(function (i, e) {
+                replaceNameWithTitle(e);
+                $(e).attr('_parentId', parentId)
+                    .attr('inner_type', 'recording');
+            });
+        }
+
+        function filterRelease(data, parentId) {
+            console.log('more...', $(data).find('release-list').attr('count'), $(data).find('release-list>release').length);
+            appendEtc(data, 'release-list', 'release');
+
+            $(data).find('release').each(function (i, e) {
+                replaceNameWithTitle(e);
+                $(e).attr('_parentId', parentId)
+                    .attr('state', 'closed')
+                    .attr('inner_type', 'release');
+            });
+        }
+
+        function filterReleaseGroup(data, parentId) {
+            appendEtc(data, 'release-group-list', 'release-group');
+
+            $(data).find('release-group').each(function (i, e) {
+                replaceNameWithTitle(e);
+                replaceAttrWithNode(e, 'date', 'first-release-date');
+                $(e).attr('_parentId', parentId)
+                    .attr('state', 'closed')
+                    .attr('inner_type', 'release-group');
+            });
+        }
+
         $(document).ready(function () {
+            var columns = $('#catalogue').datagrid({}).datagrid('options').columns;;
             $('#catalogue').treegrid({
-                loadFilter: function (data) {
-                    var result = {total: 0, rows: [{name: 'test'}]};
-                    console.log(data);
+                pagination: true,
+                columns: columns,
+                loadFilter: function (data, parentId) {
+                    filterArtists(data, parentId);
+                    filterRecording(data, parentId);
+                    filterRelease(data, parentId);
+                    filterReleaseGroup(data, parentId);
+
+                    console.log('loaded', data);
+                    var result = $.xml2json(data);
+                    console.log('xml2json', result);
+
+                    if (result['artist_list']) {
+                        result = {total: result['artist_list'].count, rows: result['artist_list'].artist};
+                    } else if (result['recording_list']) {
+                        result = {total: result['recording_list'].count, rows: result['recording_list']['recording']};
+                    } else if (result['release_list']) {
+                        result = {total: result['release_list'].count, rows: result['release_list']['release']};
+                    } else if (result['release_group_list']) {
+                        result = {total: result['release_group_list'].count, rows: result['release_group_list']['release_group']};
+                    } else {
+                        console.log('undefined source');
+                        result = {total: 0, rows: []};
+                    }
+
+                    if (!$.isArray(result.rows)) {
+                        result.rows = [result.rows];
+                    }
+
                     return result;
+                },
+                onBeforeLoad: function (row, param) {
+                    console.log('before load', row, param);
+                    if (row && row['inner_type']) {
+                        switch(row['inner_type']) {
+                            case 'artist-child':
+                                param['artist'] = row['parentId'];
+                                param.id = undefined;
+                                param.limit = 200;
+                                $.data(this, 'treegrid').options.url = baseUrl + '/' + row['url'];
+                                break;
+                            case 'release':
+                                param['release'] = param.id;
+                                param.id = undefined;
+                                param.limit = 200;
+                                $.data(this, 'treegrid').options.url = baseUrl + '/recording';
+                                break;
+                            case 'release-group':
+                                param['release-group'] = param.id;
+                                param.id = undefined;
+                                param.limit = 200;
+                                $.data(this, 'treegrid').options.url = baseUrl + '/release';
+                                break;
+                        }
+                    } else {
+                        param.offset = param.rows * (param.page - 1);
+                        param.offset = param.rows * (param.page - 1);
+                        param.limit = param.rows;
+                    }
+                    param.rows = undefined;
+                    param.page = undefined;
+                    return true;
                 }
             });
+            console.log($('#catalogue').treegrid('options'));
         });
 
         function doSearch() {
             var q = $('#searchArtist').val();
+            var pager = $('#catalogue').treegrid('getPager').pagination('options');
             $('#catalogue').treegrid({
-                url: 'http://www.musicbrainz.org/ws/2/artist/',
-                queryParams: {query: 'artist:' + q},
+                url: baseUrl + '/artist/',
+                queryParams: {
+                    type: 'artist',
+                    query: q
+                },
                 method: 'get',
                 dataType: 'xml'
             });
@@ -42,14 +193,17 @@
 </head>
 <body>
     <div id="search">
-        Artist: <input id="searchArtist" class="easyui-validatebox" value="queen"> or
-        Release: <input class="easyui-validatebox">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Search</a>
+        Artist: <input id="searchArtist" class="easyui-validatebox" value="queen" onkeypress="event.keyCode == 13 ? $('#searchBtn').click() : true;">
+        <a id="searchBtn" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Search</a>
     </div>
     <table id="catalogue" treeField="name" animate="true" idField="id" toolbar="#search" method="get">
         <thead>
         <tr>
             <th field="name" width="260">Title</th>
+            <th field="type" width="80">Type</th>
+            <th field="date" width="80">Date</th>
+            <th field="country" width="80">Country</th>
+            <th field="length" width="80" formatter="durationFormatter">Duration</th>
         </tr>
         </thead>
     </table>
