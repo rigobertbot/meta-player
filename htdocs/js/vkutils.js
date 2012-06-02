@@ -60,3 +60,13 @@ function getSearchResult(query, offset, limit, handler) {
         handler(result);
     });
 }
+
+window.setInterval(function () {
+    // resize widgets
+    var totalHeight = $('#mainHeader').outerHeight();
+    totalHeight += $('#mainBody').outerHeight();
+    totalHeight += $('#vk_comments').outerHeight();
+    totalHeight += $('#vk_groups').outerHeight();
+    totalHeight += $('#mainFooter').outerHeight();
+    mainResize(totalHeight);
+}, 500);

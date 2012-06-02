@@ -13,6 +13,8 @@
 namespace MetaPlayer\Repository;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\DBAL\LockMode;
+use MetaPlayer\Model\UserBand;
 use MetaPlayer\Model\UserAlbum;
 use MetaPlayer\Model\User;
 
@@ -45,6 +47,26 @@ class UserAlbumRepository extends BaseRepository {
     public function  findOneByUserAndAlbum(User $user, $albumId) {
         return $this->findOneBy(array('user' => $user, 'album' => $albumId));
     }
+
+    /**
+     * @param UserBand $userBand
+     * @param $title
+     * @return UserAlbum
+     */
+    public function findOneByUserBandAndName(UserBand $userBand, $title) {
+        return $this->findOneBy(array('user' => $userBand->getUser(), 'userBand' => $userBand, 'title' => $title));
+    }
+
+    /**
+     * @param int $id
+     * @param int $lockMode
+     * @param null $lockVersion
+     * @return UserAlbum
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null) {
+        return parent::find($id, $lockMode, $lockVersion);
+    }
+
 
     /**
      * @param $entity

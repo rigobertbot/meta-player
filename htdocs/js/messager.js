@@ -42,9 +42,9 @@ function MessageService() {
         if (timeout == undefined) timeout = this.noteTimeout;
         $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>' + msg,
             title: title,
-            timeout: timeout,
-            bottom: false,
-            top: $('#mainBody').offset().top + $('#mainBody').height()
+            timeout: timeout
+//            bottom: false,
+//            top: $('#mainBody').offset().top + $('#mainBody').height()
         });
     }
 

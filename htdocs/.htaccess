@@ -8,9 +8,9 @@ RewriteEngine On
 #RewriteRule ^(.*)$ $1 [CO=XDEBUG_SESSION:idea:metaplayer.local]
 
 # admin front controller rules
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^admin.*$ admin.php [NC,L]
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^admin.*$ admin.php [NC,L]
 
 # front controller rules
 RewriteCond %{REQUEST_FILENAME} !-f

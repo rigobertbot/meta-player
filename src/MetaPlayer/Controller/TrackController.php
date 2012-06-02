@@ -146,6 +146,30 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
         return new JsonViewModel($resultDto, $this->jsonUtils);
     }
 
+    public function addOrGetAction($json) {
+        $trackDto = $this->parseJson($json);
+        $trackDto->albumId = $this->albumHelper->convertDtoToUserAlbumId($trackDto->albumId);
+
+        $userAlbum = $this->userAlbumRepository->find($trackDto->albumId);
+        if ($userAlbum == null) {
+            $this->logger->error("There is no user album with id = {$trackDto->albumId}.");
+            throw new JsonException("Invalid id.");
+        }
+        if ($this->securityManager->getUser() !== $userAlbum->getUser()) {
+            $this->logger->error("The user {$this->securityManager->getUser()} tried to access now own album with id = {$trackDto->albumId}.");
+            throw new JsonException("Invalid id.");
+        }
+
+        $track = $this->userTrackRepository->findOneByUserAlbumAndTitle($userAlbum, $trackDto->title);
+
+        if ($track == null) {
+            return $this->addAction($json);
+        } else {
+            $dto = $this->trackHelper->convertUserTrackToDto($track);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        }
+    }
+
     public function getAction($id) {
         if ($this->trackHelper->isDtoUserTrackId($id)) {
             $id = $this->trackHelper->convertDtoToUserTrackId($id);

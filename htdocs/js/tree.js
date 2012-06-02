@@ -11,171 +11,214 @@ function Tree() {
     /**
      * Causes when any number of nodes were laoded.
      */
-    this.nodeLoadedEvent =  "nodeLoaded";
+    this.nodeLoadedEvent =  "treeNodeLoaded";
     /**
      * Causes after expanding node, when all children were loaded.
      */
     this.childrenLoadedEvent = "childrenLoaded";
-    this.expandedEvent = "expanded";
     this.menuNode = null;
     this.editedNode = null;
+    /**
+     * @type TreeGrid
+     */
     this.treegrid = null;
     this.loadingCounter = 0;
+    /**
+     * @type TreePlayer
+     */
+    this.treePlayer = null;
+
+    /**
+     * @type {Searcher}
+     */
+    this.searcher = new Searcher();
     
     this.init = function () {
         var that = this;
-        bodyLoading.setStatus('initializing tree');
-        new QueueLoader(['treegrid', 'easy-ui-wrappers.js', 'accordion', 'messager.js'], function() {
-            $.extend($.fn.datagrid.defaults.editors, {
-                duration: {
-                    init: function(container, options){
-                        var input = $('<input type="text" class="datagrid-editable-input">').appendTo(container);
-                        return input;
-                    },
-                    getValue: function(target){
-                        var value = $(target).val();
-                        var parts = value.split(':');
-                        var resultMs = 0;
-                        if (parts.length == 1) {
-                            resultMs =  parseInt(parts[0]);
-                        } else if (parts.length == 2) {
-                            resultMs = parseInt(parts[0]) * 60 + parseInt(parts[1]);
-                        } else if (parts.length == 3) {
-                            resultMs = parseInt(parts[0]) * 60 * 60 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
-                        } else {
-                            throw "wrong value";
-                        }
-                        return resultMs;
-                    },
-                    setValue: function(target, value){
-                        $(target).val(value);
-                    },
-                    resize: function(target, width){
-                        var input = $(target);
-                        if ($.boxModel == true){
-                            input.width(width - (input.outerWidth() - input.width()));
-                        } else {
-                            input.width(width);
-                        }
-                    }
-                },
-                editButtons: {
-                    init: function (container, options) { //' + "'" + rowData.getId() + "'" + '
-                        that.bindEditKeys();
-                        return $($('<div>').append($('<a href="#" id="editColumnSave" onclick="mainTree.getTreeGrid().endEdit(\'' + that.editedNode.getId() + '\'); event.stopPropagation();" iconCls="icon-save" plain="true" title="Применить изменения"></a>').linkbutton()).html() +
-                            $('<div>').append($('<a href="#" id="editColumnCancel" onclick="mainTree.getTreeGrid().cancelEdit(\'' + that.editedNode.getId() + '\'); event.stopPropagation();" iconCls="icon-cancel" plain="true" title="Отменить изменения"></a>').linkbutton()).html()).appendTo(container);
-                    },
-                    getValue: function (target) {
-                        return undefined;
-                    },
-                    setValue: function (target, value) {
-                    }
-                }
-            });
 
-            that.treegrid = new TreeGrid($('#metaTree'), {
-                columns: [[
-                    {field: 'name', title: 'Название', width: 250, editor: 'text'},
-                    {field: 'checked', checkbox: true},
-                    {field: 'duration', title: 'Длит.', width: 30, editor: 'duration'},
-                    {
-                        field: 'date', title: 'Дата', width: 80,
-                        editor: {
-                            type: 'datebox', options: {formatter: $.defaultDateFormatter}
-                        }
-                    },
-                    {field: 'serial', title: '№', width: 50, editor: 'numberbox'},
-                    {field: 'edited', hidden: true, width: 60, formatter: function (value, rowData, rowIndex) {
-                        return '<span />';
-                        //return that.editedColumnFormatter(value, rowData, rowIndex);
-                    }, editor: 'editButtons'}
-                ]],
-                onBeforeEdit: function (row) {
-                    that.editedNode = row;
-                    that.getTreeGrid().showColumn('edited');
+        $.extend($.fn.datagrid.defaults.editors, {
+            duration: {
+                init: function(container, options){
+                    var input = $('<input type="text" class="datagrid-editable-input">').appendTo(container);
+                    return input;
                 },
-                onCancelEdit: function (row) {
-                    that.unbindEditKeys();
-                    that.getTreeGrid().hideColumn('edited');
-                    that.editedNode = null;
-                },
-                onAfterEdit: function (row, changes) {
-                    that.unbindEditKeys();
-                    // fix duration value
-                    row.setDuration(row.duration).setDate(row.date).setName(row.name);
-
-                    that.updateNode(row);
-                    that.getTreeGrid().hideColumn('edited');
-                    that.editedNode = null;
-                },
-                onContextMenu: function(e, row){
-                    e.preventDefault();
-                    that.menuNode = row;
-                    $('#treeMenu').menu(row.isBelongsToUser() ? 'enableItem' : 'disableItem', $('#treeMenuEdit'));
-                    $('#treeMenu').menu('show', {
-                        left: e.pageX,
-                        top: e.pageY
-                    });
-                },
-                onExpand: function (row) {
-                    $(that).trigger(mainTree.expandedEvent, [row]);
-                },
-                onDblClickRow: function (row) {
-                    that.playNodes([row]);
-                }
-            });
-
-            that.getTreeGrid().setOptions({
-                onBeforeLoad: function (row, node) {
-                    if (row) {
-                        that.getTreeGrid().loading();
-                        that.loadingCounter ++;
-                        row.loadChildren(function () {
-                            that.loadingCounter --;
-                            if (that.loadingCounter == 0) {
-                                that.getTreeGrid().loaded();
-                            }
-                            if (!row.children) {
-                                row.children = [];
-                            }
-                            that.triggerChildrenLoaded(row);
-                        });
+                getValue: function(target){
+                    var value = $(target).val();
+                    var parts = value.split(':');
+                    var resultMs = 0;
+                    if (parts.length == 1) {
+                        resultMs =  parseInt(parts[0]);
+                    } else if (parts.length == 2) {
+                        resultMs = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+                    } else if (parts.length == 3) {
+                        resultMs = parseInt(parts[0]) * 60 * 60 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
                     } else {
-                        // it means loading root node.
-                        bodyLoading.resetStatus('tree is ready');
+                        throw "wrong value";
                     }
-                    return false;
+                    return resultMs;
+                },
+                setValue: function(target, value){
+                    $(target).val(value);
+                },
+                resize: function(target, width){
+                    var input = $(target);
+                    if ($.boxModel == true){
+                        input.width(width - (input.outerWidth() - input.width()));
+                    } else {
+                        input.width(width);
+                    }
                 }
-            });
-            that.getTreeGrid().loading();
-            bandRepository.list(function () {
-                that.getTreeGrid().loaded();
-            });
-
-            // quick fix, http://code.google.com/p/meta-player/issues/detail?id=15
-            $('#bodyAccordion').bind('onSelect', function (event, title) {
-                var selected = $(this).accordion('getSelected');
-                var id = $(selected).attr('id');
-                if (id == 'treeAccordion') {
-                    that.getTreeGrid().append(null, []);
+            },
+            editButtons: {
+                init: function (container, options) { //' + "'" + rowData.getId() + "'" + '
+                    that.bindEditKeys();
+                    return $($('<div>').append($('<a href="#" id="editColumnSave" onclick="mainTree.getTreeGrid().endEdit(\'' + that.editedNode.getId() + '\'); event.stopPropagation();" iconCls="icon-save" plain="true" title="Применить изменения"></a>').linkbutton()).html() +
+                        $('<div>').append($('<a href="#" id="editColumnCancel" onclick="mainTree.getTreeGrid().cancelEdit(\'' + that.editedNode.getId() + '\'); event.stopPropagation();" iconCls="icon-cancel" plain="true" title="Отменить изменения"></a>').linkbutton()).html()).appendTo(container);
+                },
+                getValue: function (target) {
+                    return undefined;
+                },
+                setValue: function (target, value) {
                 }
-            });
-        }).load();
+            }
+        });
 
-        // subscriptions
-//        mainPlayer.bindStartPlaying(function () {
-//            that.startPlay();
-//        });
+        this.treegrid = new TreeGrid($('#metaTree'), {
+            columns: [[
+                {field: 'checked', checkbox: true},
+                {field: 'name', title: 'Название', width: 250, editor: 'text'},
+                {field: 'duration', title: 'Длит.', width: 30, editor: 'duration'},
+                {field: 'serial', title: '№', width: 50, editor: 'numberbox'},
+                {
+                    field: 'date', title: 'Дата', width: 80,
+                    editor: {
+                        type: 'datebox', options: {formatter: $.defaultDateFormatter}
+                    }
+                },
+                {field: 'mp3', title: 'MP3', width: 30, formatter: function (value, rowData, rowIndex) {return that.formatterMp3(rowData);}},
+                {field: 'edited', hidden: true, width: 60, formatter: function (value, rowData, rowIndex) {
+                    return '<span />';
+                    //return that.editedColumnFormatter(value, rowData, rowIndex);
+                }, editor: 'editButtons'}
+            ]],
+            onBeforeEdit: function (row) {
+                that.editedNode = row;
+                that.getTreeGrid().showColumn('edited');
+            },
+            onCancelEdit: function (row) {
+                that.unbindEditKeys();
+                that.getTreeGrid().hideColumn('edited');
+                that.editedNode = null;
+            },
+            onAfterEdit: function (row, changes) {
+                that.unbindEditKeys();
+                // fix duration value
+                row.setDuration(row.duration).setDate(row.date).setName(row.name);
+
+                that.updateNode(row);
+                that.getTreeGrid().hideColumn('edited');
+                that.editedNode = null;
+            },
+            onContextMenu: function(e, row){
+                e.preventDefault();
+                that.menuNode = row;
+                $('#treeMenu').menu(row.isBelongsToUser() ? 'enableItem' : 'disableItem', $('#treeMenuEdit'));
+                $('#treeMenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            },
+            onDblClickRow: function (row) {
+                that.menuNode = row;
+                that.playNode();
+            },
+            rowStyler: function (rowData) {
+                return that.formatBackground(rowData);
+            }
+        });
+
+        this.getTreeGrid().setOptions({
+            onBeforeLoad: function (row, node) {
+                if (row) {
+                    that.getTreeGrid().loading();
+                    that.loadingCounter ++;
+                    row.loadChildren(function () {
+                        that.loadingCounter --;
+                        if (that.loadingCounter == 0) {
+                            that.getTreeGrid().loaded();
+                        }
+                        if (!row.children) {
+                            row.children = [];
+                        }
+                        that.triggerChildrenLoaded(row);
+                    });
+                } else {
+                    // it means loading root node.
+                    //bodyLoading.resetStatus('tree is ready');
+                }
+                return false;
+            }
+        });
+
         $(repositories).each(function (index, repository) {
             repository.bindOnLoaded(function (e, data) {
                 that.nodeLoaded(data);
-            })
+            });
             repository.bindOnRemoved(function (e, data) {
                 that.nodeRemoved(data);
             });
             repository.bindOnUpdated(function (e, data) {
                 that.nodeUpdated(data);
             })
+        });
+
+        // load bands
+        that.getTreeGrid().loading();
+        bandRepository.list(function () {
+            that.getTreeGrid().loaded();
+        });
+
+        // quick fix, http://code.google.com/p/meta-player/issues/detail?id=15
+        $('#bodyAccordion').bind('onSelect', function (event, title) {
+            var selected = $(this).accordion('getSelected');
+            var id = $(selected).attr('id');
+            if (id == 'treeAccordion') {
+                that.getTreeGrid().append(null, []);
+            }
+        });
+
+        this.treePlayer = new TreePlayer(this.treegrid, mainPlayer, this.searcher);
+
+        this.treePlayer.bindChangeCurrent(function (e, lastNode, currentNode) {
+            $([lastNode, currentNode]).each (function (i, node) {
+                if (!node) {
+                    return true;
+                }
+                console.log('refresh', node);
+                that.treegrid.refresh(node.id);
+            });
+        });
+
+        this.treePlayer.bindChangeStart(function (e, lastNode, startNode) {
+            $([lastNode, startNode]).each (function (i, node) {
+                if (!node) {
+                    return true;
+                }
+                that.treegrid.refresh(node.id);
+                var children = that.treegrid.getChildren(node.id);
+                $(children).each(function (i, child) {
+                    console.log('refresh', child);
+                    that.treegrid.refresh(child.id);
+                });
+            });
+        });
+
+        this.searcher.bindSearchFailed(function (event, node) {
+            node.setUrl(0);
+            that.treegrid.refresh(node.id);
+        });
+        this.searcher.bindSearchSuccess(function (event, node) {
+            that.treegrid.refresh(node.id);
         });
     }
 
@@ -221,10 +264,45 @@ function Tree() {
     this.getTreeGrid = function () {
         return this.treegrid;
     }
-    
-    this.isSelected = function () {
-        var panel = $('#bodyAccordion').accordion('getSelected');
-        return panel.attr('id') == 'treeAccordion';
+
+    this.formatterMp3 = function (node) {
+        if (!node.isPlayable()) {
+            return '';
+        }
+        var container = $('<div></div>');
+
+        if (node.getUrl() === null) {
+            $('<div class="loading-icon"></div>').appendTo(container);
+        } else if (node.getUrl() === 0) {
+            $('<div class="failed-icon"></div>').appendTo(container);
+        } else {
+            $('<div class="success-icon"></div>').appendTo(container);
+        }
+
+        return $(container).html();
+    }
+
+    this.formatBackground = function (node) {
+        if (!this.treePlayer) {
+            return null;
+        }
+        var color = null;
+        if (this.treePlayer.startNode) {
+            var parent = node;
+            while (parent && parent !== this.treePlayer.startNode) {
+                parent = this.treegrid.getParent(parent.id);
+            }
+            if (parent) {
+                color = 'lightgray';
+            }
+        }
+        if (this.treePlayer.currentNode === node) {
+            color = 'lightblue';
+        }
+        if (color) {
+            return 'background: ' + color;
+        }
+        return null;
     }
     
     this.nodeLoaded = function (nodes) {
@@ -248,6 +326,14 @@ function Tree() {
         } else {
             this.triggerNodeLoaded(null, nodes);
         }
+
+        var that = this;
+        $(nodes).each(function (i, node) {
+            if (node.isPlayable()) {
+                that.searcher.schedule(node);
+            }
+        });
+
     }
 
     /**
@@ -374,36 +460,36 @@ function Tree() {
             });
         });
     }
-    this.playMenuNode = function () {
-        console.log('begin playing...');
-        var nodes = this.getTreeGrid().getSelections();
-        if (!nodes || nodes.length == 0) {
-            console.log('there is no selection, use menuNode.');
-            nodes = [this.menuNode];
+
+    this.playNode = function () {
+        if (!this.treePlayer) {
+            console.log('Tree player is not initialized yet.');
+            return;
         }
-        this.playNodes(nodes);
+        console.log('begin playing...');
+        if (!this.treePlayer.startNode) {
+            this.treePlayer.startPlaying(this.menuNode);
+            return;
+        }
+
+        // check, if specified node is child of start playing node
+        var testNode = this.menuNode;
+        while (testNode && testNode !== this.treePlayer.startNode) {
+            testNode = this.treegrid.getParent(testNode.id);
+        }
+        if (testNode == null) {
+            if (confirm('Do you want to start playing from the ' + this.menuNode.getName())) {
+                this.treePlayer.startPlaying(this.menuNode);
+                return;
+            }
+            return;
+        }
+
+        this.treePlayer.play(this.menuNode);
     }
 
     /**
-     * Begin playing the specified nodes through playlist.
-     * @param nodes
-     */
-    this.playNodes = function (nodes) {
-        var that = this;
-        var loader = new NodeLoader(nodes, this);
-        loader.load(function () {
-            console.log('all nodes loaded, build pl');
-            var playlist = that.buildPlaylist(nodes);
-            console.log('list built with songs', playlist);
-            mainPlaylist.reload(playlist);
-            console.log('begin play');
-            mainPlaylist.play();
-            $('#bodyAccordion').accordion('select', 'Плейлист');
-        });
-    }   
-     
-    /**
-     * Gets all tracks from the specified node.
+     * Gets all tracks from the specified node
      */
     this.buildPlaylist = function (selectedNodes) {
         var playlist = [];
@@ -465,9 +551,9 @@ function Tree() {
 
 mainTree = new Tree();
 
-Tree.instance = mainTree;
-Tree.getInstance = function () { return Tree.instance; }
-console.log("Tree instance successfully created.", Tree.getInstance());
+//Tree.instance = mainTree;
+//Tree.getInstance = function () { return Tree.instance; }
+console.log("Tree instance successfully created.", mainTree);
 
 /**
  * The class NodeLoader provide methods for loading all subnodes of the specified nodes recursively from the specified tree.

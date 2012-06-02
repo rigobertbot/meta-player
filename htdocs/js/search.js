@@ -25,7 +25,15 @@ function Searcher() {
     this.maximumSearchTries = 3;
     this.searchQueue = [];
     this.searchSuccessEvent = "searchSuccess";
+    this.searchFailedEvent = "searchFailed";
 
+    this.bindSearchFailed = function (handler, ns) {
+        ns = ns ? "." + ns : '';
+        $(this).bind(this.searchFailedEvent + ns, handler);
+    }
+    this.triggerSearchFailed = function (track) {
+        $(this).trigger(this.searchFailedEvent, [track]);
+    }
     this.bindSearchSuccess = function (handler) {
         $(this).bind(this.searchSuccessEvent, handler);
     }
@@ -91,6 +99,7 @@ function Searcher() {
         if (!url || url === null) {
             if (!track.getQuery(track.incSearchTries() - 1)) {
                 console.log("Maximum search tries reached", track);
+                this.triggerSearchFailed(track);
                 return;
             }
             if (priority) {
@@ -100,14 +109,5 @@ function Searcher() {
             }
 
         }
-    }}
-
-/**
- * The instance of searcher singleton.
- */
-var searcher = new Searcher();
-
-
-
-
-
+    }
+}

@@ -78,4 +78,10 @@ abstract class User {
     public function isAdmin() {
         return $this->isAdmin;
     }
+
+    public function __toString() {
+        return "User{$this->id}('{$this->getSocialId()}/{$this->getSocialNetwork()})";
+    }
+
+
 }

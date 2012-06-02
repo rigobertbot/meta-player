@@ -6,3 +6,24 @@ body {
 div {
     /* background-color: white; */
 }
+
+.loading-icon {
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/default/images/pagination_loading.gif') no-repeat;
+}
+
+.success-icon {
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/default/images/tree_dnd_yes.png') no-repeat;
+}
+
+.failed-icon {
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/default/images/tree_dnd_no.png') no-repeat;
+}

@@ -18,7 +18,7 @@
 		shortMonthsToNumber["Nov"] = "11";
 		shortMonthsToNumber["Dec"] = "12";
 	
-    $.format = (function () {
+    $.fmt = (function () {
         function strDay(value) {
  						return daysInWeek[parseInt(value, 10)] || value;
         }
@@ -266,16 +266,16 @@
 $(document).ready(function () {
     $(".shortDateFormat").each(function (idx, elem) {
         if ($(elem).is(":input")) {
-            $(elem).val($.format.date($(elem).val(), "dd/MM/yyyy"));
+            $(elem).val($.fmt.date($(elem).val(), "dd/MM/yyyy"));
         } else {
-            $(elem).text($.format.date($(elem).text(), "dd/MM/yyyy"));
+            $(elem).text($.fmt.date($(elem).text(), "dd/MM/yyyy"));
         }
     });
     $(".longDateFormat").each(function (idx, elem) {
         if ($(elem).is(":input")) {
-            $(elem).val($.format.date($(elem).val(), "dd/MM/yyyy hh:mm:ss"));
+            $(elem).val($.fmt.date($(elem).val(), "dd/MM/yyyy hh:mm:ss"));
         } else {
-            $(elem).text($.format.date($(elem).text(), "dd/MM/yyyy hh:mm:ss"));
+            $(elem).text($.fmt.date($(elem).text(), "dd/MM/yyyy hh:mm:ss"));
         }
     });
 });

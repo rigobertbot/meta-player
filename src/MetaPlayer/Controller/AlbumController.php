@@ -189,6 +189,30 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
         return new JsonViewModel($resultDto, $this->jsonUtils);
     }
 
+    public function addOrGetAction($json) {
+        $albumDto = $this->parseJson($json);
+
+        $albumDto->bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
+        $userBand = $this->userBandRepository->find($albumDto->bandId);
+        if ($userBand == null) {
+            $this->logger->error("There is no user band with id = {$albumDto->bandId}.");
+            throw new JsonException("Invalid id.");
+        }
+
+        if ($userBand->getUser() !== $this->securityManager->getUser()) {
+            $this->logger->error("The user {$this->securityManager->getUser()} tried to access now own band with id = {$albumDto->bandId}.");
+            throw new JsonException("Invalid id.");
+        }
+
+        $album = $this->userAlbumRepository->findOneByUserBandAndName($userBand, $albumDto->title);
+        if ($album == null) {
+            return $this->addAction($json);
+        } else {
+            $dto = $this->albumHelper->convertUserAlbumToDto($album);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        }
+    }
+
     public function updateAction($json) {
         $albumDto = $this->parseJson($json);
 

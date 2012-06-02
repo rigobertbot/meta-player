@@ -127,6 +127,17 @@ class BandController extends BaseSecurityController implements ILoggerAware
         return new JsonViewModel($resultDto, $this->jsonUtils);
     }
 
+    public function addOrGetAction($json) {
+        $bandDto = $this->convertJson($json);
+        $band = $this->userBandRepository->findOneByUserAndName($this->securityManager->getUser(), $bandDto->name);
+        if ($band == null) {
+            return $this->addAction($json);
+        } else {
+            $dto = $this->bandHelper->convertUserBandToDto($band);
+            return new JsonViewModel($dto, $this->jsonUtils);
+        }
+    }
+
     public function getAction($id) {
         if ($this->bandHelper->isDtoUserBandId($id)) {
             $id = $this->bandHelper->convertDtoToUserBandId($id);

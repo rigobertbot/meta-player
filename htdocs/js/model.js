@@ -58,6 +58,7 @@ Node.prototype.setDate = function (value) { this.date = value; return this; }
 Node.prototype.setDuration = function (value) { this.duration = value; return this; }
 Node.prototype.getParentId = function () { return undefined; }
 Node.prototype.isBelongsToUser = function () { return this.belongsToUser; }
+Node.prototype.isPlayable = function () { return false; }
 
 /***************************************
  *************** BandNode **************
@@ -211,7 +212,7 @@ TrackNode.prototype._sleep = function () {
 TrackNode.prototype.getDurationMs = function () {return this.durationMs;}
 TrackNode.prototype.setDuration = function (durationMs) {
     this.durationMs = durationMs;
-    this.duration = Math.floor(durationMs / 60) + ":" + new String(durationMs % 60).padLeft(2, '0');
+    this.duration = Math.floor(durationMs / 60) + ":" + $.format('{0:02d}', durationMs % 60);
     return this;
 }
 
@@ -250,6 +251,6 @@ TrackNode.prototype.getQuery = function (strictLevel) {
     return this.queries[strictLevel];
 }
 
-
 TrackNode.prototype.getParentId = function () { return this.albumId; }
+TrackNode.prototype.isPlayable = function () { return true; }
 

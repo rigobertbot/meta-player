@@ -36,7 +36,7 @@ class BaseBand
      */
     protected $name;
     /**
-     * @Column(type="date", name="found_date")
+     * @Column(type="date", name="found_date", nullable=true)
      * @var \DateTime
      */
     protected $foundDate;
@@ -46,7 +46,7 @@ class BaseBand
      */
     protected $endDate;
     
-    public function __construct($name, \DateTime $foundDate, \DateTime $endDate = null) {
+    public function __construct($name, \DateTime $foundDate = null, \DateTime $endDate = null) {
         $this->name = $name;
         $this->foundDate = $foundDate;
         $this->endDate = $endDate;

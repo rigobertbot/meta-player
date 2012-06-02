@@ -75,7 +75,7 @@
         return $('<div></div>').append($(this)).html();
     }
     $.defaultDateFormatter = function (dateDate) {
-        return $.format.date(dateDate, "yyyy-MM-dd");
+        return $.fmt.date(dateDate, "yyyy-MM-dd");
     }
     $.getCallStack = function () {
         try { throw Error('') } catch(err) {

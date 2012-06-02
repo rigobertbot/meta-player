@@ -115,6 +115,20 @@ BaseRepository.prototype.add = function (node, success) {
     }, "json");
 }
 
+BaseRepository.prototype.addOrGet = function (node, success) {
+    var url = this.url + 'addOrGet';
+    var that = this;
+    var data = $.objectToJSON(node);
+
+    $.post(url, {"json": data}, function (result, textStatus, jqXHR) {
+        var parsedData = $.parseJSONObject(result);
+        that.dispatch(parsedData);
+        if ($.isFunction(success)) {
+            success(parsedData, node);
+        }
+    }, "json");
+}
+
 BaseRepository.prototype.remove = function (node, success) {
     var url = this.url + 'remove';
     var that = this;

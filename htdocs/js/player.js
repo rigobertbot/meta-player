@@ -24,11 +24,11 @@ function Player() {
     this.paused = false;
     
     this.init = function () {
-        bodyLoading.setStatus('initializing player');
+        //bodyLoading.setStatus('initializing player');
         var that = this;
         $('#mainPlayer').jPlayer({
             ready: function () {
-                bodyLoading.resetStatus('player is ready');
+                //bodyLoading.resetStatus('player is ready');
                 $('.jp-pause').bind('click', function () {
                     that.paused = true;
                     console.log("pause caught, paused", that.paused);
@@ -59,6 +59,13 @@ function Player() {
         $('#mainPlayer').jPlayer("setMedia", {mp3: node.getUrl()})
                         .jPlayer("play");
         $('.jp-title').text(node.getName());
+    }
+
+    /**
+     * Stops the playing.
+     */
+    this.stop = function () {
+        $('#mainPlayer').jPlayer('stop');
     }
 
     /**

@@ -1,0 +1,1 @@
+ALTER TABLE `user_band` MODIFY COLUMN `found_date` DATE DEFAULT NULL;

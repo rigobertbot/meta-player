@@ -7,7 +7,7 @@ $socialNetwork = $objects['socialNetwork'];
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>MetaPlayer - Demo 2 Version</title>
+    <title>MetaPlayer - Alpha Version</title>
     <link rel="stylesheet" type="text/css" href="/css/mp.css">
     <link rel="stylesheet" type="text/css" href="/css/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="/css/themes/icon.css">
@@ -21,16 +21,36 @@ $socialNetwork = $objects['socialNetwork'];
     <script type="text/javascript" src="/js/myutils.js"></script>
     <?php endif; ?>
 
-    <script type="text/javascript" src="/js/jPaq-1.0.6.full.js"></script>
-    <script type="text/javascript" src="/js/jquery-1.6.2.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="/js/jquery.xml2json.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.js"></script>
     <script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="/js/jquery.dateFormat-1.0.js"></script>
+    <script type="text/javascript" src="/js/jquery.utils.js"></script>
     <script type="text/javascript" src="/js/easyloader.js"></script>
     <script type="text/javascript" src="/js/jquery.json-2.3.js"></script>
-    <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
 
-    <script type="text/javascript" src="/js/loading.js"></script>
+    <script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
 
+    <script type="text/javascript" src="/js/easy-ui-wrappers.js"></script>
+    <script type="text/javascript" src="/js/model.js"></script>
+    <script type="text/javascript" src="/js/repository.js"></script>
+    <script type="text/javascript" src="/js/editor.js"></script>
+    <script type="text/javascript" src="/js/messager.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
+
+    <script type="text/javascript" src="/js/player.js"></script>
+    <script type="text/javascript" src="/js/search.js"></script>
+    <script type="text/javascript" src="/js/tree.js"></script>
+    <script type="text/javascript" src="/js/catalogue.js"></script>
+    <script type="text/javascript" src="/js/TreePlayer.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mainPlayer.init();
+            mainTree.init();
+            catalogue.init();
+        });
+    </script>
 </head>
 <body>
 <div id="mainHeader">
@@ -46,125 +66,46 @@ $socialNetwork = $objects['socialNetwork'];
                        idField="id" treeField="name">
                 </table>
             </div>
-            <div id="playlistAccordion" title="Плейлист">
-                <table id="playlist" class="easyui-datagrid" style="height: 288px"
-                       singleSelect="true" animate="true" rownumbers="true"
-                       idField="id">
+            <div id="editTreeAccordion" title="MusicBrainz">
+                <div id="search">
+                    Artist: <input id="searchArtist" class="easyui-validatebox" value="" onkeypress="event.keyCode == 13 ? $('#searchBtn').click() : true;">
+                    <a id="searchBtn" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Search</a>
+                    <span id="statusBar"></span>
+                </div>
+                <table id="catalogue" treeField="name" animate="true" idField="id" toolbar="#search" method="get">
+                    <thead>
+                    <tr>
+                        <th field="name" width="260">Title</th>
+                        <th field="type" width="80">Type</th>
+                        <th field="date" width="80">Date</th>
+                        <th field="country" width="80">Country</th>
+                        <th field="length" width="80" formatter="durationFormatter">Duration</th>
+                    </tr>
+                    </thead>
                 </table>
-            </div>
-            <div id="editTreeAccordion" title="Пополнить">
-                <form id="editTreeForm" action="" method="post">
-                    <table>
-                        <tr valign="top">
-                            <td align="right">
-                                <label for="editTypeBand">Группа</label>
-                                <input type="radio" id="editTypeBand" name="editType" value="band" checked="checked" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td align="right" valign="top" style="min-width: 100px">Название:</td>
-                                        <td id="editCellBandList">
-                                            <div id="editDivBandList">
-                                                <select id="bandList" style="width: 200px" name="bandList" class="easyui-combobox" validType="checkSelected['band',bandList]" valueField="id" textField="name" mode="local" required="true" missingMessage="Выберите или введите название группы."></select>
-                                            </div>
-                                            <div id="editDivBandSearch">
-                                                <select id="bandSearch" style="width: 200px" name="bandList" class="easyui-combobox" valueField="id" textField="name" required="true" missingMessage="Введите название группы."></select>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Дата основания:</td>
-                                        <td><input type="text" id="bandFoundDate" name="foundDate" required="true"></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Дата распада:</td>
-                                        <td><input type="text" id="bandEndDate" name="endDate"></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr valign="top" id="editRowAlbum">
-                            <td align="right">
-                                <label for="editTypeAlbum">Альбом</label>
-                                <input id="editTypeAlbum" type="radio" name="editType" value="album" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
-                            </td>
-                            <td id="editCellAlbum">
-                                <table>
-                                    <tr>
-                                        <td align="right" valign="top" style="min-width: 100px">Название:</td>
-                                        <td id="editCellAlbumList">
-                                            <div id="editDivAlbumList">
-                                                <select name="albumList" style="width: 200px" id="albumList" class="easyui-combobox" validType="checkSelected['album',albumList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название альбома."></select>
-                                            </div>
-                                            <div id="editDivAlbumSearch">
-                                                <select name="albumSearch" style="width: 200px" id="albumSearch" class="easyui-combobox" valueField="id" textField="title" mode="local" required="true" missingMessage="Введите название альбома."></select><br />
-                                                <input type="checkbox" id="editLoadTracks" alt="Загрузить все композиции альбома." checked="true" disabled="true"><label for="editLoadTracks">Загрузить все композиции альбома.</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Дата выпуска:</td>
-                                        <td><input type="text" id="albumReleaseDate" name="releaseDate" required="true"></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr valign="top" id="editRowTrack">
-                            <td align="right">
-                                <label for="editTypeTrack">Композиция</label>
-                                <input id="editTypeTrack" type="radio" name="editType" value="track" onchange="editTypeChanged(this);" onclick="editTypeChanged(this);">
-                            </td>
-                            <td id="editCellTrack">
-                                <table>
-                                    <tr>
-                                        <td align="right" style="min-width: 100px">Название:</td>
-                                        <td id="editCellTrackList">
-                                            <div id="editDivTrackList">
-                                                <input type="text" name="trackList" id="trackList" class="easyui-validatebox" required="true">
-                                            </div>
-                                            <div id="editDivTrackSearch">
-                                                <select name="trackSearch" style="width: 200px" id="trackSearch" class="easyui-combobox" valueField="id" textField="title" mode="local" required="true" missingMessage="Введите название композиции."></select>
-                                            </div>
-<!--                                                    <select name="trackList" id="trackList" class="easyui-combobox" validType="checkSelected['track',trackList]" valueField="id" textField="title" mode="local" required="true" missingMessage="Выберите или введите название композиции."></select> -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Длит.:</td>
-                                        <td>
-                                            <input type="text" name="trackDurationMM" id="trackDurationMM" size="2" maxlength="3" class="easyui-numberspinner" required="true" min="0" max="999" value="0" editable="true">:
-                                            <input type="text" name="trackDurationSS" id="trackDurationSS" size="2" class="easyui-numberspinner" required="true" min="1" value="0" max="60" editable="true">
-                                            <input type="hidden" name="trackDuration" id="trackDuration">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">Порядк. №:</td>
-                                        <td><input type="text" name="trackSerial" id="trackSerial" size="3" class="easyui-numberspinner" min="1" value="1" required="true" missingMessage="Укажите порядковый номер композиции в альбоме."></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right">Источник:</td>
-                            <td><input type="text" name="editSource" id="editSource" class="easyui-validatebox" required="true" missingMessage="Укажите источник информации (адрес сайта, название книги и т.п.)"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <div id="editMessages"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><input id="editSubmit" type="button" name="submit" onclick="$('#editTreeForm').submit();" value="Добавить"></td>
-                        </tr>
-                    </table>
-                </form>
-                <div id="hiddenFormElements" style="display: none">
+                <div style="display: none;">
+                    <div id="contextMenuBand" class="easyui-menu" style="width:120px;">
+                        <div onclick="addArtist($(this).parent().data('row'));"><b>Add Only</b></div>
+                        <div class="menu-sep"></div>
+                        <div onclick="showDetails($(this).parent().data('row'));">Details</div>
+                    </div>
+                    <div id="contextMenuAlbum" class="easyui-menu" style="width:120px;">
+                        <div onclick="addAlbum($(this).parent().data('row'), true);"><b>Add</b></div>
+                        <div onclick="addAlbum($(this).parent().data('row'), false);">Add Only</div>
+                        <div class="menu-sep"></div>
+                        <div onclick="showDetails($(this).parent().data('row'));">Details</div>
+                    </div>
+                    <div id="contextMenuTrack" class="easyui-menu" style="width:120px;">
+                        <div onclick="addTrack($(this).parent().data('row'));"><b>Add</b></div>
+                        <div onclick="addAlbum(true);">Add Album</div>
+                        <div class="menu-sep"></div>
+                        <div onclick="showDetails();">Details</div>
+                    </div>
                 </div>
             </div>
         </div>
         <div id="treeMenu" class="easyui-menu" style="width:120px;">
-            <div onclick="mainTree.playMenuNode()"><b>Проигрывать</b></div>
-            <div onclick="">Добавить</div>
+            <div onclick="mainTree.playNode()"><b>Проигрывать</b></div>
             <div class="menu-sep"></div>
             <div id="treeMenuEdit">
                 <span>Править</span>

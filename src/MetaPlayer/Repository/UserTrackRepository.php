@@ -15,7 +15,10 @@
  */
 namespace MetaPlayer\Repository;
 use \Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\DBAL\LockMode;
+use MetaPlayer\Model\UserAlbum;
 use Doctrine\ORM\EntityRepository;
+use MetaPlayer\Model\UserTrack;
 
 /**
  * The class UserTrackRepository represents
@@ -38,6 +41,15 @@ class UserTrackRepository extends BaseRepository {
     }
 
     /**
+     * @param UserAlbum $userAlbum
+     * @param $title
+     * @return \MetaPlayer\Model\UserTrack
+     */
+    public function findOneByUserAlbumAndTitle(UserAlbum $userAlbum, $title) {
+        return $this->findOneBy(array('user' => $userAlbum->getUser(), 'userAlbum' => $userAlbum, 'title' => $title));
+    }
+
+    /**
      * @param $entity
      * @return UserTrackRepository
      * @throws \MetaPlayer\MetaPlayerException
@@ -48,4 +60,16 @@ class UserTrackRepository extends BaseRepository {
         }
         return parent::remove($entity);
     }
+
+    /**
+     * @param int $id
+     * @param int $lockMode
+     * @param null $lockVersion
+     * @return UserTrack
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null) {
+        return parent::find($id, $lockMode, $lockVersion);
+    }
+
+
 }
