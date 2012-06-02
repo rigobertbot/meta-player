@@ -478,7 +478,7 @@ function Tree() {
             testNode = this.treegrid.getParent(testNode.id);
         }
         if (testNode == null) {
-            if (confirm('Do you want to start playing from the ' + this.menuNode.getName())) {
+            if (confirm('Вы хотите начать проигрывание с ' + this.menuNode.getName())) {
                 this.treePlayer.startPlaying(this.menuNode);
                 return;
             }

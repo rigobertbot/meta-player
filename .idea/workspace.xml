@@ -5,33 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/TreePlayer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/catalogue.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/htdocs/js/editor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/.htaccess" afterPath="$PROJECT_DIR$/htdocs/.htaccess" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/catalogue.html" afterPath="$PROJECT_DIR$/htdocs/catalogue.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/css/mp.css" afterPath="$PROJECT_DIR$/htdocs/css/mp.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/add-on/jplayer.playlist.min.js" afterPath="$PROJECT_DIR$/htdocs/js/add-on/jplayer.playlist.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" afterPath="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/jquery.dateFormat-1.0.js" afterPath="$PROJECT_DIR$/htdocs/js/jquery.dateFormat-1.0.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/jquery.jplayer.min.js" afterPath="$PROJECT_DIR$/htdocs/js/jquery.jplayer.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/messager.js" afterPath="$PROJECT_DIR$/htdocs/js/messager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/model.js" afterPath="$PROJECT_DIR$/htdocs/js/model.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/player.js" afterPath="$PROJECT_DIR$/htdocs/js/player.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/repository.js" afterPath="$PROJECT_DIR$/htdocs/js/repository.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/search.js" afterPath="$PROJECT_DIR$/htdocs/js/search.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/catalogue.js" afterPath="$PROJECT_DIR$/htdocs/js/catalogue.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/tree.js" afterPath="$PROJECT_DIR$/htdocs/js/tree.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/utils.js" afterPath="$PROJECT_DIR$/htdocs/js/utils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/vkutils.js" afterPath="$PROJECT_DIR$/htdocs/js/vkutils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseBand.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/BaseBand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Model/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserAlbumRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserAlbumRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserBandRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserBandRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" afterPath="$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" afterPath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
     </list>
     <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
@@ -82,10 +57,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tree.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="tree.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="266" column="0" selection-start="9861" selection-end="9861" vertical-scroll-proportion="0.0">
+            <state line="480" column="88" selection-start="16646" selection-end="16646" vertical-scroll-proportion="13.593047">
               <folding>
                 <element signature="e#3289#5615#0" expanded="false" />
                 <element signature="e#5657#6477#0" expanded="false" />
@@ -134,7 +109,7 @@
       <file leaf-file-name="catalogue.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/catalogue.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="261" column="19" selection-start="8399" selection-end="8399" vertical-scroll-proportion="0.0">
+            <state line="362" column="105" selection-start="11791" selection-end="11791" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -194,10 +169,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.phtml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="index.phtml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="0" selection-start="1745" selection-end="1745" vertical-scroll-proportion="-1.3952484">
+            <state line="89" column="88" selection-start="4851" selection-end="4851" vertical-scroll-proportion="7.0384617">
               <folding />
             </state>
           </provider>
@@ -249,7 +224,6 @@
         <option value="$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php" />
         <option value="$PROJECT_DIR$/htdocs/js/vkutils.js" />
         <option value="$PROJECT_DIR$/htdocs/catalogue.html" />
-        <option value="$PROJECT_DIR$/htdocs/js/catalogue.js" />
         <option value="$PROJECT_DIR$/htdocs/js/model.js" />
         <option value="$PROJECT_DIR$/htdocs/js/search.js" />
         <option value="$PROJECT_DIR$/htdocs/css/mp.css" />
@@ -258,8 +232,9 @@
         <option value="$PROJECT_DIR$/htdocs/js/player.js" />
         <option value="$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js" />
         <option value="$PROJECT_DIR$/htdocs/js/TreePlayer.js" />
-        <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
         <option value="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
+        <option value="$PROJECT_DIR$/htdocs/js/tree.js" />
+        <option value="$PROJECT_DIR$/htdocs/js/catalogue.js" />
       </list>
     </option>
   </component>
@@ -666,7 +641,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1488" height="916" extended-state="7" />
+    <frame x="-8" y="-8" width="1488" height="916" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -829,28 +804,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="266" column="0" selection-start="9861" selection-end="9861" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#3289#5615#0" expanded="false" />
-            <element signature="e#5657#6477#0" expanded="false" />
-            <element signature="e#6539#6889#0" expanded="false" />
-          </folding>
+        <state line="89" column="88" selection-start="4851" selection-end="4851" vertical-scroll-proportion="7.0384617">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/catalogue.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="261" column="19" selection-start="8399" selection-end="8399" vertical-scroll-proportion="0.0">
+        <state line="362" column="105" selection-start="11791" selection-end="11791" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
+    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="1745" selection-end="1745" vertical-scroll-proportion="-1.3952484">
-          <folding />
+        <state line="480" column="88" selection-start="16646" selection-end="16646" vertical-scroll-proportion="13.593047">
+          <folding>
+            <element signature="e#3289#5615#0" expanded="false" />
+            <element signature="e#5657#6477#0" expanded="false" />
+            <element signature="e#6539#6889#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

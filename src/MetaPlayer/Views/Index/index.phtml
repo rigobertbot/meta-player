@@ -68,38 +68,38 @@ $socialNetwork = $objects['socialNetwork'];
             </div>
             <div id="editTreeAccordion" title="MusicBrainz">
                 <div id="search">
-                    Artist: <input id="searchArtist" class="easyui-validatebox" value="" onkeypress="event.keyCode == 13 ? $('#searchBtn').click() : true;">
-                    <a id="searchBtn" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Search</a>
+                    Исполнитель: <input id="searchArtist" class="easyui-validatebox" value="" onkeypress="event.keyCode == 13 ? $('#searchBtn').click() : true;">
+                    <a id="searchBtn" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Поиск</a>
                     <span id="statusBar"></span>
                 </div>
                 <table id="catalogue" treeField="name" animate="true" idField="id" toolbar="#search" method="get">
                     <thead>
                     <tr>
-                        <th field="name" width="260">Title</th>
-                        <th field="type" width="80">Type</th>
-                        <th field="date" width="80">Date</th>
-                        <th field="country" width="80">Country</th>
-                        <th field="length" width="80" formatter="durationFormatter">Duration</th>
+                        <th field="name" width="260">Название</th>
+                        <th field="type" width="80">Тип</th>
+                        <th field="date" width="80">Дата</th>
+                        <th field="country" width="80">Страна</th>
+                        <th field="length" width="80" formatter="durationFormatter">Длит.</th>
                     </tr>
                     </thead>
                 </table>
                 <div style="display: none;">
                     <div id="contextMenuBand" class="easyui-menu" style="width:120px;">
-                        <div onclick="addArtist($(this).parent().data('row'));"><b>Add Only</b></div>
+                        <div onclick="addArtist($(this).parent().data('row'));"><b>Добавить только</b></div>
                         <div class="menu-sep"></div>
-                        <div onclick="showDetails($(this).parent().data('row'));">Details</div>
+                        <div onclick="showDetails($(this).parent().data('row'));">Детали</div>
                     </div>
                     <div id="contextMenuAlbum" class="easyui-menu" style="width:120px;">
-                        <div onclick="addAlbum($(this).parent().data('row'), true);"><b>Add</b></div>
-                        <div onclick="addAlbum($(this).parent().data('row'), false);">Add Only</div>
+                        <div onclick="addAlbum($(this).parent().data('row'), true);"><b>Добавить</b></div>
+                        <div onclick="addAlbum($(this).parent().data('row'), false);">Добавить только</div>
                         <div class="menu-sep"></div>
-                        <div onclick="showDetails($(this).parent().data('row'));">Details</div>
+                        <div onclick="showDetails($(this).parent().data('row'));">Детали</div>
                     </div>
                     <div id="contextMenuTrack" class="easyui-menu" style="width:120px;">
-                        <div onclick="addTrack($(this).parent().data('row'));"><b>Add</b></div>
-                        <div onclick="addAlbum(true);">Add Album</div>
+                        <div onclick="addTrack($(this).parent().data('row'));"><b>Добавить</b></div>
+                        <div onclick="addAlbum(true);">Добавить альбом</div>
                         <div class="menu-sep"></div>
-                        <div onclick="showDetails();">Details</div>
+                        <div onclick="showDetails();">Детали</div>
                     </div>
                 </div>
             </div>
@@ -177,10 +177,12 @@ $socialNetwork = $objects['socialNetwork'];
 <div id="mainFooter" style="float: left; width: 650px; font-size: 11px; font-family: tahoma, arial, verdana, sans-serif, 'Lucida Sans';text-align: center;">
     Для реализации MetaPlayer были использованы:<br />
     <a href="http://marcelog.github.com/Ding/" target="_blank">Ding Framework</a>, special thanks to <a href="mailto://marcelog@gmail.com" target="_blank">Marcelo Gornstein</a>;
-    <a href="http://www.doctrine-project.org/" target="_blank">doctrine</a>;
+    <a href="http://www.doctrine-project.org/" target="_blank">Doctrine 2</a>;
     <a href="http://www.jeasyui.com/" target="_blank">jQuery EasyUI</a>;
-    <a href="http://jplayer.org/">jPlayer</a>;<a href="http://musicbrainz.org" target="_blank">the catalogue MusicBrainz</a><br />
-    MetaPlayer (c) by Oak Software 2011<br />
+    <a href="http://jplayer.org/">jPlayer</a>;
+    <a href="http://musicbrainz.org" target="_blank">the catalogue MusicBrainz</a>
+    <br />MetaPlayer (c) by Oak Software 2011
+    <br />
 </div>
 </body>
 </html>

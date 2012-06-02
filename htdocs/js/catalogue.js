@@ -277,7 +277,7 @@ function addAlbum(row, withTracks, onSuccess) {
                 return;
             }
         }
-        messageService.showError("Impossible to find the appropriate album.");
+        messageService.showError("Не возможно найти подходящий альбом.");
         return;
     }
 
@@ -305,7 +305,7 @@ function addAlbum(row, withTracks, onSuccess) {
             .setSource(baseUrl + '/release/' + row.id);
 
         editor.addAlbum(album, function (albumNode) {
-            messageService.showNotification("Album '" + row.name + "' was successfully added.");
+            messageService.showNotification("Альбом '" + row.name + "' успешно добавлен.");
             if (withTracks) {
                 console.log(row.children);
                 for (var i in row.children) {
@@ -336,7 +336,7 @@ function addArtist(row, onSuccess) {
     band.setSource(baseUrl + '/artist/' + row.id);
 
     editor.addBand(band, function () {
-        messageService.showNotification("Band '" + row.name + "' was successfully added.");
+        messageService.showNotification("Группа '" + row.name + "' успешно добавлена.");
         if ($.isFunction(onSuccess)) {
             onSuccess.apply(this, arguments);
         }
@@ -361,7 +361,7 @@ function addTrack(row, albumNode, onSuccess) {
         .setDuration(parseInt(row.length) / 1000)
         .setSource(baseUrl + '/recording/' + row.id);
     editor.addTrack(track, function() {
-        messageService.showNotification("Track '" + row.name + "' was successfully added.");
+        messageService.showNotification("Композиция '" + row.name + "' успешно добавлена .");
         if ($.isFunction(onSuccess)) {
             onSuccess.apply(this, arguments);
         }
