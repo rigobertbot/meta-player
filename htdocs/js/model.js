@@ -243,6 +243,7 @@ TrackNode.prototype.getSerial = function () { return this.serial; }
  */
 TrackNode.prototype.incSearchTries = function() { return ++ this.searchTries; }
 TrackNode.prototype.getSearchTries = function () { return this.searchTries; }
+TrackNode.prototype.resetSearchTries = function () { this.searchTries = 0; return this; }
 
 TrackNode.prototype.getQuery = function (strictLevel) {
     if (!this.queries || this.queries.length <= strictLevel) {

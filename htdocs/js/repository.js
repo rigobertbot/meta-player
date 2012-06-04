@@ -22,15 +22,12 @@ BaseRepository.prototype.constructor = BaseRepository;
 
 BaseRepository.prototype.bindOnLoaded = function (handler) {
     $(this).bind(this.nodeLoadedEvent, handler);
-    console.log('bind', this.nodeLoadedEvent, this, handler);
 }
 BaseRepository.prototype.bindOnUpdated = function (handler) {
     $(this).bind(this.nodeUpdatedEvent, handler);
-    console.log('bind', this.nodeUpdatedEvent, this, handler);
 }
 BaseRepository.prototype.bindOnRemoved = function (handler) {
     $(this).bind(this.nodeRemovedEvent, handler);
-    console.log('bind', this.nodeRemovedEvent, handler);
 }
 /**
  * Checks if this repository of the specified entity.
@@ -146,7 +143,6 @@ BaseRepository.prototype.update = function (node, success) {
     var url = this.url + 'update'; // &XDEBUG_SESSION=idea
     var that = this;
     var data = $.objectToJSON(node);
-
     $.post(url, {"json": data}, function (result, textStatus, jqXHR) {
         var parsedData = $.parseJSONObject(result);
         that.dispatch(parsedData);
