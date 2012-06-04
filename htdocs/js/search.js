@@ -76,6 +76,11 @@ function Searcher() {
             var nearestResult = null;
             for (var index in result.tracks) {
                 var searchTrack = result.tracks[index];
+                if (!track.getDurationMs()) {
+                	nearestResult = searchTrack;
+                	console.log('track does not have a duration');
+                	break;
+                }
                 var delta =  Math.abs(searchTrack.duration - track.getDurationMs());
                 if (delta < nearestDelta) {
                     nearestDelta = delta;

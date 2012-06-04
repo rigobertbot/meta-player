@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="UI&#10;- form for adding/editing tree&#10;Core&#10;- dto mechanism&#10;- UserBand, UserAlbum entities">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/catalogue.js" afterPath="$PROJECT_DIR$/htdocs/js/catalogue.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/tree.js" afterPath="$PROJECT_DIR$/htdocs/js/tree.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" afterPath="$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/htdocs/js/search.js" afterPath="$PROJECT_DIR$/htdocs/js/search.js" />
     </list>
     <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
     <ignored path="meta-player.iws" />
@@ -30,91 +28,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BandController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/BandController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlbumController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/AlbumController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="204" column="0" selection-start="6638" selection-end="6638" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utils.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/utils.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="93" column="6" selection-start="2939" selection-end="2939" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tree.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="480" column="88" selection-start="16646" selection-end="16646" vertical-scroll-proportion="13.593047">
-              <folding>
-                <element signature="e#3289#5615#0" expanded="false" />
-                <element signature="e#5657#6477#0" expanded="false" />
-                <element signature="e#6539#6889#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jquery-1.7.2.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/jquery-1.7.2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="723" column="0" selection-start="18521" selection-end="18521" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jquery.easyui.min.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/jquery.easyui.min.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8207" column="0" selection-start="222273" selection-end="222273" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mp.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/css/mp.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="14" selection-start="403" selection-end="403" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TreePlayer.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/TreePlayer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="74" column="50" selection-start="2003" selection-end="2003" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="catalogue.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htdocs/js/catalogue.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="362" column="105" selection-start="11791" selection-end="11791" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="jquery.dateFormat-1.0.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/jquery.dateFormat-1.0.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -172,7 +85,7 @@
       <file leaf-file-name="index.phtml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="89" column="88" selection-start="4851" selection-end="4851" vertical-scroll-proportion="7.0384617">
+            <state line="89" column="88" selection-start="4851" selection-end="4851" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -181,7 +94,7 @@
       <file leaf-file-name="search.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="48" selection-start="3169" selection-end="3169" vertical-scroll-proportion="0.0">
+            <state line="101" column="48" selection-start="3117" selection-end="3117" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -196,10 +109,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="easy-ui-wrappers.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="easy-ui-wrappers.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="247" column="0" selection-start="5499" selection-end="5499" vertical-scroll-proportion="0.0">
+            <state line="272" column="96" selection-start="6301" selection-end="6301" vertical-scroll-proportion="0.51335657">
               <folding />
             </state>
           </provider>
@@ -248,6 +161,11 @@
       </server>
       <server host="vk.metaplayer.local" name="vk.metaplayer.local" />
       <server host="my.metaplayer.local" name="my.metaplayer.local" />
+      <server host="kv.localhost" name="kv.localhost" use_path_mappings="true">
+        <path_mappings>
+          <path_mapping local_path="$PROJECT_DIR$/htdocs" remote_path="D:\work\kv\portal\kv.mail.ru\htdocs" />
+        </path_mappings>
+      </server>
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP" />
@@ -255,8 +173,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1488" />
-    <option name="height" value="916" />
+    <option name="width" value="1554" />
+    <option name="height" value="1066" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -318,6 +236,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -454,27 +382,17 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="editor.preferences.tabs" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="editor.preferences.tabs" />
     <property name="DefaultHtmlFileTemplate" value="Html" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
     <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PublishConfig" serverName="metaplayer" serverId="f88f94f2-10ee-4d81-b22a-233b4929b824" />
   <component name="RecentsManager">
@@ -502,17 +420,17 @@
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="apache">
-      <method>
-        <option name="PhingTarget" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" server_name="apache">
       <method>
         <option name="FtpUpload" enabled="false">
           <server_id />
           <server_name />
         </option>
+        <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="apache">
+      <method>
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
@@ -528,6 +446,13 @@
       </JSRemoteDebuggerConfigurationSettings>
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="chrome" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
+      <method />
+    </configuration>
     <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" server_id="f88f94f2-10ee-4d81-b22a-233b4929b824" server_name="metaplayer">
       <method>
         <option name="FtpUpload" enabled="false">
@@ -536,13 +461,6 @@
         </option>
         <option name="PhingTarget" enabled="false" />
       </method>
-    </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" value="chrome" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method />
     </configuration>
     <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
       <option name="VM_PARAMETERS" value="" />
@@ -641,17 +559,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1488" height="916" extended-state="6" />
+    <frame x="-8" y="-8" width="1554" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="101" y="340" width="1128" height="413" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20266479" sideWeight="0.20634921" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20266479" sideWeight="0.44973546" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3346561" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20576407" sideWeight="0.54635763" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20576407" sideWeight="0.44591612" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3340494" sideWeight="0.4950298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39977974" sideWeight="0.50033134" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -659,6 +576,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="101" y="340" width="1128" height="413" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24983433" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -721,6 +639,65 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="480" column="88" selection-start="16646" selection-end="16646" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#3289#5615#0" expanded="false" />
+            <element signature="e#5657#6477#0" expanded="false" />
+            <element signature="e#6539#6889#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/jquery-1.7.2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="723" column="0" selection-start="18521" selection-end="18521" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/jquery.easyui.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8207" column="0" selection-start="222273" selection-end="222273" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/css/mp.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="14" selection-start="403" selection-end="403" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/TreePlayer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="50" selection-start="2003" selection-end="2003" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/catalogue.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="362" column="105" selection-start="11791" selection-end="11791" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/jquery.dateFormat-1.0.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="237" column="67" selection-start="10230" selection-end="10230" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Controller/TrackController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="159" column="0" selection-start="4872" selection-end="5016" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Repository/UserTrackRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="20" selection-start="1227" selection-end="1227" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/model.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="254" column="0" selection-start="7694" selection-end="7694" vertical-scroll-proportion="0.0">
@@ -728,9 +705,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="9" selection-start="219" selection-end="219" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="84" column="9" selection-start="2492" selection-end="2492" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="88" selection-start="4851" selection-end="4851" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="101" column="48" selection-start="3117" selection-end="3117" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -742,90 +738,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="http://vk.metaplayer.local/js/TreePlayer.js">
-      <provider selected="true" editor-type-id="httpFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/vkutils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="483" selection-end="483" vertical-scroll-proportion="0.033864543">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="http://q4.queue.vk.com/q_frame.php?6">
-      <provider selected="true" editor-type-id="httpFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="http://vk.metaplayer.local/?api_url=http://api.vk.com/api.php&amp;api_id=2720671&amp;api_settings=265&amp;viewer_id=335243&amp;viewer_type=2&amp;sid=652e9a1585b95aa6f38388633ee084099e853e439f6b2dad86524026023a25&amp;secret=a9ddd31c87&amp;access_token=51b34a101e47320d510ad1bad0519fd404551b651b656928ddfa0aa6ed45f28&amp;user_id=335243&amp;group_id=0&amp;is_app_user=1&amp;auth_key=678505cdade995a9b33f105065599e6d&amp;language=0&amp;parent_language=0&amp;ad_info=ElsdCQJfRFdgBhIKQgYIC3BtWxEKDw5VR0FVIxEIYxFKVTluVg==&amp;referrer=menu&amp;lc_name=fa230ba9&amp;hash=">
-      <provider selected="true" editor-type-id="httpFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/search.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="48" selection-start="3169" selection-end="3169" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/player.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="9" selection-start="219" selection-end="219" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/TreePlayer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="50" selection-start="2003" selection-end="2003" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/jquery-1.7.2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="723" column="0" selection-start="18521" selection-end="18521" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/htdocs/js/easy-ui-wrappers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="247" column="0" selection-start="5499" selection-end="5499" vertical-scroll-proportion="0.0">
+        <state line="272" column="96" selection-start="6301" selection-end="6301" vertical-scroll-proportion="0.51335657">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/jquery.easyui.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8207" column="0" selection-start="222273" selection-end="222273" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MetaPlayer/Views/Index/index.phtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="88" selection-start="4851" selection-end="4851" vertical-scroll-proportion="7.0384617">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/catalogue.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="362" column="105" selection-start="11791" selection-end="11791" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htdocs/js/tree.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="480" column="88" selection-start="16646" selection-end="16646" vertical-scroll-proportion="13.593047">
-          <folding>
-            <element signature="e#3289#5615#0" expanded="false" />
-            <element signature="e#5657#6477#0" expanded="false" />
-            <element signature="e#6539#6889#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
