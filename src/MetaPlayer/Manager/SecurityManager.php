@@ -66,7 +66,7 @@ class SecurityManager implements ILoggerAware
         }
         
         if ($user == null) {
-            $user = $this->userRepository->createUser($viewerId, $socialNetwork);
+            $user = new User($viewerId, $socialNetwork);
             $this->userRepository->persistAndFlush($user);
         }
         

@@ -26,13 +26,10 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * The class User represents User.
  *
  * @Entity(repositoryClass="MetaPlayer\Repository\UserRepository")
- * @InheritanceType("SINGLE_TABLE")
  * @Table(name="user")
- * @DiscriminatorColumn(name="type", type="string")
- * @DiscriminatorMap({"MetaPlayer\Model\SocialNetwork::vk" = "MetaPlayer\Model\VkUser", "MetaPlayer\Model\SocialNetwork::my" = "MetaPlayer\Model\MyUser"})
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-abstract class User {
+class User {
 
     /**
      * @Id @Column(type="bigint")
@@ -47,6 +44,24 @@ abstract class User {
      */
     protected $isAdmin = false;
 
+    /**
+     * @Column(name="vk_social_id")
+     * @var string
+     */
+    protected $vkId;
+
+    /**
+     * @Column(name="my_social_id")
+     * @var string
+     */
+    protected $myId;
+
+    /**
+     * @var SocialNetwork
+     */
+    protected $socialNetwork = null;
+
+
     public function getId() {
         return $this->id;
     }
@@ -56,19 +71,55 @@ abstract class User {
      * @abstract
      * @return string
      */
-    public abstract function getSocialId();
+    public function getSocialId() {
+
+    }
 
     /**
      * Gets social network type.
      * @abstract
      * @return SocialNetwork
      */
-    public abstract function getSocialNetwork();
+    public function getSocialNetwork() {
+        return $this->socialNetwork;
+    }
 
     /**
      * @param $socialId
+     * @param SocialNetwork $socialNetwork
+     * @return \MetaPlayer\Model\User
      */
-    public function __construct() {
+    public function __construct($socialId, SocialNetwork $socialNetwork) {
+        $this->socialNetwork = $socialNetwork;
+        $this->setSocialId($socialId, $socialNetwork);
+    }
+
+    /**
+     * Binds user with the specified social network.
+     * @param SocialNetwork $socialNetwork
+     * @return \MetaPlayer\Model\User
+     */
+    public function setSocialNetwork(SocialNetwork $socialNetwork) {
+        $this->socialNetwork = $socialNetwork;
+        return $this;
+    }
+
+    /**
+     * Sets social id for the specified social network.
+     * @param $socialId
+     * @param SocialNetwork $socialNetwork
+     * @return User
+     */
+    public function setSocialId($socialId, SocialNetwork $socialNetwork) {
+        switch ($socialNetwork) {
+            case SocialNetwork::$MY:
+                $this->myId = $socialId;
+                break;
+            case SocialNetwork::$VK:
+                $this->vkId = $socialId;
+                break;
+        }
+        return $this;
     }
 
     /**

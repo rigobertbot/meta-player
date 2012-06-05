@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="vkApi" class="MetaPlayer\Logic\VkApi" scope="singleton">
+        <constructor-arg><value>2720671</value></constructor-arg>
+        <constructor-arg><value>SltXbm0KOpvH5N1QG698</value></constructor-arg>
+    </bean>
+    <bean id="myApi" class="MetaPlayer\Logic\MyApi" scope="singleton">
+        <constructor-arg><value>670122</value></constructor-arg>
+        <constructor-arg><value>eb72317499040753f2294848f3205639</value></constructor-arg>
+    </bean>
+
+    <bean id="socialManager" class="MetaPlayer\Manager\SocialManager" scope="singleton">
+        <constructor-arg>
+            <array>
+                <entry key="0">
+                    <ref bean="vkApi" />
+                </entry>
+                <entry key="1">
+                    <ref bean="myApi" />
+                </entry>
+            </array>
+        </constructor-arg>
+    </bean>
+</beans>

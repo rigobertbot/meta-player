@@ -30,41 +30,26 @@ class UserRepository extends BaseRepository {
      * @throws \MetaPlayer\MetaPlayerException
      */
     public function findOneBySocialId($socialId, SocialNetwork $socialNetwork) {
-        return $this->getRepository($socialNetwork)->findOneBy(array('socialId' => $socialId));
+        $criteria = array();
+        switch ($socialNetwork) {
+            case SocialNetwork::$VK:
+                $criteria['vkId'] = $socialId;
+                break;
+            case SocialNetwork::$MY:
+                $criteria['myId'] = $socialId;
+                break;
+        }
+        $user = $this->findOneBy($criteria);
+        $user->setSocialNetwork($socialNetwork);
+        return $user;
     }
 
     /**
-     * @param \MetaPlayer\Model\SocialNetwork $socialNetwork
-     * @return \Doctrine\ORM\EntityRepository
-     * @throws \MetaPlayer\MetaPlayerException
+     * @param array $criteria
+     * @return User
      */
-    private function getRepository(SocialNetwork $socialNetwork) {
-        switch ($socialNetwork) {
-            case SocialNetwork::$MY:
-                return $this->getEntityManager()->getRepository('MetaPlayer\Model\MyUser');
-            case SocialNetwork::$VK:
-                return $this->getEntityManager()->getRepository('MetaPlayer\Model\VkUser');
-            default:
-                throw new \MetaPlayer\MetaPlayerException("Unsupport SocialNetwork type " . $socialNetwork);
-        }
-    }
-
-    /**
-     * Creates a new user.
-     * @param $socialId
-     * @param $socialNetwork
-     * @return \MetaPlayer\Model\MyUser|\MetaPlayer\Model\VkUser
-     * @throws \MetaPlayer\MetaPlayerException
-     */
-    public function createUser($socialId, $socialNetwork) {
-        switch ($socialNetwork) {
-            case SocialNetwork::$MY:
-                return new MyUser($socialId);
-            case SocialNetwork::$VK:
-                return new VkUser($socialId);
-            default:
-                throw new \MetaPlayer\MetaPlayerException("Unsupport SocialNetwork type " . $socialNetwork);
-        }
+    public function findOneBy(array $criteria) {
+        return parent::findOneBy($criteria);
     }
 
     /**
