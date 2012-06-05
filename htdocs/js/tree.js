@@ -140,17 +140,19 @@ function Tree() {
         this.getTreeGrid().setOptions({
             onBeforeLoad: function (row, node) {
                 if (row) {
-                    that.getTreeGrid().loading();
+                    that.treegrid.collapse(node.id);
+                    that.treegrid.loading();
                     that.loadingCounter ++;
                     row.loadChildren(function () {
                         that.loadingCounter --;
                         if (that.loadingCounter == 0) {
-                            that.getTreeGrid().loaded();
+                            that.treegrid.loaded();
                         }
                         if (!row.children) {
                             row.children = [];
                         }
                         that.triggerChildrenLoaded(row);
+                        that.treegrid.expand(node.id);
                     });
                 } else {
                     // it means loading root node.
@@ -215,6 +217,7 @@ function Tree() {
 
         this.searcher.bindSearchFailed(function (event, node) {
             node.setUrl(0);
+            console.log('search failed', node);
             that.treegrid.refresh(node.id);
         });
         this.searcher.bindSearchSuccess(function (event, node) {
@@ -312,16 +315,15 @@ function Tree() {
         }
         var parentId = nodes[0].getParentId();
         var parentNode = parentId ? $('#metaTree').treegrid('find', parentId) : undefined;
-        //console.log("nodeLoaded", node, parentId, $('#metaTree').treegrid('find', parentId));
         $('#metaTree')
-            .treegrid('toggle', parentId)
+//            .treegrid('toggle', parentId)
             .treegrid('append', {
                 parent: parentId,
                 data: nodes
             });
 
         if (parentNode) {
-            $('#metaTree').treegrid('toggle', parentNode.getId()); // treegrid('toggle', parentNode.getId()).
+//            $('#metaTree').treegrid('toggle', parentNode.getId()); // treegrid('toggle', parentNode.getId()).
             this.triggerNodeLoaded(parentNode, nodes);
         } else {
             this.triggerNodeLoaded(null, nodes);
@@ -350,18 +352,22 @@ function Tree() {
      */
     this.removeNode = function (node) {
         var type = '';
+        var type2 = '';
         var repository = getRepositoryFor(node);
         if (node instanceof BandNode) {
             type = 'группу';
+            type2 = 'Группа';
         } else if (node instanceof AlbumNode) {
             type = 'альбом';
+            type2 = 'Альбом';
         } else if (node instanceof TrackNode) {
             type = 'композицию';
+            type2 = 'Композиция';
         }
 
         if (confirm('Вы уверены что хотите удалить ' + type + ' "' + node.getName() + '"?')) {
             repository.remove(node, function () {
-                messageService.showNotification(type.toProperCase() + ' "' + node.getName() + '" успешно удален(а).');
+                messageService.showNotification(type2 + ' "' + node.getName() + '" успешно удален(а).');
             });
         }
     }
@@ -380,7 +386,15 @@ function Tree() {
             if (!this.getTreeGrid().find(node.getId())) {
                 this.getTreeGrid().append(node.getParentId(), [node]);
             }
-            this.getTreeGrid().refresh(nodes[i].getId());
+            if (node.isPlayable()) {
+                // if search was failed, reset to try search again.
+                if (node.getUrl() === 0) {
+                    node.setUrl(null);
+                    node.resetSearchTries();
+                }
+                this.searcher.schedule(node);
+            }
+            this.getTreeGrid().refresh(node.getId());
         }
     }
 
@@ -459,6 +473,11 @@ function Tree() {
                 messageService.showNotification('Успешно обновлено.');
             });
         });
+    }
+    this.refreshMenuNode = function () {
+        if (!this.menuNode)
+            return;
+        this.treegrid.refresh(this.menuNode.id);
     }
 
     this.playNode = function () {

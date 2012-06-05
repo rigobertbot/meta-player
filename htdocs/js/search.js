@@ -65,6 +65,7 @@ function Searcher() {
             if (!result) {
                 console.log('search failed, try again later', track);
                 that.schedule(track);
+                return;
             }
             if (result.count === 0) {
                 console.log('search failed, empty result, try again soon', track);
@@ -72,11 +73,16 @@ function Searcher() {
                 return;
             }
 
-            var nearestDelta = 4294967295;
+            var nearestDelta = 134217728;
             var nearestResult = null;
             for (var index in result.tracks) {
                 var searchTrack = result.tracks[index];
-                var delta =  Math.abs(searchTrack.duration - track.getDurationMs());
+                if (!track.getDurationMs()) {
+                	nearestResult = searchTrack;
+                	console.log('track does not have a duration');
+                	break;
+                }
+                var delta = Math.floor(Math.abs(searchTrack.duration - track.getDurationMs()));
                 if (delta < nearestDelta) {
                     nearestDelta = delta;
                     nearestResult = searchTrack;
