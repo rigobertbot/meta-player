@@ -26,8 +26,8 @@ class VkApiException extends \Exception
         return new self("The auth_key is wrong: expected $expected, but got $got.");
     }
 
-    public static function externalException ($code, $message, $method) {
-        return new self("Method $method returned error ($code): $message.");
+    public static function externalException ($method, $code, $message) {
+        return new self("Method '$method' returned error ($code): $message.");
     }
 
 }

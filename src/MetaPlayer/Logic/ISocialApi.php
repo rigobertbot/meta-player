@@ -33,7 +33,7 @@ interface ISocialApi
      * @abstract
      * @param string $message
      * @param array $userIds
-     * @return void
+     * @return array
      */
     public function sendNotification($message, array $userIds);
 }

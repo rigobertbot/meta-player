@@ -26,6 +26,7 @@ use MetaPlayer\Model\User;
 class SecurityManager implements ILoggerAware
 {
     const USER_ID = "session_user_id";
+    const SOCIAL_NETWORK = "session_social_network";
     
     /**
      * @var \Logger
@@ -57,6 +58,7 @@ class SecurityManager implements ILoggerAware
         }
         $user = $this->getUser();
         if ($user != null) {
+            $user->setSocialNetwork($socialNetwork);
             if ($user->getSocialId() != $viewerId) {
                 $currentUserId = $user->getSocialId();
                 $this->logger->warn("User $currentUserId replaced with $viewerId.");
@@ -64,13 +66,14 @@ class SecurityManager implements ILoggerAware
         } else {
             $user = $this->userRepository->findOneBySocialId($viewerId, $socialNetwork);
         }
-        
+
         if ($user == null) {
             $user = new User($viewerId, $socialNetwork);
             $this->userRepository->persistAndFlush($user);
         }
         
         $_SESSION[self::USER_ID] = $user->getId();
+        $_SESSION[self::SOCIAL_NETWORK] = (string) $socialNetwork;
     }
 
 
@@ -79,7 +82,7 @@ class SecurityManager implements ILoggerAware
      * @return boolean
      */
     public function isAuthenticated() {
-        return array_key_exists(self::USER_ID, $_SESSION);
+        return isset($_SESSION[self::USER_ID]) && isset($_SESSION[self::SOCIAL_NETWORK]);
     }
 
     /**
@@ -97,6 +100,15 @@ class SecurityManager implements ILoggerAware
      */
     public function getUserId() {
         return $_SESSION[self::USER_ID];
+
+    }
+
+    /**
+     * Get current social network.
+     * @return SocialNetwork
+     */
+    public function getSocialNetwork() {
+        return SocialNetwork::parse($_SESSION[self::SOCIAL_NETWORK]);
     }
     
     /**
@@ -104,7 +116,15 @@ class SecurityManager implements ILoggerAware
      * @return User
      */
     public function getUser() {
-        return $this->isAuthenticated() ? $this->userRepository->find($this->getUserId()) : null;
+        if (!$this->isAuthenticated()) {
+            return null;
+        }
+        $socialNetwork = $this->getSocialNetwork();
+        $user = $this->userRepository->find($this->getUserId());
+        if (isset($user)) {
+            $user->setSocialNetwork($socialNetwork);
+        }
+        return $user;
     }
 
     public function setLogger(\Logger $logger) {

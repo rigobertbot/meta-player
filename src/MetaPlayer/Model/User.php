@@ -13,6 +13,7 @@
 namespace MetaPlayer\Model;
 
 use Doctrine\ORM\Mapping\Entity;
+use MetaPlayer\MetaPlayerException;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Table;
@@ -68,11 +69,18 @@ class User {
 
     /**
      * Gets social id.
-     * @abstract
+     * @throws \MetaPlayer\MetaPlayerException
      * @return string
      */
     public function getSocialId() {
-
+        switch ($this->socialNetwork) {
+            case SocialNetwork::$MY:
+                return $this->myId;
+            case SocialNetwork::$VK:
+                return $this->vkId;
+            default:
+                throw MetaPlayerException::unsupportedSocialNetwork($this->socialNetwork);
+        }
     }
 
     /**

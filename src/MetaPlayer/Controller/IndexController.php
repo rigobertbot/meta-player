@@ -47,7 +47,7 @@ class IndexController implements ILoggerAware
         $this->logger->debug("authenticate $viewer_id");
         $this->securityManager->authenticate($viewer_id, SocialNetwork::$VK);
         
-        return new ModelAndView("Index/index", array('socialNetwork' => $this->securityManager->getUser()->getSocialNetwork()));
+        return new ModelAndView("Index/index", array('user' => $this->securityManager->getUser()));
     }
 
     public function myAction($app_id, $vid, $sig) {
@@ -56,7 +56,7 @@ class IndexController implements ILoggerAware
         $this->logger->debug("authenticate $vid");
         $this->securityManager->authenticate($vid, SocialNetwork::$MY);
 
-        return new ModelAndView("Index/index", array('socialNetwork' => $this->securityManager->getUser()->getSocialNetwork()));
+        return new ModelAndView("Index/index", array('user' => $this->securityManager->getUser()));
     }
 
     public function setLogger(\Logger $logger) {

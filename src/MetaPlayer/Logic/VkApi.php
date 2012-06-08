@@ -73,7 +73,7 @@ class VkApi implements ISocialApi
             $error = $result['error'];
             throw VkApiException::externalException($method, $error['error_code'], $error['error_msg']);
         }
-        return $result;
+        return $result['response'];
     }
 
     private function getSignature($params) {
@@ -90,9 +90,10 @@ class VkApi implements ISocialApi
      * Sends notification to the specified user list.
      * @param string $message
      * @param array $userIds
-     * @return void
+     * @return array
      */
     public function sendNotification($message, array $userIds) {
+        $sentIds = array();
         $params = array('message' => $message, 'random' => rand(), 'timestamp' => time());
         do {
             $result = array();
@@ -101,11 +102,13 @@ class VkApi implements ISocialApi
                     $result[] = array_pop($userIds);
                 }
             } else {
-                $result =& $userIds;
+                $result = $userIds;
                 $userIds = array();
             }
             $params['uids'] = implode(",", $result);
-            $this->sendRequest('secure.sendNotification', $params);
+            $response = $this->sendRequest('secure.sendNotification', $params);
+            $sentIds += explode(",", $response);
         } while (!empty($userIds));
+        return $sentIds;
     }
 }

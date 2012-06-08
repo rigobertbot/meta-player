@@ -69,6 +69,9 @@ class MyApi implements ISocialApi
         $params['sig'] = $sig;
         $query = http_build_query($params);
         $response = file_get_contents($this->apiUrl . "?" . $query);
+        if (!$response) {
+            throw MyApiException::undefinedExternalError($method);
+        }
         $result = json_decode($response, true);
         if (isset($result['error'])) {
             $error = $result['error'];
@@ -90,9 +93,10 @@ class MyApi implements ISocialApi
      * Sends notification to the specified user list.
      * @param string $message
      * @param array $userIds
-     * @return void
+     * @return array
      */
     public function sendNotification($message, array $userIds) {
+        $sentIds = array();
         $params = array('text' => $message);
         do {
             $result = array();
@@ -101,11 +105,13 @@ class MyApi implements ISocialApi
                     $result[] = array_pop($userIds);
                 }
             } else {
-                $result =& $userIds;
+                $result = $userIds;
                 $userIds = array();
             }
             $params['uids'] = implode(",", $result);
-            $this->sendRequest('notifications.send', $params);
+            $response = $this->sendRequest('notifications.send', $params);
+            $sentIds += $response;
         } while (!empty($userIds));
+        return $sentIds;
     }
 }

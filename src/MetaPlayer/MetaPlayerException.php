@@ -8,11 +8,6 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  *  
  */
-/**
- * User: v.dubrava
- * Date: 13.01.12
- * Time: 19:21
- */
 namespace MetaPlayer;
 
 /**
@@ -22,8 +17,12 @@ namespace MetaPlayer;
  */
 class MetaPlayerException extends \Exception
 {
-    function __construct($message = null, $code = null, $previous = null) {
+    public function __construct($message = null, $code = 0, $previous = null) {
         parent::__construct($message, $code, $previous);
+    }
+
+    public static function unsupportedSocialNetwork(\MetaPlayer\Model\SocialNetwork $socialNetwork) {
+        return new self("Social network $socialNetwork is not supported by this code.");
     }
 
 }

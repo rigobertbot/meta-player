@@ -36,9 +36,22 @@ class SocialManager
         }
     }
 
-
-    public function sendNotification($message) {
-
+    /**
+     * Send notification for all users of the specified network.
+     * @param $message
+     * @param SocialNetwork $socialNetwork
+     * @return array
+     */
+    public function sendNotification($message, SocialNetwork $socialNetwork, $adminsOnly = false) {
+        $api = $this->socialApis[(string) $socialNetwork];
+        $users = $adminsOnly
+            ? $this->userRepository->findAdminsBySocialNetwork($socialNetwork)
+            : $this->userRepository->findBySocialNetwork($socialNetwork);
+        $userIds = array();
+        foreach ($users as $user) {
+            $userIds[] = $user->getSocialId();
+        }
+        return $api->sendNotification($message, $userIds);
     }
 
     public function authenticate($params, SocialNetwork $socialNetwork) {
