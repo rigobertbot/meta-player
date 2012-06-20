@@ -52,7 +52,7 @@ class IndexController implements ILoggerAware
 
     public function myAction($app_id, $vid, $sig) {
         $this->logger->debug("index/my with arguments $app_id, $vid, $sig");
-        $this->socialManager->authenticate($_REQUEST, SocialNetwork::$MY);
+        $this->socialManager->authenticate($_GET, SocialNetwork::$MY);
         $this->logger->debug("authenticate $vid");
         $this->securityManager->authenticate($vid, SocialNetwork::$MY);
 
