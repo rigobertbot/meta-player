@@ -43,7 +43,7 @@ class BandManager
             $band->getFoundDate(),
             $source,
             $band->getEndDate());
-        $userBand->approve($band);
+        $userBand->setBand($band);
         $this->userBandRepository->persist($userBand);
         $this->userBandRepository->flush();
 

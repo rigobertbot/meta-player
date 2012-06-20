@@ -68,18 +68,14 @@ class BandController extends BaseSecurityController implements ILoggerAware
         return $this->listAction();
     }
     
-    public function listAction($onlyUser = false) {
-        $bands = $onlyUser ? array() : $this->bandRepository->findAll();
-        $userBands = $this->userBandRepository->findNotApproved($this->securityManager->getUser());
-        $bands = array_merge($bands, $userBands);
-        
+    public function listAction() {
+        $bands = $this->userBandRepository->findByUser($this->securityManager->getUser());
+
         $data = array();
         
         foreach ($bands as $band) {
             /* @var $band Band */
-            $bandDto = $band instanceof UserBand
-                ? $bandDto = $this->bandHelper->convertUserBandToDto($band)
-                : $bandDto = $this->bandHelper->convertBandToDto($band);
+            $bandDto = $this->bandHelper->convertUserBandToDto($band);
 
             $data[] = $bandDto;
         }
@@ -118,6 +114,13 @@ class BandController extends BaseSecurityController implements ILoggerAware
         $bandDto = $this->convertJson($json);
 
         $userBand = $this->bandHelper->convertDtoToUserBand($bandDto);
+
+        $band = $this->bandRepository->findByName($userBand->getName());
+        if ($band == null) {
+            $band = $this->bandHelper->convertDtoToBand($bandDto);
+            $this->bandRepository->persist($band);
+        }
+        $userBand->setBand($band);
         
         $this->userBandRepository->persist($userBand);
         $this->userBandRepository->flush();
@@ -162,6 +165,7 @@ class BandController extends BaseSecurityController implements ILoggerAware
     /**
      * Update user band.
      * @param $json
+     * @return \Oak\MVC\JsonViewModel
      */
     public function updateAction($json) {
         $bandDto = $this->convertJson($json);
@@ -169,6 +173,13 @@ class BandController extends BaseSecurityController implements ILoggerAware
         $userBandId = $this->bandHelper->convertDtoToUserBandId($bandDto->id);
         $userBand = $this->userBandRepository->find($userBandId);
         $this->bandHelper->populateUserBandWithDto($userBand, $bandDto);
+
+        $band = $this->bandRepository->findByName($userBand->getName());
+        if ($band == null) {
+            $band = $this->bandHelper->convertDtoToBand($bandDto);
+            $this->bandRepository->persist($band);
+        }
+        $userBand->setBand($band);
 
         $this->userBandRepository->flush();
 
@@ -188,11 +199,6 @@ class BandController extends BaseSecurityController implements ILoggerAware
         if ($userBand == null) {
             $this->logger->error("There is no user band with id $id.");
             throw new JsonException("Invalid band id.");
-        }
-
-        if ($userBand->isApproved()) {
-            $this->logger->error("There was try to remove approved user band with id $id.");
-            throw new JsonException("This band has already approved.");
         }
 
         $this->userBandRepository->remove($userBand);

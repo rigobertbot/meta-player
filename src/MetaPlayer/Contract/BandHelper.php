@@ -95,6 +95,18 @@ class BandHelper
     }
 
     /**
+     * @param BandDto $dto
+     * @return \MetaPlayer\Model\Band
+     */
+    public function convertDtoToBand(BandDto $dto) {
+        $band = new Band(
+            $dto->name,
+            ViewHelper::parseDate($dto->foundDate),
+            ViewHelper::parseDate($dto->endDate));
+        return $band;
+    }
+
+    /**
      * Populates the specified user band with values from the specified dto.
      *
      * @param \MetaPlayer\Model\UserBand $userBand

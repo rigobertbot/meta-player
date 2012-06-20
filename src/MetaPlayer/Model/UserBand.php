@@ -72,7 +72,7 @@ class UserBand extends BaseBand {
      *
      * @param Band $band
      */
-    public function approve(Band $band) {
+    public function setBand(Band $band) {
         $this->band = $band;
     }
 

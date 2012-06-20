@@ -17,9 +17,21 @@ use Doctrine\ORM\EntityRepository;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class AlbumRepository extends EntityRepository
+class AlbumRepository extends BaseRepository
 {
     public function findByBand($bandId) {
         return $this->findBy(array("band" => $bandId));
+    }
+
+    /**
+     * Finds album by name ignore case or null.
+     * @param $title
+     * @return Album|null
+     */
+    public function findByTitle($title) {
+        $albums = $this->getEntityManager()
+            ->createQuery("SELECT a FROM MetaPlayer\\Model\\Album a WHERE lower(a.title) = ?")
+            ->execute(array(strtolower($title)));
+        return reset($albums) || null;
     }
 }

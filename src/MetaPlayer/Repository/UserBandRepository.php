@@ -33,6 +33,14 @@ class UserBandRepository extends BaseRepository {
     }
 
     /**
+     * @param User $user
+     * @return UserBand[]
+     */
+    public function findByUser(User $user) {
+        return $this->findBy(array('user' => $user));
+    }
+
+    /**
      * @param $id
      * @return UserBand
      */

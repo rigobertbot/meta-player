@@ -34,13 +34,12 @@ class Album extends BaseAlbum
     protected $band;
 
     /**
-     *
-     * @param type $userBand
-     * @param type $title
-     * @param type $releaseDate
+     * @param Band $band
+     * @param string $title
+     * @param \DateTime $releaseDate
      */
-    public function __construct($userBand, $title, \DateTime $releaseDate) {
-        $this->band = $userBand;
+    public function __construct(Band $band, $title, \DateTime $releaseDate) {
+        $this->band = $band;
         parent::__construct($title, $releaseDate);
     }
 

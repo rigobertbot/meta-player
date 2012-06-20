@@ -78,9 +78,9 @@ class AlbumHelper {
      * @return UserAlbum 
      */
     public function convertDtoToUserAlbum(AlbumDto $albumDto) {
-        $albumDto->bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
+        $bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
 
-        $userBand = $this->userBandRepository->find($albumDto->bandId);
+        $userBand = $this->userBandRepository->find($bandId);
 
         $userAlbum = new UserAlbum(
                         $userBand,
@@ -89,6 +89,19 @@ class AlbumHelper {
                         $albumDto->source);
         
         return $userAlbum;
+    }
+
+    public function convertDtoToAlbum(AlbumDto $albumDto) {
+        $bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
+        $userBand = $this->userBandRepository->find($bandId);
+        $band = $userBand->getApprovedBand();
+
+        $album  = new Album(
+            $band,
+            $albumDto->title,
+            ViewHelper::parseDate($albumDto->releaseDate));
+
+        return $album;
     }
 
     /**
