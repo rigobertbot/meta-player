@@ -1,7 +1,11 @@
 <?php
 use MetaPlayer\Model\SocialNetwork;
-$socialNetwork = $objects['socialNetwork'];
-/** @var $socialNetwork \MetaPlayer\Model\SocialNetwork  */
+use MetaPlayer\Model\User;
+
+/** @var $objects array */
+$user = $objects['user'];
+/** @var $user User */
+$socialNetwork = $user->getSocialNetwork();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -13,10 +17,10 @@ $socialNetwork = $objects['socialNetwork'];
     <link rel="stylesheet" type="text/css" href="/css/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/css/blue.monday/jplayer.blue.monday.css" />
 
-    <?php if ($socialNetwork == SocialNetwork::$VK): ?>
+    <?php if ($socialNetwork === SocialNetwork::$VK): ?>
     <script type="text/javascript" src="http://vk.com/js/api/xd_connection.js?2"></script>
     <script type="text/javascript" src="/js/vkutils.js"></script>
-    <?php elseif ($socialNetwork == SocialNetwork::$MY): ?>
+    <?php elseif ($socialNetwork === SocialNetwork::$MY): ?>
     <script type="text/javascript" src="http://cdn.connect.mail.ru/js/loader.js"></script>
     <script type="text/javascript" src="/js/myutils.js"></script>
     <?php endif; ?>
@@ -54,6 +58,9 @@ $socialNetwork = $objects['socialNetwork'];
 </head>
 <body>
 <div id="mainHeader">
+    <?php if ($user->isAdmin()): ?>
+    <a href="/admin/index">Adminka!</a>
+    <?php endif; ?>
 </div>
 
 <div id="mainBody" class="easyui-layout" style="width: 650px; height: 540px;">
@@ -182,7 +189,7 @@ $socialNetwork = $objects['socialNetwork'];
     <a href="http://www.jeasyui.com/" target="_blank">jQuery EasyUI</a>;
     <a href="http://jplayer.org/">jPlayer</a>;
     <a href="http://musicbrainz.org" target="_blank">the catalogue MusicBrainz</a>
-    <br />MetaPlayer (c) by Oak Software 2011
+    <br />MetaPlayer (c) by Val Dubrava 2011-2012
     <br />
 </div>
 </body>

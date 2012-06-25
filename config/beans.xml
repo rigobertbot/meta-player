@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
     <import resource="mvc.xml" />
-    
+    <import resource="social.xml" />
+
     <bean id="jsonUtils" class="Oak\Json\JsonUtils" scope="singleton">
         <property name="classMapping">
             <array>

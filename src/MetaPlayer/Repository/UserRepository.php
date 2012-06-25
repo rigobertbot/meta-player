@@ -13,9 +13,9 @@
 namespace MetaPlayer\Repository;
 
 use \MetaPlayer\Model\SocialNetwork;
+use Doctrine\DBAL\LockMode;
+use MetaPlayer\MetaPlayerException;
 use MetaPlayer\Model\User;
-use MetaPlayer\Model\MyUser;
-use MetaPlayer\Model\VkUser;
 
 /**
  * The class UserRepository represents repository of the User.
@@ -30,42 +30,88 @@ class UserRepository extends BaseRepository {
      * @throws \MetaPlayer\MetaPlayerException
      */
     public function findOneBySocialId($socialId, SocialNetwork $socialNetwork) {
-        return $this->getRepository($socialNetwork)->findOneBy(array('socialId' => $socialId));
+        $criteria = array($this->getSocialIdField($socialNetwork) => $socialId);
+        $user = $this->findOneBy($criteria);
+        if (isset($user)) {
+            $user->setSocialNetwork($socialNetwork);
+        }
+        return $user;
     }
 
     /**
-     * @param \MetaPlayer\Model\SocialNetwork $socialNetwork
-     * @return \Doctrine\ORM\EntityRepository
+     * @param SocialNetwork $socialNetwork
+     * @return string
      * @throws \MetaPlayer\MetaPlayerException
      */
-    private function getRepository(SocialNetwork $socialNetwork) {
+    private function getSocialIdField(SocialNetwork $socialNetwork) {
         switch ($socialNetwork) {
-            case SocialNetwork::$MY:
-                return $this->getEntityManager()->getRepository('MetaPlayer\Model\MyUser');
             case SocialNetwork::$VK:
-                return $this->getEntityManager()->getRepository('MetaPlayer\Model\VkUser');
+                return 'vkId';
+            case SocialNetwork::$MY:
+                return 'myId';
             default:
-                throw new \MetaPlayer\MetaPlayerException("Unsupport SocialNetwork type " . $socialNetwork);
+                throw MetaPlayerException::unsupportedSocialNetwork($socialNetwork);
         }
     }
 
     /**
-     * Creates a new user.
-     * @param $socialId
-     * @param $socialNetwork
-     * @return \MetaPlayer\Model\MyUser|\MetaPlayer\Model\VkUser
-     * @throws \MetaPlayer\MetaPlayerException
+     * Finds all users of the specified social network.
+     * @param SocialNetwork $socialNetwork
+     * @return User[]
      */
-    public function createUser($socialId, $socialNetwork) {
-        switch ($socialNetwork) {
-            case SocialNetwork::$MY:
-                return new MyUser($socialId);
-            case SocialNetwork::$VK:
-                return new VkUser($socialId);
-            default:
-                throw new \MetaPlayer\MetaPlayerException("Unsupport SocialNetwork type " . $socialNetwork);
+    public function findBySocialNetwork(SocialNetwork $socialNetwork) {
+        $users = $this->getEntityManager()->createQuery("SELECT u FROM MetaPlayer\\Model\\User u WHERE u." . $this->getSocialIdField($socialNetwork) . " IS NOT NULL")->execute();
+        foreach ($users as $user) {
+            /** @var $user User **/
+            $user->setSocialNetwork($socialNetwork);
         }
+        return $users;
     }
+
+    /**
+     * Finds admin users for the specified social network.
+     * @param SocialNetwork $socialNetwork
+     * @return mixed
+     */
+    public function findAdminsBySocialNetwork(SocialNetwork $socialNetwork) {
+        $users = $this->getEntityManager()->createQuery("SELECT u FROM MetaPlayer\\Model\\User u WHERE u.isAdmin = TRUE AND u." . $this->getSocialIdField($socialNetwork) . " IS NOT NULL")->execute();
+        foreach ($users as $user) {
+            /** @var $user User **/
+            $user->setSocialNetwork($socialNetwork);
+        }
+        return $users;
+    }
+
+    /**
+     * @param array $criteria
+     * @return User
+     */
+    public function findOneBy(array $criteria) {
+        return parent::findOneBy($criteria);
+    }
+
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return User[]
+     */
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null) {
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
+    }
+
+    /**
+     * @param int $id
+     * @param int|null $lockMode
+     * @param null $lockVersion
+     * @internal param \MetaPlayer\Model\SocialNetwork $socialNetwork
+     * @return \MetaPlayer\Model\User
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null) {
+        return parent::find($id, $lockMode, $lockVersion);
+    }
+
 
     /**
      * Adds user entity to session.

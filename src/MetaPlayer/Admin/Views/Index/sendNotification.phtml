@@ -1,0 +1,42 @@
+<?php
+/**
+ MetaPlayer 1.0
+  
+ Licensed under the GPL terms
+ To use it on other terms please contact us
+ 
+ Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
+  
+**/
+/** @var $objects array */
+$ids = isset($objects['ids']) ? $objects['ids'] : null;
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>MetaPlayer - Admin - Send Notification</title>
+    </head>
+    <body>
+    <form action="sendNotification" method="post">
+        <dl>
+            <dt><label for="socialNetwork">Network:</label></dt>
+            <dd>
+                <select id="socialNetwork" name="socialNetwork">
+                    <?php foreach (\MetaPlayer\Model\SocialNetwork::getValues() as $value): ?>
+                    <option value="<?= $value; ?>"><?= $value->getName() ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </dd>
+            <dt><label for="message">Message:</label></dt>
+            <dd><textarea id="message" name="message" cols="20" rows="6"></textarea></dd>
+            <dt><label for="onlyAdmins">Only admins:</label><input type="checkbox" name="onlyAdmins" id="onlyAdmins"></dt>
+            <dd><input type="submit" value="Send"></dd>
+        </dl>
+    </form>
+<?php if(isset($ids)): ?>
+    <span style="color: green">Notification was successfully sent to:</span>
+    <br /><textarea wrap="true" rows="8" cols="60"><?= $ids ?></textarea>
+<?php endif;?>
+    </body>
+</html>

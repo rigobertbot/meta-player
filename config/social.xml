@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <import resource="private.social.xml" />
+
+    <bean id="socialManager" class="MetaPlayer\Manager\SocialManager" scope="singleton">
+        <constructor-arg>
+            <array>
+                <entry key="0">
+                    <ref bean="vkApi" />
+                </entry>
+                <entry key="1">
+                    <ref bean="myApi" />
+                </entry>
+            </array>
+        </constructor-arg>
+    </bean>
+</beans>
