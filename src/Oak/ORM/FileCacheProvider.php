@@ -24,7 +24,7 @@ class FileCacheProvider extends CacheProvider {
     private $cacheDir;
     
     function __construct($cacheDir) {
-        $this->cacheDir = ltrim($cacheDir, "\\/");
+        $this->cacheDir = rtrim($cacheDir, "\\/");
     }
     
     private function combinePath($id) {
