@@ -60,7 +60,7 @@ class AlbumHelper {
     public function convertUserAlbumToDto(UserAlbum $album) {
         $dto = $this->convertBaseAlbumToDto($album);
 
-        $dto->bandId = $album->getBand()->getGlobalBand()->getId();
+        $dto->bandId = $album->getBand()->getId();
         $dto->id = $album->getId();
         $dto->source = $album->getSource();
 

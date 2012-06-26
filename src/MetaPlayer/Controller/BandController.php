@@ -142,24 +142,13 @@ class BandController extends BaseSecurityController implements ILoggerAware
     }
 
     public function getAction($id) {
-        if ($this->bandHelper->isDtoUserBandId($id)) {
-            $id = $this->bandHelper->convertDtoToUserBandId($id);
-            $userBand = $this->userBandRepository->find($id);
-            if ($userBand == null) {
-                $this->logger->error("There is no user band with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->bandHelper->convertUserBandToDto($userBand);
-            return new JsonViewModel($dto, $this->jsonUtils);
-        } else {
-            $band = $this->bandRepository->find($id);
-            if ($band == null) {
-                $this->logger->error("There is no band with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->bandHelper->convertBandToDto($band);
-            return new JsonViewModel($dto, $this->jsonUtils);
+        $userBand = $this->userBandRepository->find($id);
+        if ($userBand == null) {
+            $this->logger->error("There is no user band with id = $id.");
+            throw new JsonException("Invalid id.");
         }
+        $dto = $this->bandHelper->convertUserBandToDto($userBand);
+        return new JsonViewModel($dto, $this->jsonUtils);
     }
 
     /**
@@ -170,8 +159,7 @@ class BandController extends BaseSecurityController implements ILoggerAware
     public function updateAction($json) {
         $bandDto = $this->convertJson($json);
 
-        $userBandId = $this->bandHelper->convertDtoToUserBandId($bandDto->id);
-        $userBand = $this->userBandRepository->find($userBandId);
+        $userBand = $this->userBandRepository->find($bandDto->id);
         $this->bandHelper->populateUserBandWithDto($userBand, $bandDto);
 
         $band = $this->bandRepository->findByName($userBand->getName());
@@ -191,18 +179,20 @@ class BandController extends BaseSecurityController implements ILoggerAware
     /**
      * Remove user band
      * @param $id
+     * @throws \MetaPlayer\JsonException
+     * @return void
      */
     public function removeAction($id) {
-        $id = $this->bandHelper->convertDtoToUserBandId($id);
-
         $userBand = $this->userBandRepository->find($id);
         if ($userBand == null) {
             $this->logger->error("There is no user band with id $id.");
             throw new JsonException("Invalid band id.");
         }
 
-        $this->userBandRepository->remove($userBand);
-        $this->userBandRepository->flush();
+        $this->
+            userBandRepository->
+            remove($userBand)->
+            flush();
     }
 
     public function setLogger(\Logger $logger) {

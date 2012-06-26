@@ -71,14 +71,9 @@ class UserBandRepository extends BaseRepository {
 
     /**
      * @param \MetaPlayer\Model\UserBand $entity
-     * @throws \MetaPlayer\MetaPlayerException
+     * @return UserBandRepository
      */
-    public function remove($entity)
-    {
-        if ($entity->isApproved()) {
-            throw new \MetaPlayer\MetaPlayerException("Impossible to remove approved user entity.");
-        }
-
-        parent::remove($entity);
+    public function remove($entity) {
+        return parent::remove($entity);
     }
 }

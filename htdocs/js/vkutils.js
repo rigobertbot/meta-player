@@ -52,12 +52,31 @@ function getSearchResult(query, offset, limit, handler) {
 
         for (var index in data.response) {
             var info = data.response[index];
-
-            var track = new SearchTrack(info.aid, info.artist, info.title, info.duration, info.url);
+            var track = convertAudio(info);
             result.tracks.push(track);
         }
 
         handler(result);
+    });
+}
+
+function convertAudio(vkAudio) {
+    return new Audio(
+        vkAudio['owner_id'] + '_' + vkAudio['aid'],
+        vkAudio.url,
+        vkAudio.artist,
+        vkAudio.title,
+        vkAudio.duration
+    );
+}
+
+function resolveAudio(aid, handler) {
+    VK.api('audio.getById', {audios: aid, test_mode: 1}, function (data) {
+        if (!data.response) {
+            console.log('vk resolve audio failed', data, aid. handler);
+        }
+        var vkAudio = data.response.pop();
+        handler(convertAudio(vkAudio));
     });
 }
 

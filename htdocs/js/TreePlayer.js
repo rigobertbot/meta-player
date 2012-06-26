@@ -197,8 +197,8 @@ function TreePlayer(tree, player, searcher) {
         }
 
         this.setCurrent(node);
-        if (!node.getUrl()) {
-            if (node.getUrl() === 0) {
+        if (!node.getAssociation()) {
+            if (!node.getQuery()) {
                 callbackNext.call(this);
                 return;
             }

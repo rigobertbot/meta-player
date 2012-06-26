@@ -88,14 +88,6 @@ class UserAlbum extends BaseAlbum {
     }
 
     /**
-     * Is this user entity approved and simple entity was produced.
-     * @return bool
-     */
-    public function isApproved() {
-        return $this->album != null;
-    }
-
-    /**
      * Gets album from global catalogue.
      * @return Album|null
      */

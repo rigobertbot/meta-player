@@ -22,7 +22,6 @@ function SearchTrack(id, band, track, duration, url) {
 
 
 function Searcher() {
-    this.maximumSearchTries = 3;
     this.searchQueue = [];
     this.searchSuccessEvent = "searchSuccess";
     this.searchFailedEvent = "searchFailed";
@@ -46,17 +45,17 @@ function Searcher() {
     setInterval(function () {
         var track = that.searchQueue.shift();
         if (track) {
-            var url = track.getUrl();
-            if (!url || url === null) {
+            var association = track.getAssociation();
+            if (!association || association === null) {
                 that.search(track);
             }
         }
     }, 500);
 
     this.search = function (track) {
-        var query = track.getQuery(track.getSearchTries() - 1);
+        var query = track.getQuery();
         if (query === false) {
-            console.log("Nothing found: all queries are runing out.");
+            console.log("Nothing found: all queries are running out.");
             return;
         }
         var that = this;
@@ -93,21 +92,25 @@ function Searcher() {
             }
             console.log('search binding complete, delta:', nearestDelta, 'result:', nearestResult, 'but results were:', result);
 
-            track.setUrl(nearestResult.url);
-            track.setDuration(nearestResult.duration);
-
-            that.triggerSearchSuccess(track);
+            var association = new Association();
+            association.setSocialId(nearestResult.id);
+            associationRepository.associate(track, association, function () {
+                var serverAssociation = track.getAssociation();
+                serverAssociation.resolve(nearestResult);
+                that.triggerSearchSuccess(track);
+            });
         });
     }
 
     this.schedule = function (track, priority) {
-        var url = track.getUrl();
-        if (!url || url === null) {
-            if (!track.getQuery(track.incSearchTries() - 1)) {
+        var association = track.getAssociation();
+        if (!association || association === null) {
+            if (!track.getQuery()) {
                 console.log("Maximum search tries reached", track);
                 this.triggerSearchFailed(track);
                 return;
             }
+            track.incSearchTries();
             if (priority) {
                 this.searchQueue.unshift(track)
             } else {

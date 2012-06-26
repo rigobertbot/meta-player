@@ -56,9 +56,11 @@ function Player() {
      * @param node
      */
     this.play = function (node) {
-        $('#mainPlayer').jPlayer("setMedia", {mp3: node.getUrl()})
-                        .jPlayer("play");
         $('.jp-title').text(node.getName());
+        associationManager.resolve(node.getAssociation(), function (association) {
+            $('#mainPlayer').jPlayer("setMedia", {mp3: association.getUrl()})
+                .jPlayer("play");
+        });
     }
 
     /**

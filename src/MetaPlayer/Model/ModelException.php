@@ -45,4 +45,12 @@ class ModelException extends \Exception
         $id = $userObject->getId();
         return self::illegalState("User object '$clazz' with id $id does not have correspond global object '$globalObjectName'");
     }
+
+    public static function unsupportedSocialNetwork(SocialNetwork $socialNetwork) {
+        return new self("Unsupported social network $socialNetwork.");
+    }
+
+    public static function invalidId($id, $entity) {
+        return new self("There is not $entity with id = $id.");
+    }
 }

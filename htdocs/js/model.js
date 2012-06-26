@@ -34,7 +34,7 @@ Node.prototype.constructor = Node;
 
 Node.prototype._wakeup = function () {
     this.serverId = this.id;
-    this.belongsToUser = (this.id.indexOf('user_') === 0);
+    this.belongsToUser = true;
 }
 Node.prototype._sleep = function () {
     var clone = $.extend({}, this);
@@ -185,6 +185,7 @@ function TrackNode() {
     this.queries = null;
     this.url = null;
     this.searchTries = 0;
+    this.association = null;
 }
 
 TrackNode.prototype = new Node();
@@ -245,13 +246,74 @@ TrackNode.prototype.incSearchTries = function() { return ++ this.searchTries; }
 TrackNode.prototype.getSearchTries = function () { return this.searchTries; }
 TrackNode.prototype.resetSearchTries = function () { this.searchTries = 0; return this; }
 
-TrackNode.prototype.getQuery = function (strictLevel) {
-    if (!this.queries || this.queries.length <= strictLevel) {
+TrackNode.prototype.getQuery = function () {
+    if (!this.queries || this.queries.length <= this.searchTries) {
         return false;
     }
-    return this.queries[strictLevel];
+    return this.queries[this.searchTries];
 }
 
 TrackNode.prototype.getParentId = function () { return this.albumId; }
 TrackNode.prototype.isPlayable = function () { return true; }
+/**
+ * @return Association
+ */
+TrackNode.prototype.getAssociation = function () { return this.association; }
+TrackNode.prototype.setAssociation = function (association) { this.association = association; return this; }
+
+/********************************/
+/********* Association **********/
+/********************************/
+var associationExpirationTimeMs = 8*60*60*1000; // 8h
+function Association()  {
+    this.className = 'Association';
+    this.id = null;
+//    this.trackId = null;
+//    this.serverTrackId = null;
+    this.socialId = null;
+    this.popularity = 0;
+    this.expiredOn = 0;
+    this.audio = null;
+}
+
+Association.prototype._wakeup = function () {
+//    this.serverTrackId = this.trackId;
+//    this.trackId = 't' + this.trackId;
+}
+
+Association.prototype._sleep = function () {
+//    this.trackId = this.serverTrackId;
+    return this;
+}
+
+//Association.prototype.setTrack = function(track) {
+//    this.trackId = track.id;
+//    this.serverTrackId = track.getServerId();
+//    return this;
+//}
+
+Association.prototype.setSocialId = function (socialId) {
+    this.socialId = socialId;
+    return this;
+}
+
+Association.prototype.getSocialId = function () { return this.socialId; }
+
+Association.prototype.resolve = function (audio) {
+    this.audio = audio;
+    this.expiredOn = new Date().getTime() + associationExpirationTimeMs;
+    return this;
+}
+
+Association.prototype.isResolved = function() {
+    return this.audio != null && new Date().getTime() <= this.expiredOn;
+}
+
+Association.prototype.getUrl = function () {
+    return this.audio ? this.audio.url : null;
+}
+
+Association.prototype.getDuration = function () {
+    return this.audio ? this.audio.duration : null;
+}
 

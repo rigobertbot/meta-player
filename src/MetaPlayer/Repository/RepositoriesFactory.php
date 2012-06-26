@@ -85,4 +85,11 @@ class RepositoriesFactory
         return $this->entityManager->getRepository('MetaPlayer\Model\UserTrack');
     }
 
+    /**
+     * @Bean(name={associationRepository, AssociationRepository})
+     * @return AssociationRepository
+     */
+    public function getAssociationRepository() {
+        return $this->entityManager->getRepository('MetaPlayer\Model\Association');
+    }
 }

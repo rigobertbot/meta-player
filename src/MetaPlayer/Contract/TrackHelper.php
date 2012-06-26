@@ -46,6 +46,12 @@ class TrackHelper
     private $securityManager;
 
     /**
+     * @Resource
+     * @var AssociationHelper
+     */
+    private $associationHelper;
+
+    /**
      * @param TrackDto $dto
      * @return \MetaPlayer\Model\UserTrack
      */
@@ -96,9 +102,14 @@ class TrackHelper
     public function convertUserTrackToDto(\MetaPlayer\Model\UserTrack $userTrack) {
         $dto = $this->convertBaseTrackToDto($userTrack);
 
-        $dto->id = $this->convertUserTrackIdToDto($userTrack->getId());
+        $dto->id = $userTrack->getId();
         $dto->albumId = $userTrack->getUserAlbum()->getId();
         $dto->source = $userTrack->getSource();
+        $association = $userTrack->getAssociation($this->securityManager->getSocialNetwork());
+        if ($association != null) {
+            $dto->association = $this->associationHelper->convertAssociationToDto($association);
+            $dto->association->userTrackId = $userTrack->getId();
+        }
 
         return $dto;
     }
@@ -125,9 +136,5 @@ class TrackHelper
         $dto = $this->convertBaseTrackToDto($track);
         $dto->albumId = $track->getAlbum()->getId();
         return $dto;
-    }
-
-    public function convertUserTrackIdToDto($userTrackId) {
-        return self::$userTrackIdPrefix . $userTrackId;
     }
 }

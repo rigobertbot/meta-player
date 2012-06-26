@@ -15,17 +15,10 @@
  */
 namespace MetaPlayer\Contract;
 
-class TrackDto
+class AssociationDto
 {
     public $id;
-    public $title;
-    public $serial;
-    public $duration;
-    public $albumId;
-    public $source;
-    public $queries;
-    /**
-     * @var AssociationDto
-     */
-    public $association;
+    public $userTrackId;
+    public $socialId;
+    public $popularity;
 }

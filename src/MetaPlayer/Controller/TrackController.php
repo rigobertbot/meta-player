@@ -13,6 +13,7 @@
 namespace MetaPlayer\Controller;
 
 use \MetaPlayer\Contract\TrackDto;
+use MetaPlayer\Model\ModelException;
 use \MetaPlayer\JsonException;
 use Oak\MVC\JsonViewModel;
 use MetaPlayer\ViewHelper;
@@ -82,17 +83,38 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
      */
     private $albumManager;
 
+    /**
+     * @Resource
+     * @var \MetaPlayer\Repository\AssociationRepository
+     */
+    private $associationRepository;
+
 
     public function listAction($albumId) {
         $data = array();
         $tracks = $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $albumId);
 
         foreach ($tracks as $track) {
+            $this->checkAssociation($track);
             $trackDto = $this->trackHelper->convertUserTrackToDto($track);
             $data[] = $trackDto;
         }
         
         return new JsonViewModel($data, $this->jsonUtils);
+    }
+
+    private function checkAssociation(UserTrack $userTrack) {
+        $association = $userTrack->getAssociation($this->securityManager->getSocialNetwork());
+        if ($association == null) {
+            $track = $userTrack->getGlobalTrack();
+            if ($track == null) {
+                throw ModelException::thereIsNoGlobalObject($userTrack, 'Track');
+            }
+            $association = $this->associationRepository->findOnePopularByTrack($userTrack->getGlobalTrack());
+            if ($association != null) {
+                $userTrack->associate($this->securityManager->getSocialNetwork(), $association);
+            }
+        }
     }
 
     /**
@@ -124,6 +146,7 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
         $userTrack->setGlobalTrack($track);
 
         $this->userTrackRepository->persist($userTrack);
+        $this->checkAssociation($userTrack);
         $this->userTrackRepository->flush();
 
         $resultDto = $this->trackHelper->convertUserTrackToDto($userTrack);
@@ -159,6 +182,7 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
             $this->logger->error("There is no user track with id = $id.");
             throw new JsonException("Invalid id.");
         }
+        $this->checkAssociation($userTrack);
         $dto = $this->trackHelper->convertUserTrackToDto($userTrack);
         return new JsonViewModel($dto, $this->jsonUtils);
     }
@@ -180,6 +204,7 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
             $this->trackRepository->persist($track);
         }
         $userTrack->setGlobalTrack($track);
+        $this->checkAssociation($userTrack);
 
         $this->userTrackRepository->flush();
 

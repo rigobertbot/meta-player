@@ -216,7 +216,6 @@ function Tree() {
         });
 
         this.searcher.bindSearchFailed(function (event, node) {
-            node.setUrl(0);
             console.log('search failed', node);
             that.treegrid.refresh(node.id);
         });
@@ -274,12 +273,13 @@ function Tree() {
         }
         var container = $('<div></div>');
 
-        if (node.getUrl() === null) {
-            $('<div class="loading-icon"></div>').appendTo(container);
-        } else if (node.getUrl() === 0) {
-            $('<div class="failed-icon"></div>').appendTo(container);
+        var button = $('<div onclick="event.stopPropagation();"></div>').appendTo(container);
+        if (!node.getQuery()) {
+            $(button).addClass('failed-icon');
+        } else if (!node.getAssociation()) {
+            $(button).addClass('loading-icon');
         } else {
-            $('<div class="success-icon"></div>').appendTo(container);
+            $(button).addClass('success-icon');
         }
 
         return $(container).html();
@@ -388,10 +388,7 @@ function Tree() {
             }
             if (node.isPlayable()) {
                 // if search was failed, reset to try search again.
-                if (node.getUrl() === 0) {
-                    node.setUrl(null);
-                    node.resetSearchTries();
-                }
+                node.resetSearchTries();
                 this.searcher.schedule(node);
             }
             this.getTreeGrid().refresh(node.getId());

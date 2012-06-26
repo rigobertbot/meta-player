@@ -8,6 +8,7 @@ div {
 }
 
 .loading-icon {
+    cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: auto;
@@ -15,6 +16,7 @@ div {
 }
 
 .success-icon {
+    cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: auto;
@@ -22,6 +24,7 @@ div {
 }
 
 .failed-icon {
+    cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: auto;

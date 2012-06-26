@@ -205,20 +205,14 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     }
 
     public function removeAction($id) {
-        $id = $this->albumHelper->convertDtoToUserAlbumId($id);
-
         $userAlbum = $this->userAlbumRepository->find($id);
         if ($userAlbum == null) {
             $this->logger->error("There is no user album with id $id.");
             throw new JsonException("Invalid album id.");
         }
 
-        if ($userAlbum->isApproved()) {
-            $this->logger->error("There was try to remove approved user album with id $id.");
-            throw new JsonException("This album has already approved.");
-        }
-
-        $this->userAlbumRepository->
+        $this->
+            userAlbumRepository->
             remove($userAlbum)->
             flush();
     }

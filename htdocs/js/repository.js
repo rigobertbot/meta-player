@@ -59,11 +59,9 @@ BaseRepository.prototype.dispatch = function (data) {
         }
     }
     if (loaded.length > 0) {
-        console.log("trigger", this.nodeLoadedEvent, loaded);
         $(this).trigger(this.nodeLoadedEvent, [loaded]);
     }
     if (updated.length > 0) {
-        console.log("trigger", this.nodeUpdatedEvent, updated);
         $(this).trigger(this.nodeUpdatedEvent, [updated]);
     }
 }
@@ -217,3 +215,24 @@ function getRepositoryFor(entity) {
     }
     throw "There is no repository for entity " + entity;
 }
+/***************************************
+ ******** AssociationRepository ********
+ ***************************************/
+function AssociationRepository() {
+    this.url = '/association/';
+}
+AssociationRepository.prototype.associate = function (track, association, handler) {
+    var url = this.url + 'associate';
+    var data = $.objectToJSON(association);
+    $.post(url, {trackId: track.getServerId(), 'json': data}, function (result, textStatus, jqXHR) {
+        var serverAssociation = $.parseJSONObject(result);
+        track.setAssociation(serverAssociation);
+        // invoke update action
+        trackRepository.dispatch(track);
+        if (handler && $.isFunction(handler)) {
+            handler(track, serverAssociation);
+        }
+    });
+}
+
+var associationRepository = new AssociationRepository();
