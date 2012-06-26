@@ -12,6 +12,7 @@
 
 namespace MetaPlayer\Contract;
 use MetaPlayer\Model\UserAlbum;
+use MetaPlayer\Model\ModelException;
 use MetaPlayer\Model\BaseAlbum;
 use MetaPlayer\Model\Album;
 use MetaPlayer\ViewHelper;
@@ -24,8 +25,6 @@ use MetaPlayer\Repository\UserBandRepository;
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 class AlbumHelper {
-    private static $userAlbumIdPrefix = "user_";
-    
     /**
      * @Resource
      * @var BandHelper
@@ -61,15 +60,10 @@ class AlbumHelper {
     public function convertUserAlbumToDto(UserAlbum $album) {
         $dto = $this->convertBaseAlbumToDto($album);
 
-        if ($album->getBand()->isApproved()) {
-            $dto->bandId = $album->getBand()->getApprovedBand()->getId();
-        } else {
-            $dto->bandId = $this->bandHelper->convertUserBandIdToDto($album->getBand()->getId());
-        }
-
-        $dto->id = $this->convertUserAlbumIdToDto($album->getId());
-
+        $dto->bandId = $album->getBand()->getGlobalBand()->getId();
+        $dto->id = $album->getId();
         $dto->source = $album->getSource();
+
         return $dto;
     }
     
@@ -78,9 +72,7 @@ class AlbumHelper {
      * @return UserAlbum 
      */
     public function convertDtoToUserAlbum(AlbumDto $albumDto) {
-        $bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
-
-        $userBand = $this->userBandRepository->find($bandId);
+        $userBand = $this->userBandRepository->find($albumDto->bandId);
 
         $userAlbum = new UserAlbum(
                         $userBand,
@@ -92,9 +84,12 @@ class AlbumHelper {
     }
 
     public function convertDtoToAlbum(AlbumDto $albumDto) {
-        $bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
-        $userBand = $this->userBandRepository->find($bandId);
-        $band = $userBand->getApprovedBand();
+        $userBand = $this->userBandRepository->find($albumDto->bandId);
+        $band = $userBand->getGlobalBand();
+
+        if ($band == null) {
+            throw ModelException::thereIsNoGlobalObject($userBand, 'Band');
+        }
 
         $album  = new Album(
             $band,
@@ -114,25 +109,4 @@ class AlbumHelper {
         $userAlbum->setReleaseDate(ViewHelper::parseDate($dto->releaseDate));
         $userAlbum->setSource($dto->source);
     }
-
-    public function convertUserAlbumIdToDto($userAlbumId) {
-        return self::$userAlbumIdPrefix . $userAlbumId;
-    }
-
-    public function convertDtoToUserAlbumId($dtoUserAlbumId) {
-        if (!$this->isDtoUserAlbumId($dtoUserAlbumId)) {
-            throw new \MetaPlayer\MetaPlayerException("Argument dtoAlbumId ($dtoUserAlbumId) isn't a user album id.");
-        }
-        return substr($dtoUserAlbumId, strlen(self::$userAlbumIdPrefix));
-    }
-
-    /**
-     * Checks if specified id belongs to user album.
-     * @param $albumId
-     * @return bool
-     */
-    public function isDtoUserAlbumId($albumId) {
-        return strpos($albumId, self::$userAlbumIdPrefix) === 0;
-    }
-    
 }

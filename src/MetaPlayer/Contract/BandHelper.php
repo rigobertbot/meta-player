@@ -31,19 +31,6 @@ class BandHelper
      */
     private $securityManager;
 
-    private static $userBandIdPrefix = "user_";
-    
-    public function convertUserBandIdToDto($userBandId) {
-        return self::$userBandIdPrefix . $userBandId;
-    }
-    
-    public function convertDtoToUserBandId($dtoBandId) {
-        if (!$this->isDtoUserBandId($dtoBandId)) {
-            throw new \MetaPlayer\MetaPlayerException('The specified id is not a user band id!');
-        }
-        return substr($dtoBandId, strlen(self::$userBandIdPrefix));
-    }
-
     /**
      * Converts base band to dto.
      * @param \MetaPlayer\Model\BaseBand $baseBand
@@ -74,7 +61,7 @@ class BandHelper
      */
     public function convertUserBandToDto(UserBand $userBand) {
         $dto = $this->convertBaseBandToDto($userBand);
-        $dto->id = self::convertUserBandIdToDto($userBand->getId());
+        $dto->id = $userBand->getId();
         $dto->source = $userBand->getSource();
         return $dto;
     }
@@ -118,15 +105,5 @@ class BandHelper
         $userBand->setEndDate(ViewHelper::parseDate($dto->endDate));
         $userBand->setSource($dto->source);
     }
-
-    /**
-     * Checks if specified id belongs to user ифтв.
-     * @param $bandId
-     * @return bool
-     */
-    public function isDtoUserBandId($bandId) {
-        return strpos($bandId, self::$userBandIdPrefix) === 0;
-    }
-
 
 }

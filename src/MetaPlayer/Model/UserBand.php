@@ -84,7 +84,7 @@ class UserBand extends BaseBand {
      * Gets approved band or null.
      * @return \MetaPlayer\Model\Band|null
      */
-    public function getApprovedBand() {
+    public function getGlobalBand() {
         return $this->band;
     }
 }

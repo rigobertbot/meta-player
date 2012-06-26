@@ -30,7 +30,8 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * @Table(name="user")
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class User {
+class User implements IIdentified
+{
 
     /**
      * @Id @Column(type="bigint")

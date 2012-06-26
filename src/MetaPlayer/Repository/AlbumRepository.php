@@ -11,6 +11,8 @@
 
 namespace MetaPlayer\Repository;
 use Doctrine\ORM\EntityRepository;
+use MetaPlayer\Model\Band;
+use MetaPlayer\Model\Album;
 
 /**
  * Description of AlbumRepository
@@ -25,13 +27,14 @@ class AlbumRepository extends BaseRepository
 
     /**
      * Finds album by name ignore case or null.
-     * @param $title
+     * @param Band $band
+     * @param string $title
      * @return Album|null
      */
-    public function findByTitle($title) {
+    public function findOneByBandAndTitle(Band $band, $title) {
         $albums = $this->getEntityManager()
-            ->createQuery("SELECT a FROM MetaPlayer\\Model\\Album a WHERE lower(a.title) = ?")
-            ->execute(array(strtolower($title)));
+            ->createQuery("SELECT a FROM MetaPlayer\\Model\\Album a WHERE a.band = ? AND lower(a.title) = ?")
+            ->execute(array($band, strtolower($title)));
         return reset($albums) || null;
     }
 }

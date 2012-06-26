@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
  * The BaseTrack defines common representation of the track entity.
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-abstract class BaseTrack
+abstract class BaseTrack implements IIdentified
 {
     /**
      * @Id @Column(type="bigint")

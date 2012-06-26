@@ -88,7 +88,6 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     private $jsonUtils;
 
     public function listAction($bandId) {
-        $bandId = $this->bandHelper->convertDtoToUserBandId($bandId);
         $albums =  $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $bandId);
 
         $data = array();
@@ -127,24 +126,13 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     }
 
     public function getAction($id) {
-        if ($this->albumHelper->isDtoUserAlbumId($id)) {
-            $id = $this->albumHelper->convertDtoToUserAlbumId($id);
-            $userAlbum = $this->userAlbumRepository->find($id);
-            if ($userAlbum == null) {
-                $this->logger->error("There is no user album with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
-            return new JsonViewModel($dto, $this->jsonUtils);
-        } else {
-            $album = $this->albumRepository->find($id);
-            if ($album == null) {
-                $this->logger->error("There is no album with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->albumHelper->convertAlbumToDto($album);
-            return new JsonViewModel($dto, $this->jsonUtils);
+        $userAlbum = $this->userAlbumRepository->find($id);
+        if ($userAlbum == null) {
+            $this->logger->error("There is no user album with id = $id.");
+            throw new JsonException("Invalid id.");
         }
+        $dto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
+        return new JsonViewModel($dto, $this->jsonUtils);
     }
     
     public function addAction($json) {
@@ -152,16 +140,19 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
 
         $userBand = $this->userBandRepository->findOneByBandAndUser($this->securityManager->getUser(), $albumDto->bandId);
         if ($userBand == null) {
-            $this->logger->error("There is no usr band with id = {$albumDto->bandId}.");
+            $this->logger->error("There is no user band with id = {$albumDto->bandId}.");
             throw new JsonException("Invalid id.");
         }
 
         $userAlbum = $this->albumHelper->convertDtoToUserAlbum($albumDto);
 
-        $album = $this->albumRepository->findByTitle($userAlbum->getTitle());
+        $album = $this->albumRepository->findOneByBandAndTitle($userBand->getGlobalBand(), $userAlbum->getTitle());
         if ($album == null) {
-
+            $album = $this->albumHelper->convertDtoToAlbum($albumDto);
+            $this->albumRepository->persist($album);
         }
+
+        $userAlbum->setAlbum($album);
         
         $this->userAlbumRepository->persist($userAlbum);
         $this->userAlbumRepository->flush();
@@ -173,7 +164,6 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     public function addOrGetAction($json) {
         $albumDto = $this->parseJson($json);
 
-        $albumDto->bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
         $userBand = $this->userBandRepository->find($albumDto->bandId);
         if ($userBand == null) {
             $this->logger->error("There is no user band with id = {$albumDto->bandId}.");
@@ -197,9 +187,16 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     public function updateAction($json) {
         $albumDto = $this->parseJson($json);
 
-        $userAlbumId = $this->albumHelper->convertDtoToUserAlbumId($albumDto->id);
-        $userAlbum = $this->userAlbumRepository->find($userAlbumId);
+        $userAlbum = $this->userAlbumRepository->find($albumDto->id);
+        $userBand = $userAlbum->getBand();
         $this->albumHelper->populateUserAlbumWithDto($userAlbum, $albumDto);
+
+        $album = $this->albumRepository->findOneByBandAndTitle($userBand->getGlobalBand(), $userAlbum->getTitle());
+        if ($album == null) {
+            $album = $this->albumHelper->convertDtoToAlbum($albumDto);
+            $this->albumRepository->persist($album);
+        }
+        $userAlbum->setAlbum($album);
 
         $this->userAlbumRepository->flush();
 

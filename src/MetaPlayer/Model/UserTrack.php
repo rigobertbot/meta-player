@@ -45,13 +45,6 @@ class UserTrack extends BaseTrack
     protected $source;
 
     /**
-     // @Column(type="boolean", nullable=true, name="is_approved")
-     // @var bool
-     */
-    //protected $isApproved = false;
-    // deprecated
-
-    /**
      * @ManyToOne(targetEntity="UserAlbum")
      * @JoinColumn(name="user_album_id", referencedColumnName="id")
      * @var UserAlbum
@@ -62,7 +55,7 @@ class UserTrack extends BaseTrack
      * @ManyToOne(targetEntity="Track")
      * @var Track
      */
-    protected $track = null;
+    protected $track;
 
     public function __construct(User $user, UserAlbum $userAlbum, $source, $title, $duration, $serial) {
         parent::__construct($title, $duration, $serial);
@@ -98,7 +91,7 @@ class UserTrack extends BaseTrack
     /**
      * @return \MetaPlayer\Model\Track
      */
-    public function getTrack()
+    public function getGlobalTrack()
     {
         return $this->track;
     }
@@ -123,15 +116,7 @@ class UserTrack extends BaseTrack
      * Mark as approved, and set produced entity.
      * @param \MetaPlayer\Model\Track $track
      */
-    public function approve(Track $track) {
+    public function setGlobalTrack(Track $track) {
         $this->track = $track;
-    }
-
-    /**
-     * Is this user entity approved and simple entity was produced.
-     * @return boolean
-     */
-    public function isApproved() {
-        return $this->track != null;
     }
 }

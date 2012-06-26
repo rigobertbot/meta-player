@@ -85,24 +85,10 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
     public function listAction($albumId) {
         $data = array();
-        $isUserTrack = $this->albumHelper->isDtoUserAlbumId($albumId);
-
-        if ($isUserTrack) {
-            $tracks = $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $this->albumHelper->convertDtoToUserAlbumId($albumId));
-        } else {
-            $tracks = $this->trackRepository->findByAlbum($albumId);
-            $userAlbum = $this->userAlbumRepository->findOneByUserAndAlbum($this->securityManager->getUser(), $albumId);
-            if ($userAlbum != null) {
-                $userTracks = $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $userAlbum);
-                $tracks = array_merge($tracks, $userTracks);
-            }
-        }
+        $tracks = $this->userTrackRepository->findByUserAndAlbum($this->securityManager->getUser(), $albumId);
 
         foreach ($tracks as $track) {
-            $trackDto = $track instanceof \MetaPlayer\Model\UserTrack
-                ? $this->trackHelper->convertUserTrackToDto($track)
-                : $this->trackHelper->convertTrackToDto($track);
-
+            $trackDto = $this->trackHelper->convertUserTrackToDto($track);
             $data[] = $trackDto;
         }
         
@@ -117,7 +103,7 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
     private function parseJson($json) {
         $trackDto = $this->jsonUtils->deserialize($json);
         if (!$trackDto instanceof TrackDto) {
-            $this->logger->error("json shuld be instance of AlbumDto but got " . print_r($trackDto, true));
+            $this->logger->error("json should be instance of AlbumDto but got " . print_r($trackDto, true));
             throw new JsonException("Wrong json format.");
         }
         return $trackDto;
@@ -125,20 +111,18 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
     public function addAction($json) {
         $trackDto = $this->parseJson($json);
-        if (!$this->albumHelper->isDtoUserAlbumId($trackDto->albumId)) {
-            $album = $this->albumRepository->find($trackDto->albumId);
-            if ($album == null) {
-                $this->logger->error("There is no album with id = $trackDto->albumId.");
-                throw new JsonException("Invalid albumId.");
-            }
-            $userAlbum = $this->userAlbumRepository->findOneByUserAndAlbum($this->securityManager->getUser(), $trackDto->albumId);
-            if ($userAlbum == null) {
-                $userAlbum = $this->albumManager->createUserAlbumByAlbum($album, $trackDto->source);
-            }
-            $trackDto->albumId = $this->albumHelper->convertUserAlbumIdToDto($userAlbum->getId());
-        }
 
         $userTrack = $this->trackHelper->convertDtoToUserTrack($trackDto);
+        $userAlbum = $userTrack->getAlbum();
+        $album = $userAlbum->getGlobalAlbum();
+
+        $track = $this->trackRepository->findOneByAlbumAndTitle($album, $userTrack->getTitle());
+        if ($track == null) {
+            $track = $this->trackHelper->convertDtoToTrack($trackDto);
+            $this->trackRepository->persist($track);
+        }
+        $userTrack->setGlobalTrack($track);
+
         $this->userTrackRepository->persist($userTrack);
         $this->userTrackRepository->flush();
 
@@ -148,7 +132,6 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
 
     public function addOrGetAction($json) {
         $trackDto = $this->parseJson($json);
-        $trackDto->albumId = $this->albumHelper->convertDtoToUserAlbumId($trackDto->albumId);
 
         $userAlbum = $this->userAlbumRepository->find($trackDto->albumId);
         if ($userAlbum == null) {
@@ -171,24 +154,13 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
     }
 
     public function getAction($id) {
-        if ($this->trackHelper->isDtoUserTrackId($id)) {
-            $id = $this->trackHelper->convertDtoToUserTrackId($id);
-            $userTrack = $this->userTrackRepository->find($id);
-            if ($userTrack == null) {
-                $this->logger->error("There is no user track with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->trackHelper->convertUserTrackToDto($userTrack);
-            return new JsonViewModel($dto, $this->jsonUtils);
-        } else {
-            $track = $this->trackRepository->find($id);
-            if ($track == null) {
-                $this->logger->error("There is no track with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->trackHelper->convertTrackToDto($track);
-            return new JsonViewModel($dto, $this->jsonUtils);
+        $userTrack = $this->userTrackRepository->find($id);
+        if ($userTrack == null) {
+            $this->logger->error("There is no user track with id = $id.");
+            throw new JsonException("Invalid id.");
         }
+        $dto = $this->trackHelper->convertUserTrackToDto($userTrack);
+        return new JsonViewModel($dto, $this->jsonUtils);
     }
 
     /**
@@ -198,9 +170,17 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
      */
     public function updateAction($json) {
         $trackDto = $this->parseJson($json);
-        $userTrackId = $this->trackHelper->convertDtoToUserTrackId($trackDto->id);
-        $userTrack = $this->userTrackRepository->find($userTrackId);
+        $userTrack = $this->userTrackRepository->find($trackDto->id);
         $this->trackHelper->populateUserTrackWithDto($userTrack, $trackDto);
+        $album = $userTrack->getAlbum()->getGlobalAlbum();
+
+        $track = $this->trackRepository->findOneByAlbumAndTitle($album, $userTrack->getTitle());
+        if ($track == null) {
+            $track = $this->trackHelper->convertDtoToTrack($trackDto);
+            $this->trackRepository->persist($track);
+        }
+        $userTrack->setGlobalTrack($track);
+
         $this->userTrackRepository->flush();
 
         $resultDto = $this->trackHelper->convertUserTrackToDto($userTrack);
@@ -208,17 +188,10 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
     }
 
     public function removeAction($id) {
-        $id = $this->trackHelper->convertDtoToUserTrackId($id);
-
         $userTrack = $this->userTrackRepository->find($id);
         if ($userTrack == null) {
             $this->logger->error("There is no user track with id $id.");
             throw new JsonException("Invalid track id.");
-        }
-
-        if ($userTrack->isApproved()) {
-            $this->logger->error("There was try to remove approved user album with id $id.");
-            throw new JsonException("This album has already approved.");
         }
 
         $this->userTrackRepository->

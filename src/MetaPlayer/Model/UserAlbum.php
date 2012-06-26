@@ -83,7 +83,7 @@ class UserAlbum extends BaseAlbum {
      *
      * @param Album $album
      */
-    public function approve(Album $album) {
+    public function setAlbum(Album $album) {
         $this->album = $album;
     }
 
@@ -96,10 +96,10 @@ class UserAlbum extends BaseAlbum {
     }
 
     /**
-     * Gets approved album.
+     * Gets album from global catalogue.
      * @return Album|null
      */
-    public function getApprovedAlbum() {
+    public function getGlobalAlbum() {
         return $this->album;
     }
 

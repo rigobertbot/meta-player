@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class BaseBand 
+class BaseBand implements IIdentified
 {
     /**
      * @Id @Column(type="bigint")
