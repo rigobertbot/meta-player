@@ -24,7 +24,7 @@ use MetaPlayer\Repository\UserBandRepository;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class AlbumHelper {
+class AlbumHelper extends BaseHelper {
     /**
      * @Resource
      * @var BandHelper
@@ -105,7 +105,7 @@ class AlbumHelper {
      * @param AlbumDto $dto
      */
     public function populateUserAlbumWithDto(UserAlbum $userAlbum, AlbumDto $dto) {
-        $userAlbum->setTitle($dto->title);
+        $userAlbum->setTitle($this->trimText($dto->title));
         $userAlbum->setReleaseDate(ViewHelper::parseDate($dto->releaseDate));
         $userAlbum->setSource($dto->source);
     }

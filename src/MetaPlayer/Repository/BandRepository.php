@@ -38,9 +38,9 @@ class BandRepository extends BaseRepository
      */
     public function findByName($name) {
         $bands = $this->getEntityManager()
-            ->createQuery("SELECT b FROM MetaPlayer\\Model\\Band b WHERE lower(b.name) = ?")
+            ->createQuery("SELECT b FROM MetaPlayer\\Model\\Band b WHERE lower(b.name) = ?0")
             ->execute(array(strtolower($name)));
-        return reset($bands) || null;
+        return reset($bands) ? current($bands) : null;
     }
 
 }

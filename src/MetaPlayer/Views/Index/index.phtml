@@ -126,6 +126,31 @@ $socialNetwork = $user->getSocialNetwork();
             <div iconCls="icon-reload" onclick="mainTree.reloadMenuNode()">Перегрузить</div>
             <div onclick="mainTree.refreshMenuNode()">Обновить</div>
         </div>
+        <div id="associationWindow" title="Associations"
+             collapsible="false" minimizable="false" maximizable="false">
+            Select new association:
+            <table id="associations" url="/association/list" idField="id" pagination="true" singleSelect="true">
+                <thead>
+                    <tr>
+                        <th field="artist" width="120">Artist</th>
+                        <th field="title" width="120">Title</th>
+                        <th field="duration" width="40">Duration</th>
+                        <th field="popularity" width="40">Popularity</th>
+                        <th field="lyrics" width="40">Lyrics</th>
+                        <th field="status" width="60">Status</th>
+                    </tr>
+                </thead>
+            </table>
+            <table width="100%">
+                <tr>
+                    <td width="60%">&nbsp;</td>
+                    <td width="20%"><a href="#" iconCls="icon-ok" class="easyui-linkbutton">OK</a></td>
+                    <td width="20%"><a href="#" iconCls="icon-cancel" class="easyui-linkbutton">Cancel</a></td>
+                </tr>
+            </table>
+        </div>
+        <div id="showLyricsWindow" title="Lyrics">
+        </div>
     </div>
 
     <!-- onclick="mainTree.removeNode('a')" -->

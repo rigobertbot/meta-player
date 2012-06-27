@@ -25,7 +25,7 @@ use MetaPlayer\Model\UserTrack;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class TrackHelper
+class TrackHelper extends BaseHelper
 {
     /**
      * @Resource
@@ -89,9 +89,9 @@ class TrackHelper
      * @param TrackDto $dto
      */
     public function populateUserTrackWithDto(UserTrack $userTrack, TrackDto $dto) {
-        $userTrack->setTitle($dto->title);
-        $userTrack->setDuration($dto->duration);
-        $userTrack->setSerial($dto->serial);
+        $userTrack->setTitle($this->trimText($dto->title));
+        $userTrack->setDuration($this->parseInt($dto->duration));
+        $userTrack->setSerial($this->parseInt($dto->serial));
         $userTrack->setSource($dto->source);
     }
 

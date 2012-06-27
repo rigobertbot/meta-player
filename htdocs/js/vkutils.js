@@ -61,13 +61,18 @@ function getSearchResult(query, offset, limit, handler) {
 }
 
 function convertAudio(vkAudio) {
-    return new Audio(
+    var audio = new Audio(
         vkAudio['owner_id'] + '_' + vkAudio['aid'],
         vkAudio.url,
         vkAudio.artist,
         vkAudio.title,
         vkAudio.duration
     );
+
+
+    audio.lyricsId = vkAudio['lyrics_id'];
+
+    return audio;
 }
 
 function resolveAudio(aid, handler) {

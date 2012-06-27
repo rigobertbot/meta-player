@@ -222,6 +222,14 @@ function Tree() {
         this.searcher.bindSearchSuccess(function (event, node) {
             that.treegrid.refresh(node.id);
         });
+
+        $('#associationWindow').window({
+            left: 25,
+            top: 50,
+            width: 600,
+            height: 400,
+            closed: true
+        });
     }
 
     this.bind = function (eventName, handler, ns) {
@@ -273,7 +281,7 @@ function Tree() {
         }
         var container = $('<div></div>');
 
-        var button = $('<div onclick="event.stopPropagation();"></div>').appendTo(container);
+        var button = $('<div onclick="event.stopPropagation();mainTree.editAssociation(\'' + node.id + '\');"></div>').appendTo(container);
         if (!node.getQuery()) {
             $(button).addClass('failed-icon');
         } else if (!node.getAssociation()) {
@@ -306,6 +314,20 @@ function Tree() {
             return 'background: ' + color;
         }
         return null;
+    }
+
+    this.editAssociation = function (nodeId) {
+        var node = this.treegrid.getNode(nodeId);
+        if (!node.isPlayable()) {
+            return;
+        }
+
+        $('#associationWindow').window({
+            modal: true,
+            closed: false
+        });
+
+        var assocGrid = new AssociationGrid('associations', node);
     }
     
     this.nodeLoaded = function (nodes) {

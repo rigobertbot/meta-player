@@ -33,8 +33,8 @@ class AlbumRepository extends BaseRepository
      */
     public function findOneByBandAndTitle(Band $band, $title) {
         $albums = $this->getEntityManager()
-            ->createQuery("SELECT a FROM MetaPlayer\\Model\\Album a WHERE a.band = ? AND lower(a.title) = ?")
+            ->createQuery("SELECT a FROM MetaPlayer\\Model\\Album a WHERE a.band = ?0 AND lower(a.title) = ?1")
             ->execute(array($band, strtolower($title)));
-        return reset($albums) || null;
+        return reset($albums) ? current($albums) : null;
     }
 }

@@ -246,11 +246,14 @@ TrackNode.prototype.incSearchTries = function() { return ++ this.searchTries; }
 TrackNode.prototype.getSearchTries = function () { return this.searchTries; }
 TrackNode.prototype.resetSearchTries = function () { this.searchTries = 0; return this; }
 
-TrackNode.prototype.getQuery = function () {
-    if (!this.queries || this.queries.length <= this.searchTries) {
+TrackNode.prototype.getQuery = function (index) {
+    if (index === undefined) {
+        index = this.searchTries;
+    }
+    if (!this.queries || this.queries.length <= index) {
         return false;
     }
-    return this.queries[this.searchTries];
+    return this.queries[index];
 }
 
 TrackNode.prototype.getParentId = function () { return this.albumId; }
@@ -274,6 +277,7 @@ function Association()  {
     this.popularity = 0;
     this.expiredOn = 0;
     this.audio = null;
+    this.status = 'Social';
 }
 
 Association.prototype._wakeup = function () {

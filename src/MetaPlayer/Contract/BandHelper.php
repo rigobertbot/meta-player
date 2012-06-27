@@ -23,7 +23,7 @@ use MetaPlayer\Model\Band;
  * @Component(name={bandHelper})
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class BandHelper 
+class BandHelper extends BaseHelper
 {
     /**
      * @Resource
@@ -100,7 +100,7 @@ class BandHelper
      * @param BandDto $dto
      */
     public function populateUserBandWithDto(UserBand $userBand, BandDto $dto) {
-        $userBand->setName($dto->name);
+        $userBand->setName($this->trimText($dto->name));
         $userBand->setFoundDate(ViewHelper::parseDate($dto->foundDate));
         $userBand->setEndDate(ViewHelper::parseDate($dto->endDate));
         $userBand->setSource($dto->source);
