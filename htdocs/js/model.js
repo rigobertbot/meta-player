@@ -28,6 +28,8 @@ function Node() {
     this.belongsToUser = false;
     // this node is currently edited
     this.edited = false;
+    // key which would be shared
+    this.shareId = null;
 }
 
 Node.prototype.constructor = Node;
@@ -255,6 +257,9 @@ TrackNode.prototype.getQuery = function (index) {
     }
     return this.queries[index];
 }
+
+TrackNode.prototype.getFullName = function () { return this.getQuery(0); }
+TrackNode.prototype.getShortName = function () { return this.getQuery(1); }
 
 TrackNode.prototype.getParentId = function () { return this.albumId; }
 TrackNode.prototype.isPlayable = function () { return true; }

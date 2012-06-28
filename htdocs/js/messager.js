@@ -43,6 +43,8 @@ function MessageService() {
         $.messager.show({msg: '<div class=\"messager-icon messager-info\"></div>' + msg,
             title: title,
             timeout: timeout
+//            top: 0,
+//            bottom: false
 //            bottom: false,
 //            top: $('#mainBody').offset().top + $('#mainBody').height()
         });

@@ -30,3 +30,10 @@ div {
     overflow: auto;
     background: url('themes/icons/no.png') no-repeat;
 }
+.tip-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/tip.png') no-repeat;
+}

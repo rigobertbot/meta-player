@@ -28,4 +28,5 @@ class TrackDto
      * @var AssociationDto
      */
     public $association;
+    public $shareId;
 }

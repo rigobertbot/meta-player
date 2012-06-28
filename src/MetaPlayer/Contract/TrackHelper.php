@@ -110,6 +110,7 @@ class TrackHelper extends BaseHelper
             $dto->association = $this->associationHelper->convertAssociationToDto($association);
             $dto->association->userTrackId = $userTrack->getId();
         }
+        $dto->shareId = "t" . $userTrack->getGlobalTrack()->getId();
 
         return $dto;
     }

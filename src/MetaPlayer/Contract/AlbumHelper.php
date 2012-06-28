@@ -63,6 +63,7 @@ class AlbumHelper extends BaseHelper {
         $dto->bandId = $album->getBand()->getId();
         $dto->id = $album->getId();
         $dto->source = $album->getSource();
+        $dto->shareId = "a" . $album->getGlobalAlbum()->getId();
 
         return $dto;
     }

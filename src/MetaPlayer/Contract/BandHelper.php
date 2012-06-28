@@ -63,6 +63,8 @@ class BandHelper extends BaseHelper
         $dto = $this->convertBaseBandToDto($userBand);
         $dto->id = $userBand->getId();
         $dto->source = $userBand->getSource();
+        $dto->shareId = "b" . $userBand->getGlobalBand()->getId();
+
         return $dto;
     }
 

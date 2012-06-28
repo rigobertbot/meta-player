@@ -18,6 +18,16 @@ function AssociationManager() {
         }
         handler(association);
     }
+
+    this.init = function () {
+        $('#showLyricsWindow').window({
+            left: 125,
+            top: 25,
+            width: 400,
+            height: 500,
+            closed: true
+        });
+    }
 }
 
 var associationManager = new AssociationManager();
@@ -78,8 +88,8 @@ function AssociationGrid(id, track) {
             displayMsg: 'Displaying {from} to {to}',
             total: 1<<30
         });
-        var column = this.grid.datagrid('getColumnOption', 'lyrics');
-        column.formatter = function () {return that.lyricsFormatter.apply(that, arguments);}
+        this.grid.datagrid('getColumnOption', 'lyrics').formatter = function () {return that.lyricsFormatter.apply(that, arguments);}
+        this.grid.datagrid('getColumnOption', 'duration').formatter = function () {return that.durationFormatter.apply(that, arguments);}
     }
 
     this.processData = function (data) {
@@ -184,17 +194,55 @@ function AssociationGrid(id, track) {
 
     this.lyricsFormatter = function(value, rowData, rowIndex) {
         if (!value) {
-            return;
+            return value;
         }
         var container = $('<div></div>');
-        var btn = $('<div class="failed-icon" onclick="showLyrics(\'' + value + '\')"></div>').appendTo(container);
+        var btn = $('<div class="tip-icon" onclick="showLyrics(\'' + value + '\')"></div>').appendTo(container);
 
         return $(container).html();
+    }
+
+    this.durationFormatter = function (value) {
+        if (!value) {
+            return value;
+        }
+
+        var min = Math.floor(parseInt(value) / 60);
+        var sec = parseInt(value) % 60;
+        if (sec < 10) {
+            sec = '0' + sec;
+        }
+
+        return min + ":" + sec;
+    }
+
+    this.updateSelectedAssociation = function() {
+        var selected = this.grid.datagrid('getSelected');
+        var track = this.track;
+        if (track.getAssociation() && track.getAssociation().getSocialId() == selected.id) {
+            return;
+        }
+        associationRepository.associate(track, selected.association, function () {
+            messageService.showNotification('Association successfully changed for track "' + track.getName() + '".');
+        });
     }
 
     this.init();
 }
 
 function showLyrics(lyricsId) {
-    console.log('todo: show lyrics width id ', lyricsId);
+    $('#showLyricsWindow').window({closed: false});
+    getLyrics(lyricsId, function (text) {
+        $('#lyrics').text(text);
+    });
+}
+
+function associationOk() {
+    var associationGrid = $('#associations').data('associationGrid');
+    associationGrid.updateSelectedAssociation();
+    associationCancel();
+}
+
+function associationCancel() {
+    $('#associationWindow').window({closed: true});
 }

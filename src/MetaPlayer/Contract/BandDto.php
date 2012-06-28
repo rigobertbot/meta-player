@@ -23,4 +23,5 @@ class BandDto {
     public $foundDate;
     public $endDate;
     public $source;
+    public $shareId;
 }
