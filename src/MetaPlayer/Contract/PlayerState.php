@@ -1,0 +1,41 @@
+<?php
+
+/*
+ * MetaPlayer 1.0
+ *  
+ * Licensed under the GPL terms
+ * To use it on other terms please contact us
+ * 
+ * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
+ *  
+ */
+
+namespace MetaPlayer\Contract;
+
+/**
+ * Description of AlbumDto
+ *
+ * @author Val Dubrava <valery.dubrava@gmail.com>
+ */
+class PlayerState {
+    /**
+     * Node id of root playing node.
+     * @var string
+     */
+    public $rootPlayingNode;
+    /**
+     * Node id of now playing node.
+     * @var string
+     */
+    public $nowPlayingNode;
+    /**
+     * Playing progress in seconds.
+     * @var int
+     */
+    public $playingProgress;
+    /**
+     * Player playing status.
+     * @var PlayerStatus
+     */
+    public $playerStatus;
+}

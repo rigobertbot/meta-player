@@ -171,7 +171,8 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
         }
 
         if ($userBand->getUser() !== $this->securityManager->getUser()) {
-            $this->logger->error("The user {$this->securityManager->getUser()} tried to access now own band with id = {$albumDto->bandId}.");
+            $user = $this->securityManager->getUser();
+            $this->logger->error("The user {$user} tried to access now own band with id = {$albumDto->bandId}.");
             throw new JsonException("Invalid id.");
         }
 

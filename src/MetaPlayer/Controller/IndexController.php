@@ -40,7 +40,7 @@ class IndexController implements ILoggerAware
      */
     private $socialManager;
 
-    public function indexAction($api_id, $viewer_id, $auth_key) 
+    public function indexAction($api_id, $viewer_id, $auth_key)
     {
 	    $this->logger->debug("index/index with arguments $api_id, $viewer_id, $auth_key");
         $this->socialManager->authenticate(array('api_id' => $api_id, 'viewer_id' => $viewer_id, 'auth_key' => $auth_key), SocialNetwork::$VK);
