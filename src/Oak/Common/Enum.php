@@ -49,7 +49,7 @@ class Enum
         foreach ($properties as $property) {
             if (!$property->isDefault())
                 continue;
-            $value = $property->getValue();
+            $value = $property->getValue(null);
             $enumInstance = $refClass->newInstanceArgs(array($property->name, $value));
             $property->setValue($enumInstance);
 

@@ -326,3 +326,6 @@ Association.prototype.getDuration = function () {
     return this.audio ? this.audio.duration : null;
 }
 
+/********************************/
+/************ State *************/
+/********************************/

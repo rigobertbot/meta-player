@@ -19,15 +19,15 @@ namespace MetaPlayer\Contract;
  */
 class PlayerState {
     /**
-     * Node id of root playing node.
+     * Node id of root playing node path (/band/album/track).
      * @var string
      */
-    public $rootPlayingNode;
+    public $rootPlayingNodePath;
     /**
-     * Node id of now playing node.
+     * Node id of now playing node path.
      * @var string
      */
-    public $nowPlayingNode;
+    public $nowPlayingNodePath;
     /**
      * Playing progress in seconds.
      * @var int

@@ -20,9 +20,9 @@ use Oak\Common\Enum;
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
 class PlayerStatus extends Enum {
-    public $playing = "PLAYING";
-    public $stopped = "STOPPED";
-    public $paused = "PAUSED";
+    public static $playing = "PLAYING";
+    public static $stopped = "STOPPED";
+    public static $paused = "PAUSED";
 }
 
 PlayerStatus::init();
