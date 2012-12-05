@@ -13,11 +13,12 @@
         }
     ],
     "require": {
-        "php":">=5.3.2",
+        "php": ">=5.3.2",
         "phing/phing": "2.4.14",
         "apache/log4php": "2.3.0",
-        "doctrine/orm":"2.3.0",
-        "marcelog/Ding": "dev-feature/more-flexible"
+        "doctrine/orm": "2.3.0",
+        "marcelog/Ding": "dev-feature/more-flexible",
+        "symfony/console": "v2.1.4"
     },
     "replace": {
         "apache_log4php": "*"
