@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityRepository;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class BandRepository extends EntityRepository
+class BandRepository extends BaseRepository
 {
     /**
      * @param $id
@@ -29,6 +29,18 @@ class BandRepository extends EntityRepository
      */
     public function find($id, $lockMode = \Doctrine\DBAL\LockMode::NONE, $lockVersion = null) {
         return parent::find($id, $lockMode, $lockVersion);
+    }
+
+    /**
+     * Finds band by name ignore case. If there is no band with such name it returns null.
+     * @param $name
+     * @return Band|null
+     */
+    public function findByName($name) {
+        $bands = $this->getEntityManager()
+            ->createQuery("SELECT b FROM MetaPlayer\\Model\\Band b WHERE lower(b.name) = ?0")
+            ->execute(array(strtolower($name)));
+        return reset($bands) ? current($bands) : null;
     }
 
 }

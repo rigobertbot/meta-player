@@ -12,6 +12,22 @@
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
  * PARTICULAR PURPOSE.
  */
+use MetaPlayer\GlobalFactory;
+
+if (!defined('SIGQUIT')) {
+    define('SIGQUIT', 3);
+    define('SIGHUP', 1);
+    define('SIGINT', 2);
+    define('SIGCHLD', 17);
+    define('SIGTERM', 15);
+    define('SIGUSR1', 10);
+    define('SIGUSR2', 12);
+    define('SIG_UNBLOCK', 1);
+    function pcntl_signal() {}
+    function pcntl_sigprocmask() {}
+}
+
+require_once 'bootstrap.php';
 
 function simple_query($sql) {
     global $link;
@@ -36,16 +52,19 @@ function create_version() {
 }
 
 echo "DB updater started\n";
-$projectRoot = realpath(__DIR__ . '/../');
-$connectionOptions = include $projectRoot . '/config/doctrine.config.php';
-$scriptPath = $projectRoot . '/database/updates';
+$factory = new GlobalFactory();
+$connection = $factory->getEntityManager()->getConnection();
+$host = $connection->getHost();
+$user = $connection->getUsername();
+$password = $connection->getPassword();
+$database = $connection->getDatabase();
 
-$user = $connectionOptions['user'];
-$password = $connectionOptions['password'];
-$dbname = $connectionOptions['dbname'];
+$scriptPath = PROJECT_ROOT . 'database/updates';
+
+echo "host: $host", PHP_EOL, "user: $user", PHP_EOL, "database: $database", PHP_EOL;
 echo "connect to db...\n";
-$link = mysql_connect($connectionOptions['server'], $user, $password);
-mysql_select_db($dbname, $link);
+$link = mysql_connect($host, $user, $password);
+mysql_select_db($database, $link);
 
 echo "create version table\n";
 create_version();
@@ -93,7 +112,7 @@ foreach ($toApply as $script) {
     echo "==== $script ====\n";
     $output = array();
     $error = 0;
-    exec("mysql -u $user --password=$password $dbname 2>&1 <$script", $output, $error);
+    exec("mysql -h $host -u $user --password=$password -v $database 2>&1 <$script", $output, $error);
     echo "Result code $error\n";
     $success = $error == 0;
     foreach ($output as $line) {

@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
  * Base entity of Album which implements common behaviour.
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-abstract class BaseAlbum 
+abstract class BaseAlbum implements IIdentified
 {
     /**
      * @Id @Column(type="bigint")

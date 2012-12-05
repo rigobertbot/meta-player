@@ -1,5 +1,4 @@
 <?php
-
 /*
  * MetaPlayer 1.0
  *
@@ -11,6 +10,7 @@
  */
 
 namespace MetaPlayer;
+use Ding\Container\Impl\ContainerImpl;
 
 /**
  * Description of InjectorFactory
@@ -26,16 +26,17 @@ class GlobalFactory
      * @return \Ding\Container\IContainer
      */
     public function getContainer() {
-        return \Ding\Container\Impl\ContainerImpl::getInstance();
+        return ContainerImpl::getInstance();
     }
 
     /**
      * @Bean(name={entityManager, em})
+     * @throws \Exception
      * @return \Doctrine\ORM\EntityManager
      */
     public function getEntityManager() {
         if (self::$_entityManager == null) {
-            throw new Exception("GlobalFactory is not initialized properly: there is no EntityManager.");
+            throw new \Exception("GlobalFactory is not initialized properly: there is no EntityManager.");
         }
         return self::$_entityManager;
     }

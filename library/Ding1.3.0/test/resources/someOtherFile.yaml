@@ -1,6 +1,0 @@
-beans: !!map
-  importedBean:
-    class: ClassSimpleYAML5
-    scope: singleton
-    constructor-args:
-      - ref: aSimpleSingletonBean

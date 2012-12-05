@@ -57,7 +57,7 @@ class AlbumManager
         }
 
         $userAlbum = new \MetaPlayer\Model\UserAlbum($userBand, $album->getTitle(), $album->getReleaseDate(), $source);
-        $userAlbum->approve($album);
+        $userAlbum->setAlbum($album);
 
         $this->userAlbumRepository->persistAndFlush($userAlbum);
         return $userAlbum;

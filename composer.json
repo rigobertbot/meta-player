@@ -1,0 +1,30 @@
+{
+    "name": "oak/meta-player",
+    "description": "The tool for playing music directly for social networks by bands/albums or songs.",
+    "license": "GPL-2.0",
+    "authors": [{
+        "name": "Val Dubrava",
+        "email": "valery.dubrava@gmail.com"
+    }],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ValeryDubrava/Ding.git"
+        }
+    ],
+    "require": {
+        "php":">=5.3.2",
+        "apache/log4php": "2.3.0",
+        "doctrine/orm":"2.3.0",
+        "marcelog/Ding": "dev-feature/more-flexible"
+    },
+    "replace": {
+        "apache_log4php": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "MetaPlayer": "src",
+            "Oak": "src"
+        }
+    }
+}

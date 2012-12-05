@@ -1,0 +1,11 @@
+; PROJECT_ROOT is defined in bootstrap.
+doctrine.db[driver]=pdo_mysql
+doctrine.db[host]=localhost
+doctrine.db[user]=metaplayer
+doctrine.db[password]=metaplayer
+doctrine.db[dbname]=metaplayer
+
+social.vk.appId=123
+social.vk.secret=123ssf
+social.my.appId=567
+social.my.secret=dfd567

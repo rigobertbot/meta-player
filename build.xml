@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="MetaPlayer"
+         description="MetaPlayer project"
+         basedir="."
+         default="install">
+    <property file="build.properties" />
+
+    <target name="install">
+        <chmod mode="777" file="src/MetaPlayer/Proxies" description="Proxies directory should be writable." />
+    </target>
+
+    <target name="clear-cache" description="Remove all caches and proxies">
+        <delete>
+            <fileset dir="data/cache">
+                <include name="*" />
+            </fileset>
+        </delete>
+        <delete verbose="true">
+            <fileset dir="src/MetaPlayer/Proxies">
+                <include name="*.php" />
+            </fileset>
+        </delete>
+    </target>
+</project>

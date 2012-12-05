@@ -72,19 +72,15 @@ class UserBand extends BaseBand {
      *
      * @param Band $band
      */
-    public function approve(Band $band) {
+    public function setBand(Band $band) {
         $this->band = $band;
-    }
-
-    public function isApproved() {
-        return $this->band != null;
     }
 
     /**
      * Gets approved band or null.
      * @return \MetaPlayer\Model\Band|null
      */
-    public function getApprovedBand() {
+    public function getGlobalBand() {
         return $this->band;
     }
 }

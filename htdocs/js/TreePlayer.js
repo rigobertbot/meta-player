@@ -1,17 +1,19 @@
 /**
  * MetaPlayer 1.0
- * 
+ *
  * Licensed under the GPL terms
  * To use it on other terms please contact us
  *
- * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
- * 
+ * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ]
+ *
  */
+
 
 /**
  * Tree Player provide methods for playing tracks from the tree.
  */
 function TreePlayer(tree, player, searcher) {
+    "use strict";
     this.changeCurrentEvent = "treePlayerChangeCurrent";
     this.changeStartEvent = "treePlayerChangeStart";
     this.startNode = null;
@@ -49,31 +51,31 @@ function TreePlayer(tree, player, searcher) {
             console.log('play previous');
             that.playPrevious();
         });
-    }
+    };
 
     this.bindChangeCurrent = function (handler, ns) {
         ns = ns ? '.' + ns : '';
         $(this).bind(this.changeCurrentEvent + ns, handler);
-    }
+    };
 
     this.triggerChangeCurrent = function (lastNode, currentNode) {
         $(this).trigger(this.changeCurrentEvent, [lastNode, currentNode]);
-    }
+    };
 
     this.bindChangeStart = function (handler, ns) {
         ns = ns ? '.' + ns : '';
         $(this).bind(this.changeStartEvent + ns, handler);
-    }
+    };
 
     this.triggerChangeStart = function (lastNode, startNode) {
         $(this).trigger(this.changeStartEvent, [lastNode, startNode]);
-    }
+    };
 
     this.setCurrent = function (node) {
         var lastNode = this.currentNode;
         this.currentNode = node;
         this.triggerChangeCurrent(lastNode, node);
-    }
+    };
 
     this.startPlaying = function (node) {
         var lastNode = this.startNode;
@@ -81,7 +83,7 @@ function TreePlayer(tree, player, searcher) {
         this.triggerChangeStart(lastNode, node);
         this.setCurrent(null);
         this.play(node);
-    }
+    };
 
     this.getNextUp = function (node) {
         var parent = this.tree.getParent(node.id);
@@ -98,7 +100,7 @@ function TreePlayer(tree, player, searcher) {
             this.getNextUp(parent);
         }
         return node;
-    }
+    };
 
     this.loadLastDown = function (node, callback) {
         var that = this;
@@ -109,7 +111,7 @@ function TreePlayer(tree, player, searcher) {
             }
             callback.call(that, node);
         });
-    }
+    };
 
     this.loadPrevious = function (node, callback) {
         if (node === this.startNode) {
@@ -117,13 +119,13 @@ function TreePlayer(tree, player, searcher) {
             return;
         }
         var previous = this.tree.getPrevious(node.id);
-        if (previous != null) {
+        if (previous !== null) {
             callback.call(this, previous);
             return;
         }
         var parent = this.tree.getParent(node.id);
         this.loadLastDown(parent, callback);
-    }
+    };
 
     this.loadNext = function (node, callback) {
         var that = this;
@@ -148,36 +150,37 @@ function TreePlayer(tree, player, searcher) {
             var nextUpNode = that.getNextUp(node);
             callback.call(that, nextUpNode);
         });
-    }
+    };
 
     this.loadNextPlayable = function (node, callback) {
         var that = this;
         var loadedNext = function (current) {
-            if (current == null || current === node || current.isPlayable()) {
+            if (current === null || current === node || current.isPlayable()) {
                 callback.call(that, current);
                 return;
             }
             that.loadNext(current, loadedNext);
-        }
+        };
 
         this.loadNext(node, loadedNext);
-    }
+    };
 
     this.loadPreviousPlayable = function (node, callback) {
         var that = this;
         var loadedPrev = function (current) {
-            if (current == null || current === node || current.isPlayable()) {
+            if (current === null || current === node || current.isPlayable()) {
                 callback.call(that, current);
                 return;
             }
             that.loadPrevious(current, loadedPrev);
-        }
+        };
         that.loadPrevious(node, loadedPrev);
-    }
+    };
 
     /**
      * Plays the specified or current node.
-     * @param Node or null
+     * @param callbackNext function|null
+     * @param node Node|null
      */
     this.play = function (node, callbackNext) {
         if (!node) {
@@ -197,8 +200,8 @@ function TreePlayer(tree, player, searcher) {
         }
 
         this.setCurrent(node);
-        if (!node.getUrl()) {
-            if (node.getUrl() === 0) {
+        if (!node.getAssociation()) {
+            if (!node.getQuery()) {
                 callbackNext.call(this);
                 return;
             }
@@ -216,7 +219,7 @@ function TreePlayer(tree, player, searcher) {
             return;
         }
         this.player.play(node);
-    }
+    };
 
     /**
      * Play next node from current. Stops if the same node.
@@ -224,12 +227,12 @@ function TreePlayer(tree, player, searcher) {
      */
     this.playNext = function (force) {
         var current = this.currentNode;
-        if (current == null) {
+        if (current === null) {
             current = this.startNode;
         }
 
         this.loadNextPlayable(current, function (nextNode) {
-            if (nextNode == null) {
+            if (nextNode === null) {
                 this.setCurrent(null);
                 if (!force) {
                     this.player.stop();
@@ -241,20 +244,20 @@ function TreePlayer(tree, player, searcher) {
             }
             this.play(nextNode, this.playNext);
         });
-    }
+    };
 
     this.playPrevious = function () {
-        if (this.currentNode == null) {
+        if (this.currentNode === null) {
             return;
         }
         this.loadPreviousPlayable(this.currentNode, function (prevNode) {
-            if (prevNode == null) {
+            if (prevNode === null) {
                 this.setCurrent(null);
                 return;
             }
             this.play(prevNode, this.playPrevious);
         });
-    }
+    };
 
     this.init();
     console.log('tree player successfully initialized.');

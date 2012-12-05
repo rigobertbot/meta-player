@@ -55,9 +55,6 @@ class UserTrackRepository extends BaseRepository {
      * @throws \MetaPlayer\MetaPlayerException
      */
     public function remove($entity) {
-        if ($entity->isApproved()) {
-            throw new \MetaPlayer\MetaPlayerException("Impossible to remove approved user entity.");
-        }
         return parent::remove($entity);
     }
 

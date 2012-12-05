@@ -88,7 +88,7 @@ function Tree() {
                 {field: 'checked', checkbox: true},
                 {field: 'name', title: 'Название', width: 250, editor: 'text'},
                 {field: 'duration', title: 'Длит.', width: 30, editor: 'duration'},
-                {field: 'serial', title: '№', width: 50, editor: 'numberbox'},
+//                {field: 'serial', title: '№', width: 50, editor: 'numberbox'},
                 {
                     field: 'date', title: 'Дата', width: 80,
                     editor: {
@@ -122,7 +122,7 @@ function Tree() {
             onContextMenu: function(e, row){
                 e.preventDefault();
                 that.menuNode = row;
-                $('#treeMenu').menu(row.isBelongsToUser() ? 'enableItem' : 'disableItem', $('#treeMenuEdit'));
+                $('#treeMenu').menu(row.isPlayable() ? 'enableItem' : 'disableItem', $('#treeMenuShowLyrics'));
                 $('#treeMenu').menu('show', {
                     left: e.pageX,
                     top: e.pageY
@@ -216,12 +216,19 @@ function Tree() {
         });
 
         this.searcher.bindSearchFailed(function (event, node) {
-            node.setUrl(0);
             console.log('search failed', node);
             that.treegrid.refresh(node.id);
         });
         this.searcher.bindSearchSuccess(function (event, node) {
             that.treegrid.refresh(node.id);
+        });
+
+        $('#associationWindow').window({
+            left: 25,
+            top: 50,
+            width: 600,
+            height: 400,
+            closed: true
         });
     }
 
@@ -274,12 +281,13 @@ function Tree() {
         }
         var container = $('<div></div>');
 
-        if (node.getUrl() === null) {
-            $('<div class="loading-icon"></div>').appendTo(container);
-        } else if (node.getUrl() === 0) {
-            $('<div class="failed-icon"></div>').appendTo(container);
+        var button = $('<div onclick="event.stopPropagation();mainTree.editAssociation(\'' + node.id + '\');"></div>').appendTo(container);
+        if (!node.getQuery()) {
+            $(button).addClass('failed-icon');
+        } else if (!node.getAssociation()) {
+            $(button).addClass('loading-icon');
         } else {
-            $('<div class="success-icon"></div>').appendTo(container);
+            $(button).addClass('success-icon');
         }
 
         return $(container).html();
@@ -306,6 +314,21 @@ function Tree() {
             return 'background: ' + color;
         }
         return null;
+    }
+
+    this.editAssociation = function (nodeId) {
+        messageService.showNotification('Test');
+        var node = this.treegrid.getNode(nodeId);
+        if (!node.isPlayable()) {
+            return;
+        }
+
+        $('#associationWindow').window({
+            modal: true,
+            closed: false
+        });
+
+        var assocGrid = new AssociationGrid('associations', node);
     }
     
     this.nodeLoaded = function (nodes) {
@@ -388,10 +411,7 @@ function Tree() {
             }
             if (node.isPlayable()) {
                 // if search was failed, reset to try search again.
-                if (node.getUrl() === 0) {
-                    node.setUrl(null);
-                    node.resetSearchTries();
-                }
+                node.resetSearchTries();
                 this.searcher.schedule(node);
             }
             this.getTreeGrid().refresh(node.getId());
@@ -497,7 +517,7 @@ function Tree() {
             testNode = this.treegrid.getParent(testNode.id);
         }
         if (testNode == null) {
-            if (confirm('Вы хотите начать проигрывание с ' + this.menuNode.getName())) {
+            if (confirm('Вы хотите начать проигрывание с ' + this.menuNode.getName() + '? Текущая позиция будет потеряна.')) {
                 this.treePlayer.startPlaying(this.menuNode);
                 return;
             }
@@ -505,6 +525,49 @@ function Tree() {
         }
 
         this.treePlayer.play(this.menuNode);
+    };
+
+    this.showLyrics = function () {
+        if (!this.menuNode || !this.menuNode.isPlayable()) {
+            return;
+        }
+
+        var assoc = this.menuNode.getAssociation();
+        if (!assoc) {
+            return;
+        }
+
+        if (assoc.isResolved() && assoc.audio.lyricsId) {
+            showLyrics(assoc.audio.lyricsId);
+        } else {
+            associationManager.resolve(assoc, function () {
+                showLyrics(assoc.audio.lyricsId);
+            });
+        }
+    }
+
+    this.shareNode = function () {
+        if (!this.menuNode) {
+            return;
+        }
+        var text = "Послушайте ";
+        switch (this.menuNode.className) {
+            case 'AlbumNode':
+                text += ' альбом ';
+                break;
+            case 'BandNode':
+                text += ' группу ';
+                break;
+            case 'TrackNode':
+                text += ' композицию ';
+                break;
+        }
+        text += this.menuNode.getName();
+        text += "!";
+
+        selfPost(this.menuNode.shareId, text, function () {
+            messageService.showNotification('На стене...');
+        });
     }
 
     /**

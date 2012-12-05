@@ -9,6 +9,7 @@
  */
 // main iframe size
 var mainWidth = 650;
+var appUrl = 'http://vk.com/app2720671_335243';
 
 VK.init(function() {
     VK.api('getUserSettings', {test_mode: 1}, function(data) {
@@ -35,6 +36,20 @@ function mainResize(height) {
     VK.callMethod('resizeWindow', mainWidth, height);
 }
 
+function convertAudio(vkAudio) {
+    var audio = new Audio(
+        vkAudio['owner_id'] + '_' + vkAudio['aid'],
+        vkAudio.url,
+        vkAudio.artist,
+        vkAudio.title,
+        vkAudio.duration
+    );
+
+
+    audio.lyricsId = vkAudio['lyrics_id'];
+
+    return audio;
+}
 function getSearchResult(query, offset, limit, handler) {
     VK.api('audio.search', {
         q: query,
@@ -46,18 +61,55 @@ function getSearchResult(query, offset, limit, handler) {
         if (!data.response || !$.isArray(data.response)) {
             console.log('vk search failed!', query, offset, limit, handler);
             handler(null);
+            return;
         }
 
         var result = new SearchResult(data.response.shift());
 
         for (var index in data.response) {
             var info = data.response[index];
-
-            var track = new SearchTrack(info.aid, info.artist, info.title, info.duration, info.url);
+            var track = convertAudio(info);
             result.tracks.push(track);
         }
 
         handler(result);
+    });
+}
+
+function getLyrics(id, handler) {
+    VK.api('audio.getLyrics', {lyrics_id: id, test_mode: 1}, function (data) {
+        if (!data.response) {
+            console.log('vk get lyrics failed', id, data);
+            handler(data.error['error_msg']);
+            return;
+        }
+        console.log(data.response);
+        handler(data.response.text);
+    });
+}
+
+function selfPost(nodeId, message, handler) {
+    var attachment = appUrl + '#' + nodeId;
+    VK.api('wall.post', {
+        message: message,
+        attachments: attachment,
+        test_mode: 1
+    }, function (data) {
+        if (!data.response) {
+            console.log("vk self post failed, ", nodeId, message, data);
+            return;
+        }
+        handler(data.response);
+    });
+}
+
+function resolveAudio(aid, handler) {
+    VK.api('audio.getById', {audios: aid, test_mode: 1}, function (data) {
+        if (!data.response) {
+            console.log('vk resolve audio failed', data, aid. handler);
+        }
+        var vkAudio = data.response.pop();
+        handler(convertAudio(vkAudio));
     });
 }
 

@@ -8,8 +8,11 @@
   * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ]
   *
  */
-require_once '../src/bootstrap.php';
+try {
+    $config = require_once '../src/bootstrap.php';
 
-global $config;
-
-\Ding\Mvc\Http\HttpFrontController::handle($config);
+    \Ding\Mvc\Http\HttpFrontController::handle($config);
+} catch (Exception $ex) {
+    $logger = \Logger::getLogger("MetaPlayer.index");
+    $logger->error($ex->getMessage() . "\n" . $ex->getTraceAsString(), $ex);
+}

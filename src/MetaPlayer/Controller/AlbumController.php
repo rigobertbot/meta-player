@@ -88,30 +88,12 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     private $jsonUtils;
 
     public function listAction($bandId) {
-        $isUserAlbum = $this->bandHelper->isDtoUserBandId($bandId);
-
-        $albums = array();
-
-        if ($isUserAlbum) {
-            $bandId = $this->bandHelper->convertDtoToUserBandId($bandId);
-            $albums =  $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $bandId);
-        } else {
-            $albums = $this->albumRepository->findByBand($bandId);
-            // gets user's albums if these are
-
-            $userBand = $this->userBandRepository->findOneByBandAndUser($this->securityManager->getUser(), $bandId);
-            if ($userBand != null) {
-                $userAlbums = $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $userBand);
-                $albums = array_merge($albums, $userAlbums);
-            }
-        }
+        $albums =  $this->userAlbumRepository->findByUserAndUserBand($this->securityManager->getUser(), $bandId);
 
         $data = array();
         foreach ($albums as $album) {
             /* @var $album Album */
-            $albumDto = $album instanceof UserAlbum
-                ? $this->albumHelper->convertUserAlbumToDto($album)
-                : $this->albumHelper->convertAlbumToDto($album);
+            $albumDto = $this->albumHelper->convertUserAlbumToDto($album);
 
             $data[] = $albumDto;
         }
@@ -144,43 +126,37 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     }
 
     public function getAction($id) {
-        if ($this->albumHelper->isDtoUserAlbumId($id)) {
-            $id = $this->albumHelper->convertDtoToUserAlbumId($id);
-            $userAlbum = $this->userAlbumRepository->find($id);
-            if ($userAlbum == null) {
-                $this->logger->error("There is no user album with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
-            return new JsonViewModel($dto, $this->jsonUtils);
-        } else {
-            $album = $this->albumRepository->find($id);
-            if ($album == null) {
-                $this->logger->error("There is no album with id = $id.");
-                throw new JsonException("Invalid id.");
-            }
-            $dto = $this->albumHelper->convertAlbumToDto($album);
-            return new JsonViewModel($dto, $this->jsonUtils);
+        $userAlbum = $this->userAlbumRepository->find($id);
+        if ($userAlbum == null) {
+            $this->logger->error("There is no user album with id = $id.");
+            throw new JsonException("Invalid id.");
         }
+        $dto = $this->albumHelper->convertUserAlbumToDto($userAlbum);
+        return new JsonViewModel($dto, $this->jsonUtils);
     }
     
     public function addAction($json) {
         $albumDto = $this->parseJson($json);
 
-        // if is not a user band, replace id with existing or new user band.
-        if (!$this->bandHelper->isDtoUserBandId($albumDto->bandId)) {
-            // checks if there is user's band
-            $userBand = $this->userBandRepository->findOneByBandAndUser($this->securityManager->getUser(), $albumDto->bandId);
-            if ($userBand == null) {
-                // if no, create it already approved
-                $band = $this->bandRepository->find($albumDto->bandId);
-                $userBand = $this->bandManager->createUserBandByBand($band, $albumDto->source);
-            }
-            // replace id
-            $albumDto->bandId = $this->bandHelper->convertUserBandIdToDto($userBand->getId());
+        $userBand = $this->userBandRepository->find($albumDto->bandId);
+        if ($userBand == null) {
+            $this->logger->error("There is no user band with id = {$albumDto->bandId}.");
+            throw new JsonException("Invalid id.");
+        }
+        if ($userBand->getUser() !== $this->securityManager->getUser()) {
+            $this->logger->error("The requested user band is not correspond to current user: userBandId = {$userBand->getId()}, userId = {$this->securityManager->getUser()}.");
+            throw new JsonException("Wrong request.");
         }
 
         $userAlbum = $this->albumHelper->convertDtoToUserAlbum($albumDto);
+
+        $album = $this->albumRepository->findOneByBandAndTitle($userBand->getGlobalBand(), $userAlbum->getTitle());
+        if ($album == null) {
+            $album = $this->albumHelper->convertDtoToAlbum($albumDto);
+            $this->albumRepository->persist($album);
+        }
+
+        $userAlbum->setAlbum($album);
         
         $this->userAlbumRepository->persist($userAlbum);
         $this->userAlbumRepository->flush();
@@ -192,7 +168,6 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     public function addOrGetAction($json) {
         $albumDto = $this->parseJson($json);
 
-        $albumDto->bandId = $this->bandHelper->convertDtoToUserBandId($albumDto->bandId);
         $userBand = $this->userBandRepository->find($albumDto->bandId);
         if ($userBand == null) {
             $this->logger->error("There is no user band with id = {$albumDto->bandId}.");
@@ -200,7 +175,8 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
         }
 
         if ($userBand->getUser() !== $this->securityManager->getUser()) {
-            $this->logger->error("The user {$this->securityManager->getUser()} tried to access now own band with id = {$albumDto->bandId}.");
+            $user = $this->securityManager->getUser();
+            $this->logger->error("The user {$user} tried to access now own band with id = {$albumDto->bandId}.");
             throw new JsonException("Invalid id.");
         }
 
@@ -216,9 +192,16 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     public function updateAction($json) {
         $albumDto = $this->parseJson($json);
 
-        $userAlbumId = $this->albumHelper->convertDtoToUserAlbumId($albumDto->id);
-        $userAlbum = $this->userAlbumRepository->find($userAlbumId);
+        $userAlbum = $this->userAlbumRepository->find($albumDto->id);
+        $userBand = $userAlbum->getBand();
         $this->albumHelper->populateUserAlbumWithDto($userAlbum, $albumDto);
+
+        $album = $this->albumRepository->findOneByBandAndTitle($userBand->getGlobalBand(), $userAlbum->getTitle());
+        if ($album == null) {
+            $album = $this->albumHelper->convertDtoToAlbum($albumDto);
+            $this->albumRepository->persist($album);
+        }
+        $userAlbum->setAlbum($album);
 
         $this->userAlbumRepository->flush();
 
@@ -227,20 +210,14 @@ class AlbumController extends BaseSecurityController implements ILoggerAware
     }
 
     public function removeAction($id) {
-        $id = $this->albumHelper->convertDtoToUserAlbumId($id);
-
         $userAlbum = $this->userAlbumRepository->find($id);
         if ($userAlbum == null) {
             $this->logger->error("There is no user album with id $id.");
             throw new JsonException("Invalid album id.");
         }
 
-        if ($userAlbum->isApproved()) {
-            $this->logger->error("There was try to remove approved user album with id $id.");
-            throw new JsonException("This album has already approved.");
-        }
-
-        $this->userAlbumRepository->
+        $this->
+            userAlbumRepository->
             remove($userAlbum)->
             flush();
     }

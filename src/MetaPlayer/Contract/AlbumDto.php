@@ -23,4 +23,5 @@ class AlbumDto {
     public $releaseDate;
     public $source;
     public $bandId;
+    public $shareId;
 }

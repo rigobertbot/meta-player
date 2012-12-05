@@ -1,9 +1,5 @@
-
-/library/log4php/*
-!/library/log4php/readme.txt
-/config/private.config.php
-
 /htdocs/js/easyloader_src.js
 /htdocs/js/plugins_src
 msg
-/.idea/workspace.xml
+vendor/*
+.idea

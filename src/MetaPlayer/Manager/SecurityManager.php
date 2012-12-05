@@ -15,6 +15,7 @@ use \MetaPlayer\Model\SocialNetwork;
 use Ding\Logger\ILoggerAware;
 use MetaPlayer\Repository\UserRepository;
 use MetaPlayer\Model\User;
+use Ding\HttpSession\HttpSession;
 
 /**
  * The SecurityManager provides security mehods and manages session.
@@ -38,12 +39,15 @@ class SecurityManager implements ILoggerAware
      * @var UserRepository
      */
     private $userRepository;
+
+    /** @var HttpSession */
+    private $httpSession;
     
     /**
      * Init session.
      */
     public function init() {
-        \session_start();
+        $this->httpSession = HttpSession::getSession();
     }
 
     /**
@@ -71,9 +75,9 @@ class SecurityManager implements ILoggerAware
             $user = new User($viewerId, $socialNetwork);
             $this->userRepository->persistAndFlush($user);
         }
-        
-        $_SESSION[self::USER_ID] = $user->getId();
-        $_SESSION[self::SOCIAL_NETWORK] = (string) $socialNetwork;
+
+        $this->httpSession->setAttribute(self::USER_ID, $user->getId());
+        $this->httpSession->setAttribute(self::SOCIAL_NETWORK, (string) $socialNetwork );
     }
 
 
@@ -82,7 +86,8 @@ class SecurityManager implements ILoggerAware
      * @return boolean
      */
     public function isAuthenticated() {
-        return isset($_SESSION[self::USER_ID]) && isset($_SESSION[self::SOCIAL_NETWORK]);
+
+        return $this->httpSession->getAttribute(self::USER_ID) && $this->httpSession->hasAttribute(self::SOCIAL_NETWORK);
     }
 
     /**
@@ -99,7 +104,7 @@ class SecurityManager implements ILoggerAware
      * @return int
      */
     public function getUserId() {
-        return $_SESSION[self::USER_ID];
+        return $this->httpSession->getAttribute(self::USER_ID);
 
     }
 
@@ -108,7 +113,7 @@ class SecurityManager implements ILoggerAware
      * @return SocialNetwork
      */
     public function getSocialNetwork() {
-        return SocialNetwork::parse($_SESSION[self::SOCIAL_NETWORK]);
+        return SocialNetwork::parse($this->httpSession->getAttribute(self::SOCIAL_NETWORK));
     }
     
     /**

@@ -1,1 +1,0 @@
-hi there, im a smarty view {$a}

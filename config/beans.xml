@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-    <import resource="mvc.xml" />
-    <import resource="social.xml" />
-
-    <bean id="jsonUtils" class="Oak\Json\JsonUtils" scope="singleton">
-        <property name="classMapping">
+    <!-- The PropertiesHolder bean is what makes it possible for the
+        container to read properties from a standard php.ini file, so we
+        can use them in other bean configurations.  -->
+    <bean id="PropertiesHolder" class="Ding\Helpers\Properties\PropertiesHelper">
+        <property name="locations">
             <array>
-                <entry key="BandNode">
-                    <value>MetaPlayer\Contract\BandDto</value>
-                </entry>
-                <entry key="AlbumNode">
-                    <value>MetaPlayer\Contract\AlbumDto</value>
-                </entry>
-                <entry key="TrackNode">
-                    <value>MetaPlayer\Contract\TrackDto</value>
-                </entry>
-                <entry key="Exception">
-                    <value>MetaPlayer\Contract\ExceptionDto</value>
-                </entry>
+                <entry><value>${config.dir}/application.ini</value></entry>
             </array>
         </property>
     </bean>
-    <bean id="jsonNativeSerializer" class="Oak\Json\NativeSerializer" scope="singleton" />
+
+    <import resource="doctrine.xml" />
+    <import resource="mvc.xml" />
+    <import resource="social.xml" />
+    <import resource="app.beans.xml" />
 </beans>

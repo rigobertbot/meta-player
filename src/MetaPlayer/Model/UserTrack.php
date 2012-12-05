@@ -45,13 +45,6 @@ class UserTrack extends BaseTrack
     protected $source;
 
     /**
-     // @Column(type="boolean", nullable=true, name="is_approved")
-     // @var bool
-     */
-    //protected $isApproved = false;
-    // deprecated
-
-    /**
      * @ManyToOne(targetEntity="UserAlbum")
      * @JoinColumn(name="user_album_id", referencedColumnName="id")
      * @var UserAlbum
@@ -62,7 +55,21 @@ class UserTrack extends BaseTrack
      * @ManyToOne(targetEntity="Track")
      * @var Track
      */
-    protected $track = null;
+    protected $track;
+
+    /**
+     * @ManyToOne(targetEntity="Association")
+     * @JoinColumn(name="vk_association_id", referencedColumnName="id")
+     * @var Association
+     */
+    protected $vkAssociation;
+
+    /**
+     * @ManyToOne(targetEntity="Association")
+     * @JoinColumn(name="my_association_id", referencedColumnName="id")
+     * @var Association
+     */
+    protected $myAssociation;
 
     public function __construct(User $user, UserAlbum $userAlbum, $source, $title, $duration, $serial) {
         parent::__construct($title, $duration, $serial);
@@ -98,7 +105,7 @@ class UserTrack extends BaseTrack
     /**
      * @return \MetaPlayer\Model\Track
      */
-    public function getTrack()
+    public function getGlobalTrack()
     {
         return $this->track;
     }
@@ -123,15 +130,54 @@ class UserTrack extends BaseTrack
      * Mark as approved, and set produced entity.
      * @param \MetaPlayer\Model\Track $track
      */
-    public function approve(Track $track) {
-        $this->track = $track;
+    public function setGlobalTrack(Track $track) {
+        if ($this->track !== $track) {
+            $this->track = $track;
+            // reset association if global track was changed
+            $this->vkAssociation = null;
+            $this->myAssociation = null;
+        }
     }
 
     /**
-     * Is this user entity approved and simple entity was produced.
-     * @return boolean
+     * @param SocialNetwork $socialNetwork
+     * @return Association
+     * @throws ModelException
      */
-    public function isApproved() {
-        return $this->track != null;
+    public function getAssociation(SocialNetwork $socialNetwork) {
+        switch ($socialNetwork) {
+            case SocialNetwork::$MY:
+                return $this->myAssociation;
+            case SocialNetwork::$VK:
+                return $this->vkAssociation;
+            default:
+                throw ModelException::unsupportedSocialNetwork($socialNetwork);
+        }
+    }
+
+    /**
+     * Associates track with specified the association.
+     * @param SocialNetwork $socialNetwork
+     * @param Association $association
+     * @return \MetaPlayer\Model\UserTrack
+     * @throws ModelException
+     */
+    public function associate(SocialNetwork $socialNetwork, Association $association) {
+        $prevAssoc = $this->getAssociation($socialNetwork);
+        if (isset($prevAssoc)) {
+            $prevAssoc->decrementPopularity();
+        }
+        switch ($socialNetwork) {
+            case SocialNetwork::$MY:
+                $this->myAssociation = $association;
+                break;
+            case SocialNetwork::$VK:
+                $this->vkAssociation = $association;
+                break;
+            default:
+                throw ModelException::unsupportedSocialNetwork($socialNetwork);
+        }
+        $association->incrementPopularity();
+        return $this;
     }
 }

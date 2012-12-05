@@ -24,4 +24,9 @@ class TrackDto
     public $albumId;
     public $source;
     public $queries;
+    /**
+     * @var AssociationDto
+     */
+    public $association;
+    public $shareId;
 }

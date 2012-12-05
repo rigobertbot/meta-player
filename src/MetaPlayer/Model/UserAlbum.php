@@ -83,23 +83,15 @@ class UserAlbum extends BaseAlbum {
      *
      * @param Album $album
      */
-    public function approve(Album $album) {
+    public function setAlbum(Album $album) {
         $this->album = $album;
     }
 
     /**
-     * Is this user entity approved and simple entity was produced.
-     * @return bool
-     */
-    public function isApproved() {
-        return $this->album != null;
-    }
-
-    /**
-     * Gets approved album.
+     * Gets album from global catalogue.
      * @return Album|null
      */
-    public function getApprovedAlbum() {
+    public function getGlobalAlbum() {
         return $this->album;
     }
 

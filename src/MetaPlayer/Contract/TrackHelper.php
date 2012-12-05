@@ -16,6 +16,7 @@
 namespace MetaPlayer\Contract;
 
 use MetaPlayer\Model\Track;
+use MetaPlayer\Model\ModelException;
 use MetaPlayer\Model\UserTrack;
 
 /**
@@ -24,10 +25,8 @@ use MetaPlayer\Model\UserTrack;
  *
  * @author Val Dubrava <valery.dubrava@gmail.com>
  */
-class TrackHelper
+class TrackHelper extends BaseHelper
 {
-    private static $userTrackIdPrefix = "user_";
-
     /**
      * @Resource
      * @var \MetaPlayer\Repository\UserAlbumRepository
@@ -47,14 +46,19 @@ class TrackHelper
     private $securityManager;
 
     /**
+     * @Resource
+     * @var AssociationHelper
+     */
+    private $associationHelper;
+
+    /**
      * @param TrackDto $dto
      * @return \MetaPlayer\Model\UserTrack
      */
     public function convertDtoToUserTrack(TrackDto $dto) {
-        $dto->albumId = $this->albumHelper->convertDtoToUserAlbumId($dto->albumId);
         $userAlbum = $this->userAlbumRepository->find($dto->albumId);
 
-        $userTrack = new \MetaPlayer\Model\UserTrack(
+        $userTrack = new UserTrack(
             $this->securityManager->getUser(),
             $userAlbum,
             $dto->source,
@@ -65,15 +69,29 @@ class TrackHelper
         return $userTrack;
     }
 
+    public function convertDtoToTrack(TrackDto $dto) {
+        $userAlbum = $this->userAlbumRepository->find($dto->albumId);
+        $album = $userAlbum->getGlobalAlbum();
+        if ($album == null) {
+            throw ModelException::thereIsNoGlobalObject($userAlbum, 'Album');
+        }
+        $track = new Track(
+            $album,
+            $dto->title,
+            $dto->duration,
+            $dto->serial);
+        return $track;
+    }
+
     /**
      * Populates the specified user track with values from dto.
      * @param \MetaPlayer\Model\UserTrack $userTrack
      * @param TrackDto $dto
      */
     public function populateUserTrackWithDto(UserTrack $userTrack, TrackDto $dto) {
-        $userTrack->setTitle($dto->title);
-        $userTrack->setDuration($dto->duration);
-        $userTrack->setSerial($dto->serial);
+        $userTrack->setTitle($this->trimText($dto->title));
+        $userTrack->setDuration($this->parseInt($dto->duration));
+        $userTrack->setSerial($this->parseInt($dto->serial));
         $userTrack->setSource($dto->source);
     }
 
@@ -83,15 +101,17 @@ class TrackHelper
      */
     public function convertUserTrackToDto(\MetaPlayer\Model\UserTrack $userTrack) {
         $dto = $this->convertBaseTrackToDto($userTrack);
-        $dto->id = $this->convertUserTrackIdToDto($userTrack->getId());
 
-        if ($userTrack->getAlbum()->isApproved()) {
-            $dto->albumId = $userTrack->getAlbum()->getApprovedAlbum()->getId();
-        } else {
-            $dto->albumId = $this->albumHelper->convertUserAlbumIdToDto($userTrack->getUserAlbum()->getId());
-        }
-
+        $dto->id = $userTrack->getId();
+        $dto->albumId = $userTrack->getUserAlbum()->getId();
         $dto->source = $userTrack->getSource();
+        $association = $userTrack->getAssociation($this->securityManager->getSocialNetwork());
+        if ($association != null) {
+            $dto->association = $this->associationHelper->convertAssociationToDto($association);
+            $dto->association->userTrackId = $userTrack->getId();
+        }
+        $dto->shareId = "t" . $userTrack->getGlobalTrack()->getId();
+
         return $dto;
     }
 
@@ -117,25 +137,5 @@ class TrackHelper
         $dto = $this->convertBaseTrackToDto($track);
         $dto->albumId = $track->getAlbum()->getId();
         return $dto;
-    }
-
-    public function convertUserTrackIdToDto($userTrackId) {
-        return self::$userTrackIdPrefix . $userTrackId;
-    }
-
-    public function convertDtoToUserTrackId($dtoUserTrackId) {
-        if (!$this->isDtoUserTrackId($dtoUserTrackId)) {
-            throw new \MetaPlayer\MetaPlayerException("Argument dtoAlbumId ($dtoUserTrackId) isn't a user album id.");
-        }
-        return substr($dtoUserTrackId, strlen(self::$userTrackIdPrefix));
-    }
-
-    /**
-     * Checks if specified DTO's id belongs to user track.
-     * @param $dtoId
-     * @return bool
-     */
-    public function isDtoUserTrackId($dtoId) {
-        return strpos($dtoId, self::$userTrackIdPrefix) === 0;
     }
 }

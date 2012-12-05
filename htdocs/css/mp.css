@@ -8,6 +8,7 @@ div {
 }
 
 .loading-icon {
+    cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: auto;
@@ -15,15 +16,24 @@ div {
 }
 
 .success-icon {
+    cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: auto;
-    background: url('themes/default/images/tree_dnd_yes.png') no-repeat;
+    background: url('themes/icons/ok.png') no-repeat;
 }
 
 .failed-icon {
+    cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: auto;
-    background: url('themes/default/images/tree_dnd_no.png') no-repeat;
+    background: url('themes/icons/no.png') no-repeat;
+}
+.tip-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/tip.png') no-repeat;
 }
