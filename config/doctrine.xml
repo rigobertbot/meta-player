@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="configFactory"
+          class="Doctrine\ORM\Configuration" />
+    <bean id="metadataDriver"
+            class="Doctrine\ORM\Mapping\Driver\AnnotationDriver"
+            factory-bean="configFactory"
+            factory-method="newDefaultAnnotationDriver">
+        <constructor-arg>${doctrine.modelPaths}</constructor-arg>
+        <constructor-arg><value>true</value></constructor-arg>
+    </bean>
+
+    <bean id="sqlLogger"
+          class="MetaPlayer\SQLLogger"/>
+
+    <bean id="doctrineConfig" class="Doctrine\ORM\Configuration">
+        <property name="metaDataCacheImpl">
+            <bean class="Doctrine\Common\Cache\FilesystemCache">
+                <constructor-arg><value>${doctrine.cachePath}</value></constructor-arg>
+            </bean>
+        </property>
+
+        <property name="metadataDriverImpl">
+            <ref bean="metadataDriver"/>
+        </property>
+
+        <property name="proxyDir">
+            <value>${doctrine.proxy.dir}</value>
+        </property>
+        <property name="proxyNamespace">
+            <value>${doctrine.proxy.namespace}</value>
+        </property>
+
+        <property name="sqlLogger">
+            <ref bean="sqlLogger"/>
+        </property>
+
+        <property name="autoGenerateProxyClasses">
+            <value>${doctrine.autoGenerateProxyClasses}</value>
+        </property>
+    </bean>
+
+    <bean id="entityManager"
+            class="Doctrine\ORM\EntityManager"
+            factory-method="create">
+        <constructor-arg><value>${doctrine.db}</value></constructor-arg>
+        <constructor-arg><ref bean="doctrineConfig" /></constructor-arg>
+    </bean>
+</beans>

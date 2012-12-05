@@ -517,7 +517,7 @@ function Tree() {
             testNode = this.treegrid.getParent(testNode.id);
         }
         if (testNode == null) {
-            if (confirm('Вы хотите начать проигрывание с ' + this.menuNode.getName())) {
+            if (confirm('Вы хотите начать проигрывание с ' + this.menuNode.getName() + '? Текущая позиция будет потеряна.')) {
                 this.treePlayer.startPlaying(this.menuNode);
                 return;
             }
@@ -525,7 +525,7 @@ function Tree() {
         }
 
         this.treePlayer.play(this.menuNode);
-    }
+    };
 
     this.showLyrics = function () {
         if (!this.menuNode || !this.menuNode.isPlayable()) {

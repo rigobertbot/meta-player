@@ -146,6 +146,8 @@ class TrackController extends BaseSecurityController implements \Ding\Logger\ILo
         $userTrack->setGlobalTrack($track);
 
         $this->userTrackRepository->persist($userTrack);
+        $this->userTrackRepository->flush();
+
         $this->checkAssociation($userTrack);
         $this->userTrackRepository->flush();
 

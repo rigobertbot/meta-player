@@ -29,30 +29,11 @@
     </bean>    
     <bean id="HttpViewRender" class="Ding\Mvc\Http\HttpViewRender" scope="singleton"/>    
     <bean id="HttpUrlMapper" class="Ding\Mvc\Http\HttpUrlMapper" scope="singleton">
-<!--        <property name="map">
-            <array>
-                <entry key="0">
-                    <array>
-                        <entry key="0">
-                            <value>/MyController</value>
-                        </entry>
-                        <entry key="1">
-                            <ref bean="MyController"/>
-                        </entry>
-                    </array>
-                </entry>
-            </array>
-        </property> -->
+        <property name="defaultAction">index</property>
     </bean>    
     <bean id="HttpViewResolver" class="Ding\Mvc\Http\HttpViewResolver" scope="singleton">
-        <property name="viewPrefix">
-            <value></value>
-        </property>
-        <property name="viewSuffix">
-            <value>.phtml</value>
-        </property>
-        <property name="viewPath">
-            <value>../src/MetaPlayer/Views</value>
-        </property>
+        <property name="viewPrefix" />
+        <property name="viewSuffix">.phtml</property>
+        <property name="viewPath">../src/MetaPlayer/Views</property>
     </bean>    
 </beans>

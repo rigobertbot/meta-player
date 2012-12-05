@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
   * MetaPlayer 1.0
   *  
   * Licensed under the GPL terms
@@ -8,102 +8,60 @@
   * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
   *  
  */
+require_once __DIR__ . '/../vendor/autoload.php';
 use Doctrine\Common\Annotations\AnnotationReader;
+use MetaPlayer\ErrorException;
+use Doctrine\ORM\Tools\Setup;
+use Ding\Container\Impl\ContainerImpl;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Oak\ORM\FileCacheProvider;
 
-$projectRoot = realpath(__DIR__ . '/../');
+define('PROJECT_ROOT', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
 
-set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, array(
-    $projectRoot . '/library', // for namespaced direct libraries
-    $projectRoot . '/library/log4php', // log4php
-    $projectRoot . '/library/Ding1.3.0/src/mg', // Ding
-    $projectRoot . '/library/Doctrine/lib',
-    $projectRoot . '/library/Doctrine/lib/vendor/doctrine-common/lib',
-    $projectRoot . '/library/Doctrine/lib/vendor/doctrine-dbal/lib',
-    $projectRoot . '/library/FastJSON', // FastJSON
-    $projectRoot . '/src',
-)));
+// TODO: refuse of it
+require_once PROJECT_ROOT . '/config/app.config.php';
 
-require_once $projectRoot . '/config/app.config.php';
-
-require_once 'Ding/Autoloader/Autoloader.php';
-\Ding\Autoloader\Autoloader::register();
-
-$config = include $projectRoot . '/config/ding.config.php';
+$config = include PROJECT_ROOT . '/config/ding.config.php';
 if (isset($config['ding']['log4php.properties'])) {
     \Logger::configure($config['ding']['log4php.properties']);
 }
 
 $logger = \Logger::getLogger("MetaPlayer.bootstrap");
+$app = $logger->getAllAppenders();
 
+$container = ContainerImpl::getInstance($config);
+
+// force override error handler
 set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext) {
-    throw new \MetaPlayer\ErrorException("Unhandled Error: $errstr\n $errfile ($errline) [$errno]");
+    throw new ErrorException("Unhandled Error: $errstr\n $errfile ($errline) [$errno]");
 });
 
-register_shutdown_function(function () {
-    list($type, $message, $file, $line) = error_get_last();
-    if ($type != null) {
-        throw new \MetaPlayer\ErrorException("Fatal error: $message on $file ($line)");
-    }
-});
+$logger->debug("container initialized");
+$logger->trace("container initialized trace");
+$checkContainer = $container->getBean("container");
+if ($container != $checkContainer) {
+    $logger->error("container was not successfully self registered");
+}
 
-try {
+$logger->debug("initialize doctrine");
 
-    $container = \Ding\Container\Impl\ContainerImpl::getInstance($config);
-    $logger->debug("container initialized");
-    $logger->trace("container initialized trace");
-    $checkContainer = $container->getBean("container");
-    if ($container != $checkContainer) {
-        $logger->error("container was not successfully self registered");
-    }
+$entityManager = $container->getBean("entityManager");
+if (!isset($entityManager)) {
+    $logger->error("entity manager was not successfully created");
+}
 
+//some old-school things
+\MetaPlayer\GlobalFactory::setEntityManager($entityManager);
 
-    $logger->debug("initialize doctrine");
-
-    AnnotationRegistry::registerFile($projectRoot . "/library/Doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php");
-
-    $doctrineConfig = new \Doctrine\ORM\Configuration();
-    $doctrineConfig->setMetadataCacheImpl(new FileCacheProvider(realpath(__DIR__ . '/../data/cache')));
-
-    $annotationReader = new AnnotationReader();
-
-    $doctrineConfig->setMetadataDriverImpl(
-        new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($annotationReader)
-    );
-    $doctrineConfig->setProxyDir($projectRoot . '/src/MetaPlayer/Proxies');
-    $doctrineConfig->setProxyNamespace('MetaPlayer\\Proxies');
-
-    $sqlLogger = null;
-
-    if (\Oak\Common\Env::isDebug()) {
-        $sqlLogger = $container->getBean("sqlLogger");
-        //setcookie('XDEBUG_SESSION', 'idea');
-    }
-    if (\Oak\Common\Env::isTest()) {
-        $sqlLogger = new \Doctrine\DBAL\Logging\EchoSQLLogger();
-    }
-    if (isset($sqlLogger)) {
-        $doctrineConfig->setSQLLogger($sqlLogger);
-    }
-
-
-    $connectionOptions = include $projectRoot . '/config/doctrine.config.php';
-
-    $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $doctrineConfig);
-
-    \MetaPlayer\GlobalFactory::setEntityManager($em);
-    $checkEm = $container->getBean("entityManager");
-    if ($checkEm != $em) {
-        $logger->error("entity manager was not successfull register");
-    }
-
-    \Doctrine\DBAL\Types\Type::addType(\Oak\ORM\EnumDatatype::$typeName, 'Oak\ORM\EnumDatatype');
+\Doctrine\DBAL\Types\Type::addType(\Oak\ORM\EnumDatatype::$typeName, 'Oak\ORM\EnumDatatype');
 
 // init session
-    $session = $container->getBean("securityManager");
+$session = $container->getBean("securityManager");
 
-    $logger->debug("MetaPlayer was successfull bootstrapped");
-} catch (Exception $ex) {
-    $logger->error($ex->getMessage() . "\n" . $ex->getTraceAsString(), $ex);
-}
+$logger->debug("MetaPlayer was successfully bootstrapped");
+unset($logger);
+unset($checkContainer);
+unset($container);
+unset($session);
+unset($entityManager);
+
+return $config;

@@ -1,7 +1,0 @@
-beans: !!map
-  aSecretBean:
-    class: ClassSimpleYAML9
-    scope: singleton
-    properties: !!map
-      secretBean:
-        ref: aSimpleSingletonBean

@@ -1,5 +1,0 @@
-beans: !!map
-  myOtherBeanName:
-    class: MyOtherBean
-    scope: singleton
-    factory-method: getInstance

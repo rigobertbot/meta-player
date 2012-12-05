@@ -21,6 +21,7 @@ return array(
     'ding' => array(
         'log4php.properties' => __DIR__ . '/log4php.xml',
         'factory' => array(
+            'properties' => array('config.dir' => __DIR__),
             'bdef' => array (
                 'annotation' => array(
                     'scanDir' => $SCAN_DIRS,

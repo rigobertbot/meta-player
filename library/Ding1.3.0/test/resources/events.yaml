@@ -1,6 +1,0 @@
-beans: !!map
-  eventBean3:
-    class: EventBean3
-    scope: singleton
-    listens-on: beanCreated
-

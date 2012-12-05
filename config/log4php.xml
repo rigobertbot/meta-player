@@ -4,23 +4,21 @@
         <layout class="LoggerLayoutPattern">
             <param name="conversionPattern" value="%d{Y-m-d H:i:s.u} %-5p %c.%M(%L) - %m%n" />
         </layout>        
-        <param name="file" value="../log/meatplayer.log" />
+        <param name="file" value="${PROJECT_ROOT}/log/meatplayer.log" />
     </appender>
     <root>
         <level value="info" />
         <appender_ref ref="MainFileAppender" />
     </root>
-<!-- 
-    <logger name="MetaPlayer">
-        <level value="trace" />
-    </logger>
-
-    <logger name="MetaPlayer.bootstrap">
-    	<level value="debug" />
-    </logger>
-
     <logger name="MetaPlayer.SQLLogger">
         <level value="debug" />
+        <appender_ref ref="MainFileAppender" />
     </logger>
-    -->
+    <!--<logger name="MetaPlayer">-->
+    <!--<level value="trace" />-->
+    <!--</logger>-->
+
+    <!--<logger name="MetaPlayer.bootstrap">-->
+    <!--<level value="debug" />-->
+    <!--</logger>-->
 </log4php:configuration>

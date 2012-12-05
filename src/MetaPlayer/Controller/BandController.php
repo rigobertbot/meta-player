@@ -74,25 +74,12 @@ class BandController extends BaseSecurityController implements ILoggerAware
         $data = array();
         
         foreach ($bands as $band) {
-            /* @var $band Band */
             $bandDto = $this->bandHelper->convertUserBandToDto($band);
 
             $data[] = $bandDto;
         }
         
         return new JsonViewModel($data, $this->jsonUtils);
-    }
-
-    public function listUserAction() {
-        $userBands = $this->userBandRepository->findNotApproved($this->securityManager->getUser());
-        $result = array();
-        foreach ($userBands as $userBand) {
-
-            $dto = array('id' => $userBand->getId(), 'name' => $userBand->getName());
-            $result[] = $dto;
-        }
-
-        return new JsonViewModel($result, $this->jsonUtils);
     }
 
     /**
@@ -104,7 +91,7 @@ class BandController extends BaseSecurityController implements ILoggerAware
         $bandDto = $this->jsonUtils->deserialize($json);
         /* @var $bandDto BandDto */
         if (!$bandDto instanceof BandDto) {
-            $this->logger->error("json shuld be instance of BandDto but got " . print_r($bandDto, true));
+            $this->logger->error("json should be instance of BandDto but got " . print_r($bandDto, true));
             throw new JsonException("Wrong json format.");
         }
         return $bandDto;

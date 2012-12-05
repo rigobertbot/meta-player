@@ -16,7 +16,7 @@ use Doctrine\DBAL\Logging\SQLLogger as ISQLLogger;
 use Ding\Logger\ILoggerAware;
 
 /**
- * Description of SQLLogger
+ * Application specified SQL logger for Doctrine.
  *
  * @Component(name={SQLLogger, sqlLogger})
  * @author Val Dubrava <valery.dubrava@gmail.com>

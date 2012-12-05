@@ -1,6 +1,7 @@
 /** band **/
 ALTER TABLE `user_band`
-	DROP FOREIGN KEY `fk_user_band_band`;
+	DROP FOREIGN KEY `fk_user_band_band`,
+    DROP FOREIGN KEY `fk_user_band_user`;
 
 DELETE FROM band;
 

@@ -72,6 +72,10 @@ function Editor() {
             var task = that.taskQueue.shift();
             task.finish();
             onSuccess.apply(this, arguments);
+        }, function() {
+            var problemTask = that.taskQueue.shift();
+            console.log('Error on processing task:', problemTask);
+            // TODO: reporting
         });
     }
 

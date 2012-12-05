@@ -17,14 +17,7 @@ $socialNetwork = $user->getSocialNetwork();
     <link rel="stylesheet" type="text/css" href="/css/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/css/blue.monday/jplayer.blue.monday.css" />
 
-    <?php if ($socialNetwork === SocialNetwork::$VK): ?>
-    <script type="text/javascript" src="http://vk.com/js/api/xd_connection.js?2"></script>
-    <script type="text/javascript" src="/js/vkutils.js"></script>
-    <?php elseif ($socialNetwork === SocialNetwork::$MY): ?>
-    <script type="text/javascript" src="http://cdn.connect.mail.ru/js/loader.js"></script>
-    <script type="text/javascript" src="/js/myutils.js"></script>
-    <?php endif; ?>
-
+    <!-- JQuery, JQuery UI, Easy UI -->
     <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
     <script type="text/javascript" src="/js/jquery.xml2json.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.js"></script>
@@ -35,6 +28,15 @@ $socialNetwork = $user->getSocialNetwork();
     <script type="text/javascript" src="/js/jquery.json-2.3.js"></script>
 
     <script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+
+    <!-- Social networks -->
+    <?php if ($socialNetwork === SocialNetwork::$VK): ?>
+    <script type="text/javascript" src="http://vk.com/js/api/xd_connection.js?2"></script>
+    <script type="text/javascript" src="/js/vkutils.js"></script>
+    <?php elseif ($socialNetwork === SocialNetwork::$MY): ?>
+    <script type="text/javascript" src="http://cdn.connect.mail.ru/js/loader.js"></script>
+    <script type="text/javascript" src="/js/myutils.js"></script>
+    <?php endif; ?>
 
     <script type="text/javascript" src="/js/easy-ui-wrappers.js"></script>
     <script type="text/javascript" src="/js/model.js?1"></script>

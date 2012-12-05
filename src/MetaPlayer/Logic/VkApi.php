@@ -53,7 +53,7 @@ class VkApi implements ISocialApi
             throw VkApiException::wrongApiId($api_id, $this->apiId);
         }
 
-        $expectedAuth = md5($api_id . '_' . $viewer_id . '_' . \MPConfig::$VKSecret);
+        $expectedAuth = md5($api_id . '_' . $viewer_id . '_' . $this->secret);
         if ($auth_key != $expectedAuth) {
             throw VkApiException::wrongAuthKey($auth_key, $expectedAuth);
         }

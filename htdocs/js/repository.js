@@ -7,6 +7,7 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
+/*global AlbumNode:false, BandNode:false, TrackNode:false */
 /***************************************
  *********** BaseRepository ************
  ***************************************/
@@ -22,20 +23,20 @@ BaseRepository.prototype.constructor = BaseRepository;
 
 BaseRepository.prototype.bindOnLoaded = function (handler) {
     $(this).bind(this.nodeLoadedEvent, handler);
-}
+};
 BaseRepository.prototype.bindOnUpdated = function (handler) {
     $(this).bind(this.nodeUpdatedEvent, handler);
-}
+};
 BaseRepository.prototype.bindOnRemoved = function (handler) {
     $(this).bind(this.nodeRemovedEvent, handler);
-}
+};
 /**
  * Checks if this repository of the specified entity.
  * @param entity
  */
 BaseRepository.prototype.isRepositoryOf = function (entity) {
-    throw "All inheritance of BaseRepository must implement method isRepositoryOf."
-}
+    throw "All inheritance of BaseRepository must implement method isRepositoryOf.";
+};
 
 BaseRepository.prototype.dispatch = function (data) {
     if (!$.isArray(data)) {
@@ -48,12 +49,12 @@ BaseRepository.prototype.dispatch = function (data) {
         var entity = data[index];
         var identity = entity.id.toString();
         var oldEntity = this.identityMap[identity];
-        var isNew = (oldEntity == undefined);
+        var isNew = (oldEntity === undefined);
         if (isNew) {
             this.identityMap[identity] = entity;
             loaded.push(entity);
         } else {
-            console.log("update existing entity with new data", $.extend(new Object(), oldEntity), entity);
+            console.log("update existing entity with new data", $.extend({}, oldEntity), entity);
             $.extend(oldEntity, entity);
             updated.push(oldEntity);
         }
@@ -64,13 +65,13 @@ BaseRepository.prototype.dispatch = function (data) {
     if (updated.length > 0) {
         $(this).trigger(this.nodeUpdatedEvent, [updated]);
     }
-}
+};
 
 BaseRepository.prototype.dispatchRemove = function (node) {
     var identity = node.id.toString();
     this.identityMap[identity] = undefined;
     $(this).trigger(this.nodeRemovedEvent, [node]);
-}
+};
 
 BaseRepository.prototype.list = function (success, params) {
     var url = this.url + 'list';
@@ -82,7 +83,7 @@ BaseRepository.prototype.list = function (success, params) {
             success(parsedData);
         }
     });
-}
+};
 
 BaseRepository.prototype.get = function (id, success) {
     var url = this.url + 'get';
@@ -94,7 +95,7 @@ BaseRepository.prototype.get = function (id, success) {
             success(parsedData);
         }
     });
-}
+};
 
 BaseRepository.prototype.add = function (node, success) {
     var url = this.url + 'add';
@@ -108,21 +109,35 @@ BaseRepository.prototype.add = function (node, success) {
             success(parsedData, node);
         }
     }, "json");
-}
+};
 
-BaseRepository.prototype.addOrGet = function (node, success) {
+BaseRepository.prototype.addOrGet = function (node, success, error) {
     var url = this.url + 'addOrGet';
     var that = this;
     var data = $.objectToJSON(node);
 
-    $.post(url, {"json": data}, function (result, textStatus, jqXHR) {
-        var parsedData = $.parseJSONObject(result);
-        that.dispatch(parsedData);
-        if ($.isFunction(success)) {
-            success(parsedData, node);
-        }
-    }, "json");
-}
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {"json": data},
+        dataType: 'json',
+            success: function (result, textStatus, jqXHR) {
+            var parsedData = null;
+            try {
+                parsedData = $.parseJSONObject(result);
+                that.dispatch(parsedData);
+            } catch(e) {
+                if ($.isFunction(error)) {
+                    error(jqXHR, textStatus, error);
+                }
+            }
+            if (parsedData && $.isFunction(success)) {
+                success(parsedData, node);
+            }
+        },
+        error: error
+    });
+};
 
 BaseRepository.prototype.remove = function (node, success) {
     var url = this.url + 'remove';
@@ -134,8 +149,8 @@ BaseRepository.prototype.remove = function (node, success) {
         if ($.isFunction(success)) {
             success(node);
         }
-    })
-}
+    });
+};
 
 BaseRepository.prototype.update = function (node, success) {
     var url = this.url + 'update'; // &XDEBUG_SESSION=idea
@@ -148,7 +163,7 @@ BaseRepository.prototype.update = function (node, success) {
             success(parsedData, node);
         }
     }, "json");
-}
+};
 
 /***************************************
  *********** BandRepository ************
@@ -164,7 +179,7 @@ BandRepository.prototype.parent = BaseRepository;
 BandRepository.prototype.counter = 0;
 BandRepository.prototype.isRepositoryOf = function (object) {
     return object instanceof BandNode;
-}
+};
 var bandRepository = new BandRepository();
 
 /***************************************
@@ -179,7 +194,7 @@ AlbumRepository.prototype = new BaseRepository();
 AlbumRepository.prototype.parent = BaseRepository;
 AlbumRepository.prototype.isRepositoryOf = function (entity) {
     return entity instanceof AlbumNode;
-}
+};
 var albumRepository = new AlbumRepository();
 
 /***************************************
@@ -194,7 +209,7 @@ TrackRepository.prototype = new BaseRepository();
 TrackRepository.prototype.parent = BaseRepository;
 TrackRepository.prototype.isRepositoryOf = function (entity) {
     return entity instanceof TrackNode;
-}
+};
 var trackRepository = new TrackRepository();
 
 /**
@@ -233,6 +248,6 @@ AssociationRepository.prototype.associate = function (track, association, handle
             handler(track, serverAssociation);
         }
     });
-}
+};
 
 var associationRepository = new AssociationRepository();

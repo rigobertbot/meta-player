@@ -1,4 +1,5 @@
 /**
+ *
  * MetaPlayer 1.0
  * 
  * Licensed under the GPL terms
@@ -7,12 +8,19 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  * 
  */
+/*global Association:false, getSearchResult:false, associationRepository:false*/
+function debug() {
+    "use strict";
+    console.log.apply(console, arguments);
+}
 function SearchResult(count) {
+    "use strict";
     this.count = count;
     this.tracks = [];
 }
 
 function SearchTrack(id, band, track, duration, url) {
+    "use strict";
     this.id = id;
     this.band = band;
     this.track = track;
@@ -22,6 +30,7 @@ function SearchTrack(id, band, track, duration, url) {
 
 
 function Searcher() {
+    "use strict";
     this.searchQueue = [];
     this.searchSuccessEvent = "searchSuccess";
     this.searchFailedEvent = "searchFailed";
@@ -29,24 +38,26 @@ function Searcher() {
     this.bindSearchFailed = function (handler, ns) {
         ns = ns ? "." + ns : '';
         $(this).bind(this.searchFailedEvent + ns, handler);
-    }
+    };
     this.triggerSearchFailed = function (track) {
         $(this).trigger(this.searchFailedEvent, [track]);
-    }
+    };
     this.bindSearchSuccess = function (handler) {
         $(this).bind(this.searchSuccessEvent, handler);
-    }
+    };
     this.triggerSearchSuccess = function (track) {
         $(this).trigger(this.searchSuccessEvent, [track]);
-    }
+    };
 
     var that = this;
 
     setInterval(function () {
         var track = that.searchQueue.shift();
         if (track) {
+            debug('shift track', track);
             var association = track.getAssociation();
-            if (!association || association === null) {
+            if (!association) {
+                debug('it does not have assoc, try to search');
                 that.search(track);
             }
         }
@@ -61,6 +72,7 @@ function Searcher() {
         }
         var that = this;
 
+        debug('search in social network', query);
         getSearchResult(query, 0, 30, function (result) {
             if (!result) {
                 console.log('search failed, try again later', track);
@@ -77,12 +89,13 @@ function Searcher() {
 
             var nearestDelta = 134217728;
             var nearestResult = null;
-            for (var index in result.tracks) {
+            debug('parse result', result);
+            for (var index = 0; index <  result.tracks.length; index ++) {
                 var searchTrack = result.tracks[index];
                 if (!track.getDurationMs()) {
-                	nearestResult = searchTrack;
-                	console.log('track does not have a duration');
-                	break;
+                    nearestResult = searchTrack;
+                    console.log('track does not have a duration');
+                    break;
                 }
                 var delta = Math.floor(Math.abs(searchTrack.duration - track.getDurationMs()));
                 if (delta < nearestDelta) {
@@ -103,22 +116,27 @@ function Searcher() {
                 that.triggerSearchSuccess(track);
             });
         });
-    }
+    };
 
+    /**
+     * Schedules track to the search queue.
+     * @param track TrackNode
+     * @param priority boolean
+     */
     this.schedule = function (track, priority) {
         var association = track.getAssociation();
-        if (!association || association === null) {
+        if (!association) {
             if (!track.getQuery()) {
                 console.log("Maximum search tries reached", track);
                 this.triggerSearchFailed(track);
                 return;
             }
             if (priority) {
-                this.searchQueue.unshift(track)
+                this.searchQueue.unshift(track);
             } else {
                 this.searchQueue.push(track);
             }
 
         }
-    }
+    };
 }

@@ -39,13 +39,21 @@ class ExceptionController implements ILoggerAware
      * @var JsonUtils
      */
     private $jsonUtils;
-    
-    public function _exceptionAction($exception)
+
+    /**
+     * @param \Exception $exception
+     * @return \Ding\Mvc\ModelAndView
+     */
+    public function _ExceptionException($exception)
     {
-        return new ModelAndView("Exception\exception", array('headers' => $this->headers, 'exception' => $exception));
+        $this->logger->error($exception->getMessage() . PHP_EOL . $exception->getTraceAsString(), $exception);
+
+        return new ModelAndView("Exception/exception", array('headers' => $this->headers, 'exception' => $exception));
     }
     
     public function metaPlayer_JsonExceptionAction(\MetaPlayer\JsonException $exception) {
+        $this->logger->error($exception->getMessage() . PHP_EOL . $exception->getTraceAsString(), $exception);
+
         return new JsonViewModel(
                 new \MetaPlayer\Contract\ExceptionDto($exception->getMessage(),
                 $exception->getCode()),

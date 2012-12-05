@@ -1,5 +1,6 @@
 /** track **/
-ALTER TABLE `user_track` 
+ALTER TABLE `user_track`
+    DROP FOREIGN KEY `fk_user_track_user`,
 	DROP FOREIGN KEY `fk_user_track_user_album`,
 	DROP FOREIGN KEY `fk_user_track_track`;
 

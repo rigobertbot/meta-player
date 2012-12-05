@@ -7,7 +7,7 @@
  * Copyright(c) 2010-2011 Val Dubrava [ valery.dubrava@gmail.com ] 
  *
  */
-
+/*global mailru:false, SearchResult:false */
 mailru.loader.require('api', function() {
     mailru.app.init('2966cbd30280bf5ad7e9fc2483f59f15');
 
