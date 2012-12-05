@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af28bc77-43ea-438b-9dbe-225f8b8b5606" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dictionaries/v_dubrava.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
     </list>
     <list id="1376f5d8-a2c5-45b2-b020-1ebe18903791" name="be" comment="" />
@@ -522,7 +526,11 @@
       <created>1354686411350</created>
       <updated>1354686411350</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="remove .idea from project">
+      <created>1354686450089</created>
+      <updated>1354686450089</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <option name="createChangelist" value="false" />
     <servers />
   </component>
