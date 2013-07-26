@@ -17,13 +17,24 @@ function PlayerWrapper(element) {
     this.paused = false;
 
 
-    this.play = function (url) {
+    this.play = function (url, callback) {
         this.stop();
         this.player.jPlayer("setMedia", {
             mp3: url
         });
         this.player.jPlayer("play");
         this.paused = false;
+
+        this.player.unbind($.jPlayer.event.playing + '.inner');
+        if (callback) {
+            console.log('PlayerWrapper.play', 'callback presents', callback);
+            var that = this;
+            this.player.bind($.jPlayer.event.playing + '.inner', function (event) {
+                console.log('PlayerWrapper.play', 'event occurs', event);
+                that.player.unbind($.jPlayer.event.playing + '.inner');
+                callback.apply(that, arguments);
+            });
+        }
     };
 
     this.stop = function () {
@@ -45,4 +56,5 @@ function PlayerWrapper(element) {
         supplied: "mp3",
         swfPath: "/js"
     });
+
 }

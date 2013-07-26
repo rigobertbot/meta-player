@@ -251,11 +251,12 @@ function AssociationGrid(id, track) {
         return $(container).html();
     };
 
-    this.previewPlay = function(id) {
+    this.previewPlay = function(id, callback) {
         console.log('previewPlay', id);
         if (this.currentPlayed == id) {
             console.log('previewPlay', 'this track current played');
             this.player.playPause();
+            if (callback) { callback(); }
             return;
         }
 
@@ -268,7 +269,7 @@ function AssociationGrid(id, track) {
         associationManager.resolve(association, function (resolved) {
             console.log('previewPlay', 'resolved');
             that.currentPlayed = id;
-            that.player.play(resolved.getUrl());
+            that.player.play(resolved.getUrl(), callback);
         });
     };
 
@@ -319,10 +320,15 @@ function previewPlayAssociation(element, id) {
         associationGrid.previewPause(id);
         $(element).removeClass('pause-icon').addClass('play-icon');
     } else /* if($(element).hasClass('.play-icon')) */ {
-        associationGrid.previewPlay(id);
         // other icon set to play
         $('.association-player.pause-icon').removeClass('pause-icon').addClass('play-icon');
-        // this icon set to pause
-        $(element).removeClass('play-icon').addClass('pause-icon');
+
+        // this icon set to loading
+        $(element).removeClass('play-icon').addClass('loading-icon');
+
+        associationGrid.previewPlay(id, function () {
+            // this icon set to pause
+            $(element).removeClass('play-icon').addClass('pause-icon');
+        });
     }
 }
