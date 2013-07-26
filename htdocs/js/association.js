@@ -17,7 +17,7 @@ function AssociationManager() {
             return;
         }
         handler(association);
-    }
+    };
 
     this.init = function () {
         $('#showLyricsWindow').window({
@@ -28,10 +28,20 @@ function AssociationManager() {
             closed: true
         });
     }
+
 }
 
 var associationManager = new AssociationManager();
 
+/**
+ * Resolved audio track.
+ * @param aid
+ * @param url
+ * @param artist
+ * @param title
+ * @param duration
+ * @constructor
+ */
 function Audio(aid, url, artist, title, duration) {
     this.id = aid;
     this.url = url;
@@ -41,6 +51,11 @@ function Audio(aid, url, artist, title, duration) {
     this.lyricsId = null;
 }
 
+/**
+ * Grid row pased on association.
+ * @param association
+ * @constructor
+ */
 function AudioRow (association) {
     this.id = association.getSocialId();
     this.status = association.id ? 'Server' : 'Social';
@@ -58,12 +73,24 @@ function AudioRow (association) {
 function AssociationGrid(id, track) {
     this.grid = $('#' + id);
     this.track = track;
-    this.associations = [];
+    /**
+     * Server association.
+     * @type AudioRow[]
+     */
+    this.serverAudioRows = [];
     this.loaded = [];
     this.offsetMap = {};
+    /**
+     * @type PlayerWrapper
+     */
+    this.player = null;
+    /** @type string current preview played song social id */
+    this.currentPlayed = null;
 
     this.init = function () {
         $(this.grid).data('associationGrid', this);
+        this.player = new PlayerWrapper('#associationWindowPlayer');
+
         var that = this;
         this.grid.datagrid({
             url: '/association/list',
@@ -88,9 +115,10 @@ function AssociationGrid(id, track) {
             displayMsg: 'Displaying {from} to {to}',
             total: 1<<30
         });
-        this.grid.datagrid('getColumnOption', 'lyrics').formatter = function () {return that.lyricsFormatter.apply(that, arguments);}
-        this.grid.datagrid('getColumnOption', 'duration').formatter = function () {return that.durationFormatter.apply(that, arguments);}
-    }
+        this.grid.datagrid('getColumnOption', 'lyrics').formatter = function () {return that.lyricsFormatter.apply(that, arguments);};
+        this.grid.datagrid('getColumnOption', 'duration').formatter = function () {return that.durationFormatter.apply(that, arguments);};
+        this.grid.datagrid('getColumnOption', 'play').formatter = function() {return that.playFormatter.apply(that, arguments);};
+    };
 
     this.processData = function (data) {
         var result = {total: 1<<30, rows: []};
@@ -102,7 +130,7 @@ function AssociationGrid(id, track) {
         }
 
         return result;
-    }
+    };
 
     this.appendSearchResult = function () {
         var pager = this.grid.datagrid('getPager');
@@ -158,8 +186,12 @@ function AssociationGrid(id, track) {
                 association.setSocialId(audio.id);
                 association.resolve(audio);
                 var row = new AudioRow(association);
-                if (audio.id in that.associations) {
-                    row.status = 'Social/Server';
+                if (audio.id in that.serverAudioRows) {
+                    var serverAssocIndex = that.grid.datagrid('getRowIndex', audio.id);
+                    var serverAssocRow = that.serverAudioRows[audio.id];
+                    serverAssocRow.status = 'Social/Server';
+                    that.grid.datagrid('refreshRow', serverAssocIndex);
+                    return;
                 }
                 row.refreshAudio();
                 that.grid.datagrid('appendRow', row);
@@ -168,10 +200,9 @@ function AssociationGrid(id, track) {
 
             if (result.tracks.length < limit) {
                 that.appendSearchResult();
-                return;
             }
         });
-    }
+    };
 
     this.processFirstResult = function (data) {
         var associations = $.parseJSONObject(data);
@@ -179,18 +210,16 @@ function AssociationGrid(id, track) {
         var result = [];
         var that = this;
         $(associations).each(function(i, association) {
-            that.associations[association.getSocialId()] = association;
             var row = new AudioRow(association);
-//            if (that.track.getAssociation() && that.track.getAssociation().getSocialId() == row.id) {
-//            }
             associationManager.resolve(association, function () {
                 row.refreshAudio();
                 that.grid.datagrid('refreshRow', i);
             });
+            that.serverAudioRows[association.getSocialId()] = row;
             result.push(row);
         });
         return result;
-    }
+    };
 
     this.lyricsFormatter = function(value, rowData, rowIndex) {
         if (!value) {
@@ -200,7 +229,7 @@ function AssociationGrid(id, track) {
         var btn = $('<div class="tip-icon" onclick="showLyrics(\'' + value + '\')"></div>').appendTo(container);
 
         return $(container).html();
-    }
+    };
 
     this.durationFormatter = function (value) {
         if (!value) {
@@ -214,7 +243,42 @@ function AssociationGrid(id, track) {
         }
 
         return min + ":" + sec;
-    }
+    };
+
+    this.playFormatter = function (value, rowData, rowIndex) {
+        var container = $('<div></div>');
+        var playBtn = $('<div class="play-icon association-player" onclick="previewPlayAssociation(this, \'' + rowData.id + '\')"></div>').appendTo(container);
+        return $(container).html();
+    };
+
+    this.previewPlay = function(id) {
+        console.log('previewPlay', id);
+        if (this.currentPlayed == id) {
+            console.log('previewPlay', 'this track current played');
+            this.player.playPause();
+            return;
+        }
+
+        var rowIndex = this.grid.datagrid('getRowIndex', id);
+        var rows = this.grid.datagrid('getRows');
+        var row = rows[rowIndex];
+
+        var association = row.association;
+        var that = this;
+        associationManager.resolve(association, function (resolved) {
+            console.log('previewPlay', 'resolved');
+            that.currentPlayed = id;
+            that.player.play(resolved.getUrl());
+        });
+    };
+
+    this.previewPause = function (id) {
+        if (this.currentPlayed != id) {
+            console.log('previewPause', 'track with ' + id + ' is not playing now!');
+            return;
+        }
+        this.player.playPause();
+    };
 
     this.updateSelectedAssociation = function() {
         var selected = this.grid.datagrid('getSelected');
@@ -225,7 +289,7 @@ function AssociationGrid(id, track) {
         associationRepository.associate(track, selected.association, function () {
             messageService.showNotification('Association successfully changed for track "' + track.getName() + '".');
         });
-    }
+    };
 
     this.init();
 }
@@ -245,4 +309,20 @@ function associationOk() {
 
 function associationCancel() {
     $('#associationWindow').window({closed: true});
+}
+
+function previewPlayAssociation(element, id) {
+    console.log('previewPlayAssociation', element, id);
+    var associationGrid = $('#associations').data('associationGrid');
+    if ($(element).hasClass('pause-icon')) {
+        console.log('previewPlayAssociation', 'played, pause');
+        associationGrid.previewPause(id);
+        $(element).removeClass('pause-icon').addClass('play-icon');
+    } else /* if($(element).hasClass('.play-icon')) */ {
+        associationGrid.previewPlay(id);
+        // other icon set to play
+        $('.association-player.pause-icon').removeClass('pause-icon').addClass('play-icon');
+        // this icon set to pause
+        $(element).removeClass('play-icon').addClass('pause-icon');
+    }
 }
