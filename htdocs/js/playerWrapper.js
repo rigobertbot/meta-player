@@ -51,6 +51,36 @@ function PlayerWrapper(element) {
         }
     };
 
+    this._bind = function (event, handler, ns) {
+        if (ns && ns.length) {
+            if (ns[0] == '.') {
+                event += ns;
+            } else {
+                event = event + '.' + ns;
+            }
+        }
+        return this.player.bind(event, handler)
+    };
+
+    this._unbind = function (event, ns) {
+        if (ns && ns.length) {
+            if (ns[0] == '.') {
+                event += ns;
+            } else {
+                event = event + '.' + ns;
+            }
+        }
+        return this.player.unbind(event);
+    };
+
+    this.bindEnded = function (handler, ns) {
+        return this._bind($.jPlayer.event.ended, handler, ns);
+    };
+
+    this.unbindEnded = function (ns) {
+        return this._unbind($.jPlayer.event.ended, ns);
+    };
+
     // constructor
     this.player.jPlayer({
         supplied: "mp3",
