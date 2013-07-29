@@ -305,7 +305,7 @@ function Tree() {
             }
         } else {
             if (this.isSubtreePlayingNode(node)) {
-                iconClass = 'play-only-icon';
+                iconClass = 'replay-icon';
             } else {
                 iconClass = 'play-icon';
             }

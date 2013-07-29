@@ -44,7 +44,13 @@ div {
     overflow: auto;
     background: url('themes/icons/play.png') no-repeat;
 }
-.pause-icon {
+.replay-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/replay.png') no-repeat;
+}.pause-icon {
     cursor: pointer;
     width: 16px;
     height: 16px;
