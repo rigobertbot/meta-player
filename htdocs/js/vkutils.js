@@ -116,7 +116,8 @@ function resolveAudio(aid, handler) {
 window.setInterval(function () {
     // resize widgets
     var totalHeight = $('#mainHeader').outerHeight();
-    totalHeight += $('#mainBody').outerHeight();
+    totalHeight += $('#mainPlayerControls').outerHeight();
+    totalHeight += $('#bodyAccordion').outerHeight();
     totalHeight += $('#vk_comments').outerHeight();
     totalHeight += $('#vk_groups').outerHeight();
     totalHeight += $('#mainFooter').outerHeight();

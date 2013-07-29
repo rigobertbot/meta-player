@@ -11,7 +11,7 @@
 /**
  * Player facade.
  */
-function Player(element) {
+function Player(element, controls) {
     /**
      * When player started playing.
      */
@@ -50,16 +50,18 @@ function Player(element) {
                 });
             },
             swfPath: "/js",
-            supplied: "mp3"
+            supplied: "mp3",
+            cssSelectorAncestor: controls
         });
     };
 
     /**
      * Start playing the specified node.
-     * @param node
+     * @param node Playable node.
+     * @param fqn Full qualified node name.
      */
-    this.play = function (node) {
-        $('.jp-title').text(node.getName());
+    this.play = function (node, fqn) {
+        $('.jp-title li').text(fqn);
         var that = this;
         associationManager.resolve(node.getAssociation(), function (association) {
             that.player
@@ -116,4 +118,4 @@ function Player(element) {
     }
 }
 
-mainPlayer = new Player('#mainPlayer');
+mainPlayer = new Player('#mainPlayer', '#mainPlayerControls');

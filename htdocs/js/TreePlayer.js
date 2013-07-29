@@ -208,7 +208,7 @@ function TreePlayer(tree, player, searcher) {
             var that = this;
             this.searcher.bindSearchSuccess(function (e, searchedNode) {
                 if (node === searchedNode) {
-                    that.player.play(searchedNode);
+                    that.player.play(searchedNode, that.getNodeFullName(searchedNode));
                 }
             });
             this.searcher.bindSearchFailed(function (e, failedNode) {
@@ -218,7 +218,7 @@ function TreePlayer(tree, player, searcher) {
             });
             return;
         }
-        this.player.play(node);
+        this.player.play(node, this.getNodeFullName(node));
     };
 
     /**
@@ -257,6 +257,23 @@ function TreePlayer(tree, player, searcher) {
             }
             this.play(prevNode, this.playPrevious);
         });
+    };
+
+    /**
+     * Get node full name (group - album - title).
+     * @param node
+     */
+    this.getNodeFullName = function (node) {
+        var fqn = node.getName();
+        var parent = this.tree.getParent(node.id);
+        if (parent) {
+            fqn = parent.getName() + ' - ' + fqn;
+            parent = this.tree.getParent(parent.id);
+            if (parent) {
+                fqn = parent.getName() + ' - ' + fqn;
+            }
+        }
+        return fqn;
     };
 
     this.init();
