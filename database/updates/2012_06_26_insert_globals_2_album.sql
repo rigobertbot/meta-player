@@ -1,10 +1,8 @@
 /** album **/
 ALTER TABLE `user_album`
-    DROP index `fk_user_album_user`,
+    DROP FOREIGN KEY `fk_user_album_user`,
 	DROP index `fk_user_album_album`,
 	DROP index `fk_user_album_user_band`;
-
-DELETE from user_album where user_id not in (select id from user);
 
 ALTER TABLE `album`
 	DROP index `fk_album_band`;

@@ -1,11 +1,11 @@
 /** track **/
 ALTER TABLE `user_track`
     DROP FOREIGN KEY `fk_user_track_user`,
-	DROP FOREIGN KEY `fk_user_track_user_album`,
-	DROP FOREIGN KEY `fk_user_track_track`;
+	DROP INDEX `fk_user_track_user_album`,
+	DROP INDEX `fk_user_track_track`;
 
 ALTER TABLE `track` 
-	DROP FOREIGN KEY `fk_track_album`;
+	DROP INDEX `fk_track_album`;
 
 DELETE FROM track;
 
