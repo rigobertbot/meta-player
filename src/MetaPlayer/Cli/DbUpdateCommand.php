@@ -19,7 +19,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManager;
 
-
 class DbUpdateCommand extends Command
 {
     /**
@@ -35,8 +34,6 @@ class DbUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        require_once __DIR__ . '\..\..\bootstrap.php';
-
         echo "DB updater started\n";
         $connection = $this->entityManager->getConnection();
         $host = $connection->getHost();
@@ -52,10 +49,10 @@ class DbUpdateCommand extends Command
         mysql_select_db($database, $link);
 
         echo "create version table\n";
-        create_version();
+        $this->createVersion($link);
 
         echo "get actual version\n";
-        $result = simple_query("select id, applied_script from version");
+        $result = $this->simpleQuery($link, "select id, applied_script from version");
         $applied = array();
 
         foreach ($result as $row) {
@@ -111,7 +108,7 @@ class DbUpdateCommand extends Command
                 break;
             }
 
-            simple_query("INSERT INTO `version` (applied_script) VALUES ('$script')");
+            $this->simpleQuery($link, "INSERT INTO `version` (applied_script) VALUES ('$script')");
         }
 
         mysql_close($link);

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="commandDbUpdate" class="MetaPlayer\Cli\DbUpdateCommand" />
+
+    <bean id="cli" class="ArrayObject">
+        <constructor-arg>
+            <array>
+                <entry><ref bean="commandDbUpdate" /></entry>
+            </array>
+        </constructor-arg>
+    </bean>
+</beans>

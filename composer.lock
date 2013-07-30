@@ -1,4 +1,8 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "e1e3b438b216a852e7174565cc4111e0",
     "packages": [
         {
@@ -12,9 +16,7 @@
             "require": {
                 "php": ">=5.2.7"
             },
-            "time": "2012-10-26 11:13:25",
             "type": "library",
-            "installation-source": "source",
             "autoload": {
                 "classmap": [
                     "src/main/php/"
@@ -29,7 +31,8 @@
                 "log",
                 "logging",
                 "php"
-            ]
+            ],
+            "time": "2012-10-26 11:13:25"
         },
         {
             "name": "doctrine/common",
@@ -48,14 +51,12 @@
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "2012-09-19 22:55:18",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.3.x-dev"
                 }
             },
-            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Doctrine\\Common": "lib/"
@@ -93,44 +94,44 @@
             "description": "Common Library for Doctrine projects",
             "homepage": "http://www.doctrine-project.org",
             "keywords": [
-                "collections",
-                "spl",
-                "eventmanager",
                 "annotations",
-                "persistence"
-            ]
+                "collections",
+                "eventmanager",
+                "persistence",
+                "spl"
+            ],
+            "time": "2012-09-19 22:55:18"
         },
         {
             "name": "doctrine/dbal",
-            "version": "2.3.1",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/dbal",
-                "reference": "2.3.1"
+                "url": "https://github.com/doctrine/dbal.git",
+                "reference": "2.3.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/dbal/archive/2.3.1.zip",
-                "reference": "2.3.1",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/2.3.4",
+                "reference": "2.3.4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2",
-                "doctrine/common": "2.3.*"
+                "doctrine/common": ">=2.3.0,<2.5-dev",
+                "php": ">=5.3.2"
             },
-            "time": "2012-12-04 21:06:56",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.3.x-dev"
                 }
             },
-            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Doctrine\\DBAL": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -158,10 +159,11 @@
             "homepage": "http://www.doctrine-project.org",
             "keywords": [
                 "database",
-                "persistence",
                 "dbal",
+                "persistence",
                 "queryobject"
-            ]
+            ],
+            "time": "2013-05-11 07:45:37"
         },
         {
             "name": "doctrine/orm",
@@ -178,15 +180,14 @@
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2",
-                "ext-pdo": "*",
                 "doctrine/dbal": "2.3.*",
+                "ext-pdo": "*",
+                "php": ">=5.3.2",
                 "symfony/console": "2.*"
             },
             "suggest": {
                 "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
             },
-            "time": "2012-09-19 23:03:34",
             "bin": [
                 "bin/doctrine",
                 "bin/doctrine.php"
@@ -197,7 +198,6 @@
                     "dev-master": "2.3.x-dev"
                 }
             },
-            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Doctrine\\ORM": "lib/"
@@ -231,7 +231,8 @@
             "keywords": [
                 "database",
                 "orm"
-            ]
+            ],
+            "time": "2012-09-19 23:03:34"
         },
         {
             "name": "marcelog/ding",
@@ -239,21 +240,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ValeryDubrava/Ding.git",
-                "reference": "7cf67510e5dbaeb06b5171ffb0a91b08d5bcd925"
+                "reference": "b4527642e3b36afeb2f0663454115d966e4d4e98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/ValeryDubrava/Ding/archive/7cf67510e5dbaeb06b5171ffb0a91b08d5bcd925.zip",
-                "reference": "7cf67510e5dbaeb06b5171ffb0a91b08d5bcd925",
+                "url": "https://api.github.com/repos/ValeryDubrava/Ding/zipball/b4527642e3b36afeb2f0663454115d966e4d4e98",
+                "reference": "b4527642e3b36afeb2f0663454115d966e4d4e98",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
-                "apache/log4php": ">=2.3.0"
+                "apache/log4php": ">=2.3.0",
+                "php": ">=5.3.3"
             },
-            "time": "1354543446",
             "type": "framework",
-            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Ding": "src/mg"
@@ -273,25 +272,26 @@
             "description": "PHP Dependency Injection based on Spring(tm), with Aspect Oriented Programming, MVC",
             "homepage": "http://marcelog.github.com/Ding",
             "keywords": [
-                "dependency",
-                "injection",
-                "di",
+                "annotation",
                 "aop",
                 "aspect",
-                "event",
-                "mvc",
-                "tcp",
-                "container",
                 "bean",
+                "container",
+                "dependency",
+                "di",
+                "event",
+                "injection",
                 "jsr",
+                "mvc",
                 "spring",
+                "tcp",
                 "xml",
-                "yaml",
-                "annotation"
+                "yaml"
             ],
             "support": {
                 "source": "https://github.com/ValeryDubrava/Ding/tree/feature/more-flexible"
-            }
+            },
+            "time": "2013-07-30 12:28:50"
         },
         {
             "name": "phing/phing",
@@ -310,12 +310,10 @@
             "require": {
                 "php": ">=5.2.0"
             },
-            "time": "2012-11-29 21:23:47",
             "bin": [
                 "bin/phing"
             ],
             "type": "library",
-            "installation-source": "dist",
             "autoload": {
                 "classmap": [
                     "classes/phing/"
@@ -343,7 +341,8 @@
                 "build",
                 "task",
                 "tool"
-            ]
+            ],
+            "time": "2012-11-29 21:23:47"
         },
         {
             "name": "symfony/console",
@@ -363,14 +362,12 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2012-11-09 08:52:51",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Console": ""
@@ -390,15 +387,24 @@
                 }
             ],
             "description": "Symfony Console Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2012-11-09 08:52:51"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": {
         "marcelog/ding": 20
-    }
+    },
+    "platform": {
+        "php": ">=5.3.2"
+    },
+    "platform-dev": [
+
+    ]
 }

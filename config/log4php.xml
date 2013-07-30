@@ -7,7 +7,7 @@
         <param name="file" value="${PROJECT_ROOT}/log/metaplayer.log" />
     </appender>
     <root>
-        <level value="info" />
+        <level value="debug" />
         <appender_ref ref="MainFileAppender" />
     </root>
     <logger name="MetaPlayer.SQLLogger">

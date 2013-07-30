@@ -15,4 +15,5 @@
     <import resource="mvc.xml" />
     <import resource="social.xml" />
     <import resource="app.beans.xml" />
+    <import resource="cli.xml" />
 </beans>
