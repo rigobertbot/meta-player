@@ -1,4 +1,4 @@
-CREATE TABLE `metaplayer`.`user_track` (
+CREATE TABLE `user_track` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL,
   `user_album_id` BIGINT UNSIGNED NOT NULL,
@@ -26,13 +26,13 @@ CREATE TABLE `metaplayer`.`user_track` (
 )
 ENGINE = InnoDB;
 
-ALTER TABLE `metaplayer`.`user_band` ADD COLUMN `band_id` BIGINT UNSIGNED AFTER `is_approved`,
+ALTER TABLE `user_band` ADD COLUMN `band_id` BIGINT UNSIGNED AFTER `is_approved`,
  ADD CONSTRAINT `fk_user_band_band` FOREIGN KEY `fk_user_band_band` (`band_id`)
     REFERENCES `band` (`id`)
     ON DELETE SET NULL
     ON UPDATE RESTRICT;
 
-ALTER TABLE `metaplayer`.`user_album` ADD COLUMN `album_id` BIGINT UNSIGNED AFTER `is_approved`,
+ALTER TABLE `user_album` ADD COLUMN `album_id` BIGINT UNSIGNED AFTER `is_approved`,
  ADD CONSTRAINT `fk_user_album_album` FOREIGN KEY `fk_user_album_album` (`album_id`)
     REFERENCES `album` (`id`)
     ON DELETE SET NULL
