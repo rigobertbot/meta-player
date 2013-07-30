@@ -85,7 +85,7 @@ function Tree() {
 
         this.treegrid = new TreeGrid($('#metaTree'), {
             columns: [[
-                {field: 'checked', checkbox: true},
+                {field: 'controls', width: 30, title: 'Play', formatter: function (value, rowData, rowIndex) { return that.formatterControls(rowData); }},
                 {field: 'name', title: 'Название', width: 250, editor: 'text'},
                 {field: 'duration', title: 'Длит.', width: 30, editor: 'duration'},
 //                {field: 'serial', title: '№', width: 50, editor: 'numberbox'},
@@ -181,13 +181,13 @@ function Tree() {
         });
 
         // quick fix, http://code.google.com/p/meta-player/issues/detail?id=15
-        $('#bodyAccordion').bind('onSelect', function (event, title) {
-            var selected = $(this).accordion('getSelected');
-            var id = $(selected).attr('id');
-            if (id == 'treeAccordion') {
-                that.getTreeGrid().append(null, []);
-            }
-        });
+//        $('#bodyAccordion').bind('onSelect', function (event, title) {
+//            var selected = $(this).accordion('getSelected');
+//            var id = $(selected).attr('id');
+//            if (id == 'treeAccordion') {
+//                that.getTreeGrid().append(null, []);
+//            }
+//        });
 
         this.treePlayer = new TreePlayer(this.treegrid, mainPlayer, this.searcher);
 
@@ -291,30 +291,77 @@ function Tree() {
         }
 
         return $(container).html();
-    }
+    };
+
+    this.formatterControls = function (node) {
+        var container = $('<div></div>');
+
+        var iconClass = 'play-icon';
+        if (node.isPlayable()) {
+            if (this.isPlayingNode(node)) {
+                iconClass = 'pause-icon';
+            } else {
+                iconClass = 'play-icon';
+            }
+        } else {
+            if (this.isSubtreePlayingNode(node)) {
+                iconClass = 'replay-icon';
+            } else {
+                iconClass = 'play-icon';
+            }
+        }
+        var button = $('<div class="' + iconClass + '" onclick="event.stopPropagation(); mainTree.playNodeById(\'' + node.id + '\');"></div>').appendTo(container);
+
+        return $(container).html();
+    };
+
+    /**
+     * Checks if specified node is now playing.
+     * @param node
+     * @returns {boolean}
+     */
+    this.isPlayingNode = function (node) {
+        return this.treePlayer.currentNode === node;
+    };
+
+    /**
+     * Checks if specified node is on playing branch.
+     * @param node
+     * @returns {boolean}
+     */
+    this.isSubtreePlayingNode = function (node) {
+        if (!this.treePlayer.startNode) {
+            return false;
+        }
+
+        // go down from the specified node
+        while (node && node !== this.treePlayer.startNode) {
+            node = this.treegrid.getParent(node.id);
+        }
+
+        if (!node) {
+            return false;
+        }
+
+        return true;
+    };
 
     this.formatBackground = function (node) {
         if (!this.treePlayer) {
             return null;
         }
         var color = null;
-        if (this.treePlayer.startNode) {
-            var parent = node;
-            while (parent && parent !== this.treePlayer.startNode) {
-                parent = this.treegrid.getParent(parent.id);
-            }
-            if (parent) {
-                color = 'lightgray';
-            }
+        if (this.isSubtreePlayingNode(node)) {
+            color = 'lightgray';
         }
-        if (this.treePlayer.currentNode === node) {
+        if (this.isPlayingNode(node)) {
             color = 'lightblue';
         }
         if (color) {
             return 'background: ' + color;
         }
         return null;
-    }
+    };
 
     this.editAssociation = function (nodeId) {
         messageService.showNotification('Test');
@@ -500,31 +547,38 @@ function Tree() {
         this.treegrid.refresh(this.menuNode.id);
     }
 
-    this.playNode = function () {
+    this.playNodeById = function (nodeId) {
+        this.playNode(this.treegrid.find(nodeId));
+    };
+
+    this.playNode = function (node) {
         if (!this.treePlayer) {
             console.log('Tree player is not initialized yet.');
             return;
         }
+        if (!node) {
+            node = this.menuNode;
+        }
         console.log('begin playing...');
         if (!this.treePlayer.startNode) {
-            this.treePlayer.startPlaying(this.menuNode);
+            this.treePlayer.startPlaying(node);
             return;
         }
 
         // check, if specified node is child of start playing node
-        var testNode = this.menuNode;
+        var testNode = node;
         while (testNode && testNode !== this.treePlayer.startNode) {
             testNode = this.treegrid.getParent(testNode.id);
         }
         if (testNode == null) {
-            if (confirm('Вы хотите начать проигрывание с ' + this.menuNode.getName() + '? Текущая позиция будет потеряна.')) {
-                this.treePlayer.startPlaying(this.menuNode);
+            if (confirm('Вы хотите начать проигрывание с ' + node.getName() + '? Текущая позиция будет потеряна.')) {
+                this.treePlayer.startPlaying(node);
                 return;
             }
             return;
         }
 
-        this.treePlayer.play(this.menuNode);
+        this.treePlayer.play(node);
     };
 
     this.showLyrics = function () {

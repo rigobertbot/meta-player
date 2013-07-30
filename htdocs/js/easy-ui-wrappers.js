@@ -92,7 +92,7 @@ function TreeGrid(element, options) {
     this.refresh = function (nodeId) {
         this.element.treegrid('refresh', nodeId);
         return this;
-    }
+    };
 
     /**
      * Remove a node and it's children nodes.
@@ -101,7 +101,8 @@ function TreeGrid(element, options) {
     this.remove = function (nodeId) {
         this.element.treegrid('remove', nodeId);
         return this;
-    }
+    };
+
     /**
      * Find the specifed node and return the node data.
      * @param nodeId
@@ -109,7 +110,7 @@ function TreeGrid(element, options) {
      */
     this.find = function (nodeId) {
         return this.element.treegrid('find', nodeId);
-    }
+    };
 
     /**
      * Display loading status.

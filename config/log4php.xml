@@ -4,7 +4,7 @@
         <layout class="LoggerLayoutPattern">
             <param name="conversionPattern" value="%d{Y-m-d H:i:s.u} %-5p %c.%M(%L) - %m%n" />
         </layout>        
-        <param name="file" value="${PROJECT_ROOT}/log/meatplayer.log" />
+        <param name="file" value="${PROJECT_ROOT}/log/metaplayer.log" />
     </appender>
     <root>
         <level value="info" />

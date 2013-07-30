@@ -11,7 +11,7 @@
 /**
  * Player facade.
  */
-function Player() {
+function Player(element, controls) {
     /**
      * When player started playing.
      */
@@ -22,11 +22,14 @@ function Player() {
     this.playEvent = "play";
     
     this.paused = false;
+
+    this.player = null;
     
     this.init = function () {
         //bodyLoading.setStatus('initializing player');
         var that = this;
-        $('#mainPlayer').jPlayer({
+        this.player = $(element);
+        this.player.jPlayer({
             ready: function () {
                 //bodyLoading.resetStatus('player is ready');
                 $('.jp-pause').bind('click', function () {
@@ -47,35 +50,39 @@ function Player() {
                 });
             },
             swfPath: "/js",
-            supplied: "mp3"
+            supplied: "mp3",
+            cssSelectorAncestor: controls
         });
-    }
+    };
 
     /**
      * Start playing the specified node.
-     * @param node
+     * @param node Playable node.
+     * @param fqn Full qualified node name.
      */
-    this.play = function (node) {
-        $('.jp-title').text(node.getName());
+    this.play = function (node, fqn) {
+        $('.jp-title li').text(fqn);
+        var that = this;
         associationManager.resolve(node.getAssociation(), function (association) {
-            $('#mainPlayer').jPlayer("setMedia", {mp3: association.getUrl()})
+            that.player
+                .jPlayer("setMedia", {mp3: association.getUrl()})
                 .jPlayer("play");
         });
-    }
+    };
 
     /**
      * Stops the playing.
      */
     this.stop = function () {
-        $('#mainPlayer').jPlayer('stop');
-    }
+        this.player.jPlayer('stop');
+    };
 
     /**
      * Subscribes to end playing.
      * @param callback
      */
     this.bindEndPlaying = function (callback) {
-        $('#mainPlayer').bind($.jPlayer.event.ended, callback);
+        this.player.bind($.jPlayer.event.ended, callback);
     }
 
     /**
@@ -111,4 +118,4 @@ function Player() {
     }
 }
 
-mainPlayer = new Player();
+mainPlayer = new Player('#mainPlayer', '#mainPlayerControls');

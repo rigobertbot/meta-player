@@ -37,3 +37,23 @@ div {
     overflow: auto;
     background: url('themes/icons/tip.png') no-repeat;
 }
+.play-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/play.png') no-repeat;
+}
+.replay-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/replay.png') no-repeat;
+}.pause-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/pause.png') no-repeat;
+}
