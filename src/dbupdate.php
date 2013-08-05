@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2010-2011 All Right Reserved
+ * Copyright (c) 2010-2013 All Right Reserved
  * Oak Software, Val Dubrava [ valery.dubrava@gmail.com ]
  *
  * This source is subject to the Microsoft Reference Source License (MS-RSL).
