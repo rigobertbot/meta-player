@@ -336,7 +336,7 @@ function TreeGrid(element, options) {
             previous = child;
         }
         throw "The specified node is not present in child list of its parent. Or not a root node.";
-    }
+    };
 
     /**
      * Reload data.
@@ -344,7 +344,7 @@ function TreeGrid(element, options) {
     this.reload = function () {
         this.element.treegrid('reload');
         return this;
-    }
+    };
 
     /**
      * Get pager.

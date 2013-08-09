@@ -9,7 +9,6 @@
  */
 var baseUrl = 'http://www.musicbrainz.org/ws/2';
 var editor = new Editor();
-var catalogue;
 
 function durationFormatter(value) {
     if (!value) {
@@ -22,6 +21,14 @@ function durationFormatter(value) {
     }
 
     return Math.floor(i / 60) + ':' + seconds;
+}
+
+function favoriteFormatter(value, rowData, rowIndex) {
+    var container = $('<div></div>');
+
+    
+
+    return container.html();
 }
 
 function replaceNameWithTitle(element) {
@@ -102,7 +109,7 @@ function filterReleaseGroup(data, parentId) {
 
 function createPages(data, parentRow) {
     var count = $(data).children().children().first().attr('count')
-    var pager = $(catalogue.getPager()).pagination('options');
+    var pager = $(catalogue.tree.getPager()).pagination('options');
     var pageSize = parseInt(pager.pageSize);
     if (count <= pageSize) {
         return null;
@@ -149,7 +156,7 @@ function compareReleases(r1, r2) {
 }
 
 function loadFilter(data, parentId) {
-    var parentRow = catalogue.find(parentId);
+    var parentRow = catalogue.tree.find(parentId);
     if (parentRow && !parentRow['noPaging']) {
         console.log('paging', parentRow);
         var pages = createPages(data, parentRow);
@@ -252,7 +259,7 @@ function beforeLoad(row, param) {
 
 
 function doSearch() {
-    catalogue.reload();
+    catalogue.tree.reload();
 }
 
 function addAlbum(row, withTracks, onSuccess) {
@@ -266,13 +273,13 @@ function addAlbum(row, withTracks, onSuccess) {
                 $(row).unbind('expanded');
                 addAlbum(row, withTracks, onSuccess);
             });
-            catalogue.expand(row.id);
+            catalogue.tree.expand(row.id);
             return;
         }
         for (var i in row.children) {
             var child = row.children[i];
             if (child.data == row.data || row.children.length == 1) {
-                catalogue.collapse(row.id);
+                catalogue.tree.collapse(row.id);
                 addAlbum(child, withTracks, onSuccess);
                 return;
             }
@@ -288,13 +295,13 @@ function addAlbum(row, withTracks, onSuccess) {
                 return;
             }
             $(row).unbind('expanded');
-            catalogue.collapse(row.id);
+            catalogue.tree.collapse(row.id);
             addAlbum(row, withTracks, onSuccess);
         });
-        catalogue.expand(row.id);
+        catalogue.tree.expand(row.id);
         return;
     }
-    var bandRow = catalogue.getParentWhile(row, function (node) {
+    var bandRow = catalogue.tree.getParentWhile(row, function (node) {
         return !node || node['inner_type'] == 'artist';
     });
     addArtist(bandRow, function (band) {
@@ -347,7 +354,7 @@ function addTrack(row, albumNode, onSuccess) {
     console.log('add track', row);
 
     if (!albumNode) {
-        var albumRow = catalogue.getParent(row.id);
+        var albumRow = catalogue.tree.getParent(row.id);
         addAlbum(albumRow, false, function (albumLoadedNode) {
             addTrack(row, albumLoadedNode, onSuccess);
         });
@@ -370,12 +377,13 @@ function addTrack(row, albumNode, onSuccess) {
 }
 
 function Catalogue() {
+    this.tree = null;
+
     this.init = function () {
         editor.start();
         editor.setInfoBar($('#statusBar'));
-
-        var columns = $('#catalogue').datagrid({}).datagrid('options').columns;;
-        $('#catalogue').treegrid({
+        var columns = $('#catalogue').datagrid({}).datagrid('options').columns;
+        this.tree = new TreeGrid($('#catalogue'), {
             animate: false,
             pagination: true,
             columns: columns,
@@ -407,7 +415,6 @@ function Catalogue() {
             },
             onBeforeLoad: beforeLoad
         });
-        catalogue = new TreeGrid($('#catalogue'));
     }
 }
 
