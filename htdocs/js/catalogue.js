@@ -9,26 +9,102 @@
  */
 var baseUrl = 'http://www.musicbrainz.org/ws/2';
 var editor = new Editor();
+/**
+ * @param {FavoriteBindingManager} fbm
+ * @constructor
+ */
+function Catalogue(fbm) {
+    this.tree = null;
+    /**
+     * @type {FavoriteBindingManager}
+     * @private
+     */
+    this._fbm = fbm;
 
-function durationFormatter(value) {
-    if (!value) {
-        return value;
-    }
-    var i = parseInt(value) / 1000;
-    var seconds = Math.ceil(i % 60);
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
+    this.init = function () {
+        editor.start();
+        editor.setInfoBar($('#statusBar'));
+        var that = this;
+        this.tree = new TreeGrid($('#catalogue'), {
+            idField: 'id',
+            treeField: 'name',
+            animate: false,
+            pagination: true,
+            columns: [[
+                {field: "name", width: 260, title: "Название"},
+                {field: "type", width: 80, title: "Тип"},
+                {field: "date", width: 80, title: "Дата"},
+                {field: "country", width: 80, title: "Страна"},
+                {field: "length", width: 80, title: "Длит.", formatter: function () { return that.durationFormatter.apply(that, arguments);} },
+                {field: "name", width: 20, title: "Название", formatter: function () { return that.favoriteFormatter.apply(that, arguments);} }
+            ]],
+            onContextMenu: function (e, row) {
+                e.preventDefault();
+                var menu = null;
+                switch (row['inner_type']) {
+                    case 'artist':
+                        menu = $('#contextMenuBand');
+                        break;
+                    case 'release-group':
+                    case 'single':
+                    case 'release':
+                        menu = $('#contextMenuAlbum');
+                        break;
+                    case 'recording':
+                        menu = $('#contextMenuTrack');
+                        break;
+                }
+                $(menu).menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                }).data('row', row);
+            },
+            loadFilter: loadFilter,
+            onExpand: function (row) {
+                console.log("trigger expanded", row);
+                $(row).trigger("expanded", row);
+            },
+            onBeforeLoad: beforeLoad
+        });
+    };
 
-    return Math.floor(i / 60) + ':' + seconds;
-}
+    this.durationFormatter = function (value) {
+        if (!value) {
+            return value;
+        }
+        var i = parseInt(value) / 1000;
+        var seconds = Math.ceil(i % 60);
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
 
-function favoriteFormatter(value, rowData, rowIndex) {
-    var container = $('<div></div>');
+        return Math.floor(i / 60) + ':' + seconds;
+    };
 
-    
+    this.favoriteFormatter = function(value, rowData, rowIndex) {
+        var container = $('<div></div>');
 
-    return container.html();
+        var uid = 'favorite_' + rowIndex;
+        var loader = $('<div class="icon-loading" id="' + uid + '"></div>').appendTo(container);
+
+        switch (rowData.inner_type) {
+            case 'artist':
+                this._fbm.bindBand(rowData.name, function (node) {
+                    console.log('bound!', node);
+                    rowData.node = node;
+                    $('#' + uid).text(node.getId());
+                });
+                break;
+            case 'release':
+                console.log('check favorite for release');
+                //fbm.bindAlbum(rowData.name, function (node) {})
+                break;
+            case 'recording':
+                break;
+        }
+
+        return container.html();
+    };
 }
 
 function replaceNameWithTitle(element) {
@@ -208,7 +284,7 @@ function loadFilter(data, parentId) {
 }
 
 function beforeLoad(row, param) {
-    console.log('before load', row, param);
+    console.log('before load catalogue', row, param);
     if (row && row['inner_type']) {
         switch(row['inner_type']) {
             case 'artist-child':
@@ -375,48 +451,3 @@ function addTrack(row, albumNode, onSuccess) {
     });
 
 }
-
-function Catalogue() {
-    this.tree = null;
-
-    this.init = function () {
-        editor.start();
-        editor.setInfoBar($('#statusBar'));
-        var columns = $('#catalogue').datagrid({}).datagrid('options').columns;
-        this.tree = new TreeGrid($('#catalogue'), {
-            animate: false,
-            pagination: true,
-            columns: columns,
-            onContextMenu: function (e, row) {
-                e.preventDefault();
-                var menu = null;
-                switch (row['inner_type']) {
-                    case 'artist':
-                        menu = $('#contextMenuBand');
-                        break;
-                    case 'release-group':
-                    case 'single':
-                    case 'release':
-                        menu = $('#contextMenuAlbum');
-                        break;
-                    case 'recording':
-                        menu = $('#contextMenuTrack');
-                        break;
-                }
-                $(menu).menu('show', {
-                    left: e.pageX,
-                    top: e.pageY
-                }).data('row', row);
-            },
-            loadFilter: loadFilter,
-            onExpand: function (row) {
-                console.log("trigger expanded", row);
-                $(row).trigger("expanded", row);
-            },
-            onBeforeLoad: beforeLoad
-        });
-    }
-}
-
-catalogue = new Catalogue();
-console.log('Catalogue MusicBrainz successfully created.');

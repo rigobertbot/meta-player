@@ -117,5 +117,3 @@ function Player(element, controls) {
         $(this).bind(this.playEvent, handler);
     }
 }
-
-mainPlayer = new Player('#mainPlayer', '#mainPlayerControls');

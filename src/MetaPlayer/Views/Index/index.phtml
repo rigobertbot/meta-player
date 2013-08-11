@@ -45,18 +45,32 @@ $socialNetwork = $user->getSocialNetwork();
     <script type="text/javascript" src="/js/messager.js"></script>
     <script type="text/javascript" src="/js/utils.js"></script>
 
+    <script type="text/javascript" src="/js/identityMap.js"></script>
     <script type="text/javascript" src="/js/playerWrapper.js"></script>
     <script type="text/javascript" src="/js/player.js"></script>
     <script type="text/javascript" src="/js/association.js?1"></script>
     <script type="text/javascript" src="/js/search.js?1"></script>
     <script type="text/javascript" src="/js/tree.js?1"></script>
+    <script type="text/javascript" src="/js/favorite.js"></script>
     <script type="text/javascript" src="/js/catalogue.js"></script>
     <script type="text/javascript" src="/js/TreePlayer.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            var identityMap = new IdentityMap();
+            identityMap.init();
+
+            var mainPlayer = new Player('#mainPlayer', '#mainPlayerControls');
             mainPlayer.init();
+
+            // create favorite tree (main tree).
+            var mainTree = new Tree(identityMap, mainPlayer);
             mainTree.init();
+            console.log("Tree instance successfully created.", mainTree);
+
+            var fbm = new FavoriteBindingManager(identityMap);
+            var catalogue = new Catalogue(fbm);
             catalogue.init();
+
             associationManager.init();
         });
     </script>
@@ -112,10 +126,7 @@ $socialNetwork = $user->getSocialNetwork();
 </div>
 <div id="bodyAccordion" class="easyui-accordion" style="width: 650px">
     <div id="treeAccordion" selected="true" title="Избранное">
-        <table id="metaTree"
-               class="easyui-treegrid"
-               nowrap="true" rownumbers="false" animate="true" singleSelect="false"
-               idField="id" treeField="name">
+        <table id="metaTree">
         </table>
     </div>
     <div id="editTreeAccordion" title="Каталог">
@@ -124,17 +135,7 @@ $socialNetwork = $user->getSocialNetwork();
             <a id="searchBtn" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Поиск</a>
             <span id="statusBar"></span>
         </div>
-        <table id="catalogue" treeField="name" animate="true" idField="id" toolbar="#search" method="get">
-            <thead>
-            <tr>
-                <th field="name" width="260">Название</th>
-                <th field="type" width="80">Тип</th>
-                <th field="date" width="80">Дата</th>
-                <th field="country" width="80">Страна</th>
-                <th field="length" width="80" formatter="durationFormatter">Длит.</th>
-                <th field="favorite" width="20" formatter="favoriteFormatter">И</th>
-            </tr>
-            </thead>
+        <table id="catalogue" animate="true" toolbar="#search" method="get">
         </table>
     </div>
 </div>

@@ -7,7 +7,22 @@
  * Copyright(c) 2010-2013 Val Dubrava [ valery.dubrava@gmail.com ]
  * 
  */
-function Tree() {
+/**
+ * @param {IdentityMap} identityMap
+ * @constructor
+ * @param {Player} player
+ */
+function Tree(identityMap, player) {
+    /**
+     * @type {IdentityMap}
+     * @private
+     */
+    this._identityMap = identityMap;
+    /**
+     * @type {Player}
+     * @private
+     */
+    this._player = player;
     /**
      * Causes when any number of nodes were laoded.
      */
@@ -19,7 +34,7 @@ function Tree() {
     this.menuNode = null;
     this.editedNode = null;
     /**
-     * @type TreeGrid
+     * @type {TreeGrid}
      */
     this.treegrid = null;
     this.loadingCounter = 0;
@@ -83,7 +98,10 @@ function Tree() {
             }
         });
 
+        console.log("begin build treegrid");
         this.treegrid = new TreeGrid($('#metaTree'), {
+            idField: 'id', treeField: 'name',
+            nowrap: true, rownumbers: false, animate: true, singleSelect: false,
             columns: [[
                 {field: 'controls', width: 30, title: 'Play', formatter: function (value, rowData, rowIndex) { return that.formatterControls(rowData); }},
                 {field: 'name', title: 'Название', width: 250, editor: 'text'},
@@ -134,62 +152,28 @@ function Tree() {
             },
             rowStyler: function (rowData) {
                 return that.formatBackground(rowData);
-            }
-        });
-
-        this.getTreeGrid().setOptions({
-            onBeforeLoad: function (row, node) {
-                if (row) {
-                    that.treegrid.collapse(node.id);
-                    that.treegrid.loading();
-                    that.loadingCounter ++;
-                    row.loadChildren(function () {
-                        that.loadingCounter --;
-                        if (that.loadingCounter == 0) {
-                            that.treegrid.loaded();
-                        }
-                        if (!row.children) {
-                            row.children = [];
-                        }
-                        that.triggerChildrenLoaded(row);
-                        that.treegrid.expand(node.id);
-                    });
-                } else {
-                    // it means loading root node.
-                    //bodyLoading.resetStatus('tree is ready');
-                }
+            },
+            onBeforeLoad: function (rowData, param) {
+                // it fires before tree will be wrapped, so just made gag for it
+                console.log("onBeforeLoad fires", rowData, param);
                 return false;
             }
         });
+        console.log("tree wrapped", this.treegrid);
 
-        $(repositories).each(function (index, repository) {
-            repository.bindOnLoaded(function (e, data) {
-                that.nodeLoaded(data);
-            });
-            repository.bindOnRemoved(function (e, data) {
-                that.nodeRemoved(data);
-            });
-            repository.bindOnUpdated(function (e, data) {
-                that.nodeUpdated(data);
-            })
+        this._identityMap.bindNodeAdded(function (event, parent, nodes) {
+            that.nodeAdded(parent, nodes);
         });
 
-        // load bands
-        that.getTreeGrid().loading();
-        bandRepository.list(function () {
-            that.getTreeGrid().loaded();
+        // pass arguments depending on tree wrapper
+        this.getTreeGrid().setOptions({
+            onBeforeLoad: function (rowData, param) {
+                console.log("onBeforeLoad fires after wrapper created", rowData, param);
+                return that.onBeforeLoad.apply(that, arguments);
+            }
         });
 
-        // quick fix, http://code.google.com/p/meta-player/issues/detail?id=15
-//        $('#bodyAccordion').bind('onSelect', function (event, title) {
-//            var selected = $(this).accordion('getSelected');
-//            var id = $(selected).attr('id');
-//            if (id == 'treeAccordion') {
-//                that.getTreeGrid().append(null, []);
-//            }
-//        });
-
-        this.treePlayer = new TreePlayer(this.treegrid, mainPlayer, this.searcher);
+        this.treePlayer = new TreePlayer(this.treegrid, this._player, this.searcher);
 
         this.treePlayer.bindChangeCurrent(function (e, lastNode, currentNode) {
             $([lastNode, currentNode]).each (function (i, node) {
@@ -198,6 +182,7 @@ function Tree() {
                 }
                 console.log('refresh', node);
                 that.treegrid.refresh(node.id);
+                return false;
             });
         });
 
@@ -212,6 +197,7 @@ function Tree() {
                     console.log('refresh', child);
                     that.treegrid.refresh(child.id);
                 });
+                return false;
             });
         });
 
@@ -230,7 +216,7 @@ function Tree() {
             height: 400,
             closed: true
         });
-    }
+    };
 
     this.bind = function (eventName, handler, ns) {
         ns = ns ? '.' + ns : '';
@@ -262,18 +248,11 @@ function Tree() {
     }
 
     /**
-     * @return jQuery
-     */
-    this.getTree = function () {
-        return $('#metaTree');
-    }
-
-    /**
-     * @return TreeGrid
+     * @return {TreeGrid}
      */
     this.getTreeGrid = function () {
         return this.treegrid;
-    }
+    };
 
     this.formatterMp3 = function (node) {
         if (!node.isPlayable()) {
@@ -376,37 +355,62 @@ function Tree() {
         });
 
         var assocGrid = new AssociationGrid('associations', node);
-    }
-    
-    this.nodeLoaded = function (nodes) {
-        if (!nodes.length || nodes.length < 1) {
-            this.triggerNodeLoaded(null, []);
-            return;
-        }
-        var parentId = nodes[0].getParentId();
-        var parentNode = parentId ? $('#metaTree').treegrid('find', parentId) : undefined;
-        $('#metaTree')
-//            .treegrid('toggle', parentId)
-            .treegrid('append', {
-                parent: parentId,
-                data: nodes
-            });
+    };
 
-        if (parentNode) {
-//            $('#metaTree').treegrid('toggle', parentNode.getId()); // treegrid('toggle', parentNode.getId()).
-            this.triggerNodeLoaded(parentNode, nodes);
-        } else {
-            this.triggerNodeLoaded(null, nodes);
-        }
-
+    this.onBeforeLoad = function (node, param) {
         var that = this;
-        $(nodes).each(function (i, node) {
-            if (node.isPlayable()) {
-                that.searcher.schedule(node);
-            }
-        });
+        if (node === null) {
+            this.getTreeGrid().loading();
+            this._identityMap.getRootNodes(function () {
+                that.getTreeGrid().loaded();
+            });
+        } else {
+            this.getTreeGrid().loading();
+            this._identityMap.getChildren(node, function () {
+                that.getTreeGrid().loaded();
+            });
+        }
+        return true;
+    };
 
-    }
+    this.nodeAdded = function (parentNode, nodes) {
+        console.log("nodeAdded event", arguments);
+        var parentId = null;
+        if (parentNode !== null) {
+            parentId = parentNode.getId();
+        }
+        this.getTreeGrid().append(parentId, nodes);
+    };
+    
+//    this.nodeLoaded = function (nodes) {
+//        if (!nodes.length || nodes.length < 1) {
+//            this.triggerNodeLoaded(null, []);
+//            return;
+//        }
+//        var parentId = nodes[0].getParentId();
+//        var parentNode = parentId ? $('#metaTree').treegrid('find', parentId) : undefined;
+//        $('#metaTree')
+////            .treegrid('toggle', parentId)
+//            .treegrid('append', {
+//                parent: parentId,
+//                data: nodes
+//            });
+//
+//        if (parentNode) {
+////            $('#metaTree').treegrid('toggle', parentNode.getId()); // treegrid('toggle', parentNode.getId()).
+//            this.triggerNodeLoaded(parentNode, nodes);
+//        } else {
+//            this.triggerNodeLoaded(null, nodes);
+//        }
+//
+//        var that = this;
+//        $(nodes).each(function (i, node) {
+//            if (node.isPlayable()) {
+//                that.searcher.schedule(node);
+//            }
+//        });
+//
+//    }
 
     /**
      * Handles nodeRemove event.
@@ -684,12 +688,6 @@ function Tree() {
         return $.inArray(node, selected) === -1; // it means no selected = true
     }
 }
-
-mainTree = new Tree();
-
-//Tree.instance = mainTree;
-//Tree.getInstance = function () { return Tree.instance; }
-console.log("Tree instance successfully created.", mainTree);
 
 /**
  * The class NodeLoader provide methods for loading all subnodes of the specified nodes recursively from the specified tree.

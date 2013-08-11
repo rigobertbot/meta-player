@@ -20,14 +20,19 @@ function IdentityMap() {
     this.bandRepository = new BandRepository();
     this.albumRepository = new AlbumRepository();
     this.trackRepository = new TrackRepository();
+    /**
+     * @type {BaseRepository[]}
+     */
     this.repositories = [this.bandRepository, this.albumRepository, this.trackRepository];
+
+    this._nodeAddedEvent = "nodeAdded";
 
     this.init = function () {
         var that = this;
-        var handlerLoaded = function (nodes) {
+        var handlerLoaded = function (event, nodes) {
             that._onNodesLoaded(nodes);
         };
-        var handlerRemoved = function (nodes) {
+        var handlerRemoved = function (event, nodes) {
             that._onNodeRemoved(nodes);
         };
         $(this.repositories).each(function (index, repo) {
@@ -46,14 +51,16 @@ function IdentityMap() {
                 treeNode = new TreeNode(node, null, null);
                 this.tree.push(treeNode);
                 this.identityMap[node.getId()] = treeNode;
+                this._triggerNodeAdded(null, [node]);
             } else {
                 var parentTreeNode = this.identityMap[node.getParentId()];
-                if (parentTreeNode === null) {
+                if (parentTreeNode === undefined) {
                     throw "Identity map does not have parent (" + node.getParentId() + ") of loaded node (" + node.getId() + ").";
                 }
                 treeNode = new TreeNode(node, parentTreeNode, null);
                 parentTreeNode.addChild(treeNode);
                 this.identityMap[node.getId()] = treeNode;
+                this._triggerNodeAdded(parentTreeNode.getNode(), [node]);
             }
         }
     };
@@ -63,7 +70,7 @@ function IdentityMap() {
             if (!nodes.hasOwnProperty(index)) continue;
             var node = nodes[index];
             var treeNode = this.identityMap[node.getId()];
-            if (treeNode === null) {
+            if (treeNode === undefined) {
                 throw "Identity map does not have removed node (" + node.getId() + ").";
             }
             treeNode.setRemoved(true);
@@ -72,7 +79,74 @@ function IdentityMap() {
     };
 
     /**
-     * @param callback function(Node[]);
+     * @param node
+     * @returns {BaseRepository}
+     * @private
+     */
+    this._findRepository = function (node) {
+        for (var index in this.repositories) {
+            //noinspection JSUnfilteredForInLoop
+            var repository = this.repositories[index];
+            if (repository.isRepositoryOf(node)) {
+                return repository;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * @param parentNode
+     * @returns {BaseRepository}
+     * @private
+     */
+    this._findRepositoryForChildren = function (parentNode) {
+        for (var index in this.repositories) {
+            //noinspection JSUnfilteredForInLoop
+            var repository = this.repositories[index];
+            if (repository.isChildrenRepositoryOf(parentNode)) {
+                return repository;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Fires event on "nodeAdded"
+     * @param parentNode
+     * @param nodes
+     * @private
+     * @return {IdentityMap}
+     */
+    this._triggerNodeAdded = function (parentNode, nodes) {
+        $(this).trigger(this._nodeAddedEvent, [parentNode, nodes]);
+        return this;
+    };
+
+    /**
+     * @name getNodeCallback
+     * @function
+     * @param {Node[]} nodes
+     */
+
+    /**
+     * @name getChildrenCallback
+     * @function
+     * @param {Event} event
+     * @param {Node} parent
+     * @param {Node[]} nodes
+     */
+
+    /**
+     * @param {getChildrenCallback|Function} handler
+     * @return {IdentityMap}
+     */
+    this.bindNodeAdded = function (handler) {
+        $(this).bind(this._nodeAddedEvent, handler);
+        return this;
+    };
+
+    /**
+     * @param {getNodeCallback|Function} callback
      * @return {IdentityMap}
      */
     this.getRootNodes = function (callback) {
@@ -101,11 +175,11 @@ function IdentityMap() {
     /**
      * @param parentNode Node
      * @return {IdentityMap}
-     * @param callback function(Node[]);
+     * @param {getNodeCallback|Function} callback
      */
     this.getChildren = function (parentNode, callback) {
         var treeNode = this.identityMap[parentNode.getId()];
-        if (treeNode === null) {
+        if (treeNode === undefined) {
             throw "Identity map does not have the specified parent node (" + parentNode.getId() + ").";
         }
         if (treeNode.getChildrenTreeNodes() !== null) {
@@ -113,12 +187,15 @@ function IdentityMap() {
             return this;
         }
         var that = this;
-        treeNode.getNode().loadChildren(function () {
+        var repository = this._findRepositoryForChildren(parentNode);
+        repository.list(function () {
             if (treeNode.getChildrenTreeNodes() === null) {
                 callback([]);
+                return;
             }
             that.getChildren(parentNode, callback);
-        });
+        }, parentNode.getChildrenRequestParams());
+
         return this;
     };
 }

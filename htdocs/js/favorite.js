@@ -7,21 +7,52 @@
  * Copyright(c) 2010-2013 Val Dubrava [ valery.dubrava@gmail.com ]
  *
  */
-function FavoriteBindingManager() {
-    this.BAND_TYPE = 'band';
-    this.ALBUM_TYPE = 'album';
-    this.TRACK_TYPE = 'track';
+function FavoriteBindingManager(identityMap) {
+    /**
+     * @type {IdentityMap}
+     * @private
+     */
+    this._identityMap = identityMap;
 
-    this.byName = {};
-
-    this.bindFavorite = function (type, name, id) {
-
+    this.bindBand = function (name, callback) {
+        this._identityMap.getRootNodes(function (nodes) {
+            for (var index in nodes) {
+                if (!nodes.hasOwnProperty(index)) continue;
+                var band = nodes[index];
+                if (band.getName() == name) {
+                    callback(band);
+                    return;
+                }
+            }
+        });
+        return this;
     };
 
-    /**
-     * @param nodes Node[]
-     */
-    this.loadNode = function (nodes) {
+    this.bindAlbum = function (bandNode, name, callback) {
+        this._identityMap.getChildren(bandNode, function (albums) {
+            for (var index in albums) {
+                if (!albums.hasOwnProperty(index)) continue;
+                var album = albums[index];
+                if (album.getName() == name) {
+                    callback(album);
+                    return;
+                }
+            }
+        });
+        return this;
+    };
 
+    this.bindTrack = function (albumNode, name, callback) {
+        this._identityMap.getChildren(albumNode, function (nodes) {
+            for (var index in nodes) {
+                if (!nodes.hasOwnProperty(index)) continue;
+                var track = nodes[index];
+                if (track.getName() == name) {
+                    callback(track);
+                    return;
+                }
+            }
+        });
+        return this;
     };
 }

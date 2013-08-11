@@ -38,6 +38,15 @@ BaseRepository.prototype.isRepositoryOf = function (entity) {
     throw "All inheritance of BaseRepository must implement method isRepositoryOf.";
 };
 
+/**
+ * Check if this repository of the specified entity children.
+ * @param {Node} entity
+ * @returns {boolean}
+ */
+BaseRepository.prototype.isChildrenRepositoryOf = function (entity) {
+    return false;
+};
+
 BaseRepository.prototype.dispatch = function (data) {
     if (!$.isArray(data)) {
         data = [data];
@@ -51,6 +60,7 @@ BaseRepository.prototype.dispatch = function (data) {
         var oldEntity = this.identityMap[identity];
         var isNew = (oldEntity === undefined);
         if (isNew) {
+            console.log("new entity loaded", identity, entity);
             this.identityMap[identity] = entity;
             loaded.push(entity);
         } else {
@@ -195,6 +205,9 @@ AlbumRepository.prototype.parent = BaseRepository;
 AlbumRepository.prototype.isRepositoryOf = function (entity) {
     return entity instanceof AlbumNode;
 };
+AlbumRepository.prototype.isChildrenRepositoryOf = function (entity) {
+    return entity instanceof BandNode;
+};
 var albumRepository = new AlbumRepository();
 
 /***************************************
@@ -209,6 +222,9 @@ TrackRepository.prototype = new BaseRepository();
 TrackRepository.prototype.parent = BaseRepository;
 TrackRepository.prototype.isRepositoryOf = function (entity) {
     return entity instanceof TrackNode;
+};
+TrackRepository.prototype.isChildrenRepositoryOf = function (entity) {
+    return entity instanceof AlbumNode;
 };
 var trackRepository = new TrackRepository();
 

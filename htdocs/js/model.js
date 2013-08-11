@@ -44,7 +44,7 @@ Node.prototype._sleep = function () {
     clone.id = this.serverId;
     return clone;
 };
-Node.prototype.loadChildren = function (callback) {};
+Node.prototype.getChildrenRequestParams = function () { return {} };
 Node.prototype.getId = function () { return this.id; };
 Node.prototype.setId = function (value) { this.id = value; return this; };
 Node.prototype.isLeaf = function () { return this.leaf; };
@@ -59,7 +59,7 @@ Node.prototype.setSource = function (source) { this.source = source; return this
 Node.prototype.getSource = function () { return this.source; };
 Node.prototype.setDate = function (value) { this.date = value; return this; };
 Node.prototype.setDuration = function (value) { this.duration = value; return this; };
-Node.prototype.getParentId = function () { return undefined; };
+Node.prototype.getParentId = function () { return null; };
 Node.prototype.isBelongsToUser = function () { return this.belongsToUser; };
 Node.prototype.isPlayable = function () { return false; };
 
@@ -86,9 +86,7 @@ BandNode.prototype._sleep = function () {
     return this.parent.prototype._sleep.call(this);
 };
 
-BandNode.prototype.loadChildren = function (callback) {
-    albumRepository.list(callback, {bandId: this.serverId});
-};
+BandNode.prototype.getChildrenRequestParams = function () { return {bandId: this.serverId} };
 BandNode.prototype.getFoundDate = function () { return this.foundDate; };
 BandNode.prototype.getEndDate = function () { return this.endDate; };
 BandNode.prototype.setDate = function (value) {
@@ -146,9 +144,7 @@ AlbumNode.prototype.setParentBand = function (band) {
     return this;
 };
 
-AlbumNode.prototype.loadChildren = function (callback) {
-    trackRepository.list(callback, {albumId: this.serverId});
-};
+AlbumNode.prototype.getChildrenRequestParams = function () { return {albumId: this.serverId} };
 
 AlbumNode.prototype.getReleaseDate = function () { return this.releaseDate; };
 AlbumNode.prototype.setReleaseDate = function (value) {

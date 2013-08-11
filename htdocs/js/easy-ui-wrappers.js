@@ -24,7 +24,7 @@ function TreeGrid(element, options) {
     this.setOptions = function (options) {
         this.element.treegrid(options);
         return this;
-    }
+    };
 
     if (options) {
         if (!options) {
@@ -36,7 +36,7 @@ function TreeGrid(element, options) {
                 that.lastExpanedNodeId = null;
                 $(that).trigger(that.expandedEvent, [row]);
             }
-        }
+        };
         this.setOptions(options);
     }
 
