@@ -60,11 +60,11 @@ BaseRepository.prototype.dispatch = function (data) {
         var oldEntity = this.identityMap[identity];
         var isNew = (oldEntity === undefined);
         if (isNew) {
-            console.log("new entity loaded", identity, entity);
+//            console.log("new entity loaded", identity, entity);
             this.identityMap[identity] = entity;
             loaded.push(entity);
         } else {
-            console.log("update existing entity with new data", $.extend({}, oldEntity), entity);
+//            console.log("update existing entity with new data", $.extend({}, oldEntity), entity);
             $.extend(oldEntity, entity);
             updated.push(oldEntity);
         }

@@ -155,20 +155,22 @@ function Tree(identityMap, player) {
             },
             onBeforeLoad: function (rowData, param) {
                 // it fires before tree will be wrapped, so just made gag for it
-                console.log("onBeforeLoad fires", rowData, param);
+//                console.log("onBeforeLoad fires", rowData, param);
                 return false;
             }
         });
-        console.log("tree wrapped", this.treegrid);
 
         this._identityMap.bindNodeAdded(function (event, parent, nodes) {
             that.nodeAdded(parent, nodes);
+        });
+        this._identityMap.bindNodeRemoved(function (event, parent, nodes) {
+            that.nodeRemoved(parent, nodes);
         });
 
         // pass arguments depending on tree wrapper
         this.getTreeGrid().setOptions({
             onBeforeLoad: function (rowData, param) {
-                console.log("onBeforeLoad fires after wrapper created", rowData, param);
+//                console.log("onBeforeLoad fires after wrapper created", rowData, param);
                 return that.onBeforeLoad.apply(that, arguments);
             }
         });
@@ -365,60 +367,38 @@ function Tree(identityMap, player) {
                 that.getTreeGrid().loaded();
             });
         } else {
+            that.getTreeGrid().collapse(node.getId());
             this.getTreeGrid().loading();
             this._identityMap.getChildren(node, function () {
                 that.getTreeGrid().loaded();
+                that.getTreeGrid().expand(node.getId());
             });
         }
         return true;
     };
 
     this.nodeAdded = function (parentNode, nodes) {
-        console.log("nodeAdded event", arguments);
+//        console.log("nodeAdded event", arguments);
         var parentId = null;
         if (parentNode !== null) {
             parentId = parentNode.getId();
         }
+//        console.log("get node:", this.getTreeGrid().getNode(parentId));
         this.getTreeGrid().append(parentId, nodes);
     };
-    
-//    this.nodeLoaded = function (nodes) {
-//        if (!nodes.length || nodes.length < 1) {
-//            this.triggerNodeLoaded(null, []);
-//            return;
-//        }
-//        var parentId = nodes[0].getParentId();
-//        var parentNode = parentId ? $('#metaTree').treegrid('find', parentId) : undefined;
-//        $('#metaTree')
-////            .treegrid('toggle', parentId)
-//            .treegrid('append', {
-//                parent: parentId,
-//                data: nodes
-//            });
-//
-//        if (parentNode) {
-////            $('#metaTree').treegrid('toggle', parentNode.getId()); // treegrid('toggle', parentNode.getId()).
-//            this.triggerNodeLoaded(parentNode, nodes);
-//        } else {
-//            this.triggerNodeLoaded(null, nodes);
-//        }
-//
-//        var that = this;
-//        $(nodes).each(function (i, node) {
-//            if (node.isPlayable()) {
-//                that.searcher.schedule(node);
-//            }
-//        });
-//
-//    }
 
     /**
      * Handles nodeRemove event.
-     * @param node
+     * @param {Node|null} parent
+     * @param {Node[]} nodes
      */
-    this.nodeRemoved = function (node) {
-        $('#metaTree').treegrid('remove', node.getId());
-    }
+    this.nodeRemoved = function (parent, nodes) {
+        for (var index in nodes) {
+            //noinspection JSUnfilteredForInLoop
+            var node = nodes[index];
+            $('#metaTree').treegrid('remove', node.getId());
+        }
+    };
 
     /**
      * Remove node.

@@ -26,6 +26,7 @@ function IdentityMap() {
     this.repositories = [this.bandRepository, this.albumRepository, this.trackRepository];
 
     this._nodeAddedEvent = "nodeAdded";
+    this._nodeRemovedEvent = "nodeRemoved";
 
     this.init = function () {
         var that = this;
@@ -74,6 +75,7 @@ function IdentityMap() {
                 throw "Identity map does not have removed node (" + node.getId() + ").";
             }
             treeNode.setRemoved(true);
+            this._triggerNodeRemoved(treeNode.getParent(), [treeNode.getNode()]);
             //TODO: possible recursive removed required.
         }
     };
@@ -112,13 +114,25 @@ function IdentityMap() {
 
     /**
      * Fires event on "nodeAdded"
-     * @param parentNode
-     * @param nodes
+     * @param {Node} parentNode
+     * @param {Node[]} nodes
      * @private
      * @return {IdentityMap}
      */
     this._triggerNodeAdded = function (parentNode, nodes) {
         $(this).trigger(this._nodeAddedEvent, [parentNode, nodes]);
+        return this;
+    };
+
+    /**
+     * Fires event on "nodeRemoved"
+     * @param {Node} parentNode
+     * @param {Node[]} nodes
+     * @return {IdentityMap}
+     * @private
+     */
+    this._triggerNodeRemoved = function (parentNode, nodes) {
+        $(this).trigger(this._nodeRemovedEvent, [parentNode, nodes]);
         return this;
     };
 
@@ -142,6 +156,15 @@ function IdentityMap() {
      */
     this.bindNodeAdded = function (handler) {
         $(this).bind(this._nodeAddedEvent, handler);
+        return this;
+    };
+
+    /**
+     * @param {getChildrenCallback|Function} handler
+     * @returns {IdentityMap}
+     */
+    this.bindNodeRemoved = function (handler) {
+        $(this).bind(this._nodeRemovedEvent, handler);
         return this;
     };
 
