@@ -132,7 +132,7 @@ $socialNetwork = $user->getSocialNetwork();
     <div id="editTreeAccordion" title="Каталог">
         <div id="search">
             Исполнитель: <input id="searchArtist" class="easyui-validatebox" value="" onkeypress="event.keyCode == 13 ? $('#searchBtn').click() : true;">
-            <a id="searchBtn" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearch();">Поиск</a>
+            <a id="searchBtn" href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-search">Поиск</a>
             <span id="statusBar"></span>
         </div>
         <table id="catalogue" animate="true" toolbar="#search" method="get">

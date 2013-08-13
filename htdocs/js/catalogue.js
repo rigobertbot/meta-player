@@ -25,6 +25,7 @@ function Catalogue(fbm) {
         editor.start();
         editor.setInfoBar($('#statusBar'));
         var that = this;
+
         this.tree = new TreeGrid($('#catalogue'), {
             idField: 'id',
             treeField: 'name',
@@ -59,12 +60,16 @@ function Catalogue(fbm) {
                     top: e.pageY
                 }).data('row', row);
             },
-            loadFilter: loadFilter,
+            loadFilter: function () { that.loadFilter.apply(that, arguments); },
             onExpand: function (row) {
                 console.log("trigger expanded", row);
                 $(row).trigger("expanded", row);
             },
             onBeforeLoad: beforeLoad
+        });
+
+        $('#searchBtn').click(function (event) {
+            that.tree.reload();
         });
     };
 
@@ -104,6 +109,58 @@ function Catalogue(fbm) {
         }
 
         return container.html();
+    };
+
+    this.loadFilter = function(data, parentId) {
+        var parentRow = this.tree.find(parentId);
+        if (parentRow && !parentRow['noPaging']) {
+//            console.log('paging', parentRow);
+            var pages = createPages(data, parentRow);
+            if (pages != null) {
+                return pages;
+            }
+        }
+        filterArtists(data, parentId);
+        filterRecording(data, parentId);
+        filterRelease(data, parentId);
+        filterReleaseGroup(data, parentId);
+
+//        console.log('loaded', data);
+        var result = $.xml2json(data);
+//        console.log('xml2json', result);
+
+        if (result['artist_list']) {
+            result = {total: result['artist_list'].count, rows: result['artist_list'].artist};
+            if (!$.isArray(result.rows)) {
+                result.rows = [result.rows];
+            }
+        } else if (result['release']) {
+            var recordings = [];
+            $(result['release']['medium_list']['medium']).each(function (i, medium) {
+                $(medium['track_list']['track']).each(function (i, track) {
+                    recordings.push(track['recording']);
+                });
+            });
+            recordings.sort(function (r1, r2) { return r1.position - r2.position; });
+            result = {total: recordings.length, rows: recordings};
+        } else if (result['release_list']) {
+            result = {total: result['release_list'].count, rows: result['release_list']['release']};
+            if (!$.isArray(result.rows)) {
+                result.rows = result.rows ? [result.rows] : [];
+            }
+            result.rows.sort(compareReleases);
+        } else if (result['release_group_list']) {
+            result = {total: result['release_group_list'].count, rows: result['release_group_list']['release_group']};
+            if (!$.isArray(result.rows)) {
+                result.rows = result.rows ? [result.rows] : [];
+            }
+            result.rows.sort(compareReleaseGroup);
+        } else {
+            console.log('undefined source');
+            result = {total: 0, rows: []};
+        }
+
+        return result;
     };
 }
 
@@ -231,58 +288,6 @@ function compareReleases(r1, r2) {
     return r1.name == r2.name ? 0 : r1.name > r2.name ? 1 : -1;
 }
 
-function loadFilter(data, parentId) {
-    var parentRow = catalogue.tree.find(parentId);
-    if (parentRow && !parentRow['noPaging']) {
-        console.log('paging', parentRow);
-        var pages = createPages(data, parentRow);
-        if (pages != null) {
-            return pages;
-        }
-    }
-    filterArtists(data, parentId);
-    filterRecording(data, parentId);
-    filterRelease(data, parentId);
-    filterReleaseGroup(data, parentId);
-
-    console.log('loaded', data);
-    var result = $.xml2json(data);
-    console.log('xml2json', result);
-
-    if (result['artist_list']) {
-        result = {total: result['artist_list'].count, rows: result['artist_list'].artist};
-        if (!$.isArray(result.rows)) {
-            result.rows = [result.rows];
-        }
-    } else if (result['release']) {
-        var recordings = [];
-        $(result['release']['medium_list']['medium']).each(function (i, medium) {
-            $(medium['track_list']['track']).each(function (i, track) {
-                recordings.push(track['recording']);
-            });
-        });
-        recordings.sort(function (r1, r2) { return r1.position - r2.position; });
-        result = {total: recordings.length, rows: recordings};
-    } else if (result['release_list']) {
-        result = {total: result['release_list'].count, rows: result['release_list']['release']};
-        if (!$.isArray(result.rows)) {
-            result.rows = result.rows ? [result.rows] : [];
-        }
-        result.rows.sort(compareReleases);
-    } else if (result['release_group_list']) {
-        result = {total: result['release_group_list'].count, rows: result['release_group_list']['release_group']};
-        if (!$.isArray(result.rows)) {
-            result.rows = result.rows ? [result.rows] : [];
-        }
-        result.rows.sort(compareReleaseGroup);
-    } else {
-        console.log('undefined source');
-        result = {total: 0, rows: []};
-    }
-
-    return result;
-}
-
 function beforeLoad(row, param) {
     console.log('before load catalogue', row, param);
     if (row && row['inner_type']) {
@@ -331,11 +336,6 @@ function beforeLoad(row, param) {
     param.rows = undefined;
     param.page = undefined;
     return true;
-}
-
-
-function doSearch() {
-    catalogue.tree.reload();
 }
 
 function addAlbum(row, withTracks, onSuccess) {
