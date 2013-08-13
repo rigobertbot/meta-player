@@ -221,16 +221,16 @@ function TreeGrid(element, options) {
 
     /**
      * Gets parent while condition is not return true.
-     * @param node
-     * @param condition
-     * @return Node
+     * @param {Node} node
+     * @param {Function} condition
+     * @return {Node}
      */
     this.getParentWhile = function (node, condition) {
         if (condition(node)) {
             return node;
         }
         return this.getParentWhile(this.getParent(node.id), condition);
-    }
+    };
 
     /**
      * Get the root nodes, return node array.

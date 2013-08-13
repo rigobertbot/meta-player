@@ -14,6 +14,9 @@ var editor = new Editor();
  * @constructor
  */
 function Catalogue(fbm) {
+    /**
+     * @type {TreeGrid}
+     */
     this.tree = null;
     /**
      * @type {FavoriteBindingManager}
@@ -36,31 +39,41 @@ function Catalogue(fbm) {
                 {field: "type", width: 80, title: "Тип"},
                 {field: "date", width: 80, title: "Дата"},
                 {field: "country", width: 80, title: "Страна"},
-                {field: "length", width: 80, title: "Длит.", formatter: function () { return that.durationFormatter.apply(that, arguments);} },
-                {field: "name", width: 20, title: "Название", formatter: function () { return that.favoriteFormatter.apply(that, arguments);} }
+                {
+                    field: "length",
+                    width: 80,
+                    title: "Длит.",
+                    formatter: function () { return that.durationFormatter.apply(that, arguments);}
+                },
+                {
+                    field: "favorite",
+                    width: 25,
+                    title: "<span style='color: red'>Избр.</span>",
+                    formatter: function () { return that.favoriteFormatter.apply(that, arguments);}
+                }
             ]],
             onContextMenu: function (e, row) {
-                e.preventDefault();
-                var menu = null;
-                switch (row['inner_type']) {
-                    case 'artist':
-                        menu = $('#contextMenuBand');
-                        break;
-                    case 'release-group':
-                    case 'single':
-                    case 'release':
-                        menu = $('#contextMenuAlbum');
-                        break;
-                    case 'recording':
-                        menu = $('#contextMenuTrack');
-                        break;
-                }
-                $(menu).menu('show', {
-                    left: e.pageX,
-                    top: e.pageY
-                }).data('row', row);
+//                e.preventDefault();
+//                var menu = null;
+//                switch (row['inner_type']) {
+//                    case 'artist':
+//                        menu = $('#contextMenuBand');
+//                        break;
+//                    case 'release-group':
+//                    case 'single':
+//                    case 'release':
+//                        menu = $('#contextMenuAlbum');
+//                        break;
+//                    case 'recording':
+//                        menu = $('#contextMenuTrack');
+//                        break;
+//                }
+//                $(menu).menu('show', {
+//                    left: e.pageX,
+//                    top: e.pageY
+//                }).data('row', row);
             },
-            loadFilter: function () { that.loadFilter.apply(that, arguments); },
+            loadFilter: function () { return that.loadFilter.apply(that, arguments); },
             onExpand: function (row) {
                 console.log("trigger expanded", row);
                 $(row).trigger("expanded", row);
@@ -86,36 +99,64 @@ function Catalogue(fbm) {
         return Math.floor(i / 60) + ':' + seconds;
     };
 
-    this.favoriteFormatter = function(value, rowData, rowIndex) {
+    this.favoriteFormatter = function(value, rowData) {
+        if (!rowData.inner_type || ['artist', 'release', 'recording'].indexOf(rowData.inner_type) == -1) {
+            return null;
+        }
         var container = $('<div></div>');
 
-        var uid = 'favorite_' + rowIndex;
-        var loader = $('<div class="icon-loading" id="' + uid + '"></div>').appendTo(container);
+        var uid = 'favorite_' + rowData.id;
+        var async = false;
+        var loader = $('<div class="loading-icon" id="' + uid + '"></div>').appendTo(container);
 
         switch (rowData.inner_type) {
             case 'artist':
                 this._fbm.bindBand(rowData.name, function (node) {
-                    console.log('bound!', node);
+                    if (async) {
+                        // select element if it was async call, because formatter just return html of element.
+                        loader = $('#' + uid);
+                    }
                     rowData.node = node;
-                    $('#' + uid).text(node.getId());
+                    loader.removeClass('loading-icon');
+                    if (node) {
+                        loader.text(node.getId());
+                    }
+                    console.log('bound!', node, uid, "async:", async);
                 });
                 break;
             case 'release':
+                var parentNode = this.tree.getParentWhile(rowData, function (node) {
+                    return node && node.inner_type == 'artist';
+                });
+                if (!parentNode.node) {
+                    break;
+                }
                 console.log('check favorite for release');
-                //fbm.bindAlbum(rowData.name, function (node) {})
+                this._fbm.bindAlbum(parentNode.node, rowData.name, function (node) {
+                    if (async) {
+                        loader = $('#' + uid);
+                    }
+                    console.log('bound!', node, uid, async);
+                    rowData.node = node;
+                    loader.removeClass('loading-icon');
+                    if (node) {
+                        loader.text(node.getId());
+                    }
+                });
                 break;
             case 'recording':
                 break;
         }
 
+        async = true;
         return container.html();
     };
 
     this.loadFilter = function(data, parentId) {
         var parentRow = this.tree.find(parentId);
         if (parentRow && !parentRow['noPaging']) {
-//            console.log('paging', parentRow);
-            var pages = createPages(data, parentRow);
+            console.log('paging', parentRow);
+            var pages = this.createPages(data, parentRow);
             if (pages != null) {
                 return pages;
             }
@@ -125,9 +166,9 @@ function Catalogue(fbm) {
         filterRelease(data, parentId);
         filterReleaseGroup(data, parentId);
 
-//        console.log('loaded', data);
+        console.log('loaded', data);
         var result = $.xml2json(data);
-//        console.log('xml2json', result);
+        console.log('xml2json', result);
 
         if (result['artist_list']) {
             result = {total: result['artist_list'].count, rows: result['artist_list'].artist};
@@ -160,7 +201,32 @@ function Catalogue(fbm) {
             result = {total: 0, rows: []};
         }
 
+        console.log("load filter finish, result:", result);
         return result;
+    };
+
+    this.createPages = function(data, parentRow) {
+        var count = $(data).children().children().first().attr('count');
+        var pager = $(this.tree.getPager()).pagination('options');
+        var pageSize = parseInt(pager.pageSize);
+        if (count <= pageSize) {
+            return null;
+        }
+        var pages = [];
+        for (var i = 1; i <= count; i += pageSize) {
+            var rest = Math.min(count, i + pageSize - 1);
+            var page = $.extend({}, parentRow);
+            page.name = '[' + i + '..' + rest + ']';
+            page._parentId = parentRow.id;
+            page.id = $.genUuid();
+            page.limit = pageSize;
+            page.offset = i - 1;
+            page.state = 'closed';
+            page.noPaging = true;
+
+            pages.push(page);
+        }
+        return {rows: pages, total: pages.length};
     };
 }
 
@@ -238,30 +304,6 @@ function filterReleaseGroup(data, parentId) {
             .attr('offset', 0)
             .attr('inner_type', 'release-group');
     });
-}
-
-function createPages(data, parentRow) {
-    var count = $(data).children().children().first().attr('count')
-    var pager = $(catalogue.tree.getPager()).pagination('options');
-    var pageSize = parseInt(pager.pageSize);
-    if (count <= pageSize) {
-        return null;
-    }
-    var pages = [];
-    for (var i = 1; i <= count; i += pageSize) {
-        var rest = Math.min(count, i + pageSize - 1);
-        var page = $.extend({}, parentRow);
-        page.name = '[' + i + '..' + rest + ']';
-        page._parentId = parentRow.id;
-        page.id = $.genUuid();
-        page.limit = pageSize;
-        page.offset = i - 1;
-        page.state = 'closed';
-        page.noPaging = true;
-
-        pages.push(page);
-    }
-    return {rows: pages, total: pages.length};
 }
 
 function compareReleaseGroup(r1, r2) {

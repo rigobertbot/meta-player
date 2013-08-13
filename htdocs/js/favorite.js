@@ -13,9 +13,15 @@ function FavoriteBindingManager(identityMap) {
      * @private
      */
     this._identityMap = identityMap;
+    this._bandCallingQueue = new CallbackQueue();
+    this._albumCallingQueue = new CallbackQueue();
+    this._trackCallingQueue = new CallbackQueue();
 
     this.bindBand = function (name, callback) {
-        this._identityMap.getRootNodes(function (nodes) {
+        var that = this;
+        this._bandCallingQueue.register(name, function (callback) {
+            that._identityMap.getRootNodes(callback);
+        }, function (nodes) {
             for (var index in nodes) {
                 if (!nodes.hasOwnProperty(index)) continue;
                 var band = nodes[index];
@@ -24,12 +30,24 @@ function FavoriteBindingManager(identityMap) {
                     return;
                 }
             }
+            callback(null);
         });
+
         return this;
     };
 
+    /**
+     * @param {Node} bandNode
+     * @param {string} name
+     * @param {Function} callback
+     * @returns {FavoriteBindingManager}
+     */
     this.bindAlbum = function (bandNode, name, callback) {
-        this._identityMap.getChildren(bandNode, function (albums) {
+        var key = bandNode.getId() + name;
+        var that = this;
+        this._albumCallingQueue.register(key, function (callback) {
+            that._identityMap.getChildren(bandNode, callback);
+        }, function (albums) {
             for (var index in albums) {
                 if (!albums.hasOwnProperty(index)) continue;
                 var album = albums[index];
@@ -38,21 +56,31 @@ function FavoriteBindingManager(identityMap) {
                     return;
                 }
             }
+            callback(null);
         });
         return this;
     };
 
     this.bindTrack = function (albumNode, name, callback) {
-        this._identityMap.getChildren(albumNode, function (nodes) {
-            for (var index in nodes) {
-                if (!nodes.hasOwnProperty(index)) continue;
-                var track = nodes[index];
-                if (track.getName() == name) {
-                    callback(track);
-                    return;
+        var key = albumNode.getId() + name;
+        var that = this;
+        this._trackCallingQueue.register(
+            key,
+            function (callback) {
+                that._identityMap.getChildren(albumNode, callback);
+            },
+            function (nodes) {
+                for (var index in nodes) {
+                    if (!nodes.hasOwnProperty(index)) continue;
+                    var track = nodes[index];
+                    if (track.getName() == name) {
+                        callback(track);
+                        return;
+                    }
                 }
+                callback(null);
             }
-        });
+        );
         return this;
     };
 }
