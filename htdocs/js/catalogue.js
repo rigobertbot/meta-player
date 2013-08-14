@@ -100,7 +100,7 @@ function Catalogue(fbm) {
     };
 
     this.favoriteFormatter = function(value, rowData) {
-        if (!rowData.inner_type || ['artist', 'release', 'recording'].indexOf(rowData.inner_type) == -1) {
+        if (!rowData.inner_type || ['artist', 'release', 'release-group', 'recording'].indexOf(rowData.inner_type) == -1) {
             return null;
         }
         var container = $('<div></div>');
@@ -108,43 +108,50 @@ function Catalogue(fbm) {
         var uid = 'favorite_' + rowData.id;
         var async = false;
         var loader = $('<div class="loading-icon" id="' + uid + '"></div>').appendTo(container);
+        var boundNode = function (rowData, node) {
+            if (async) {
+                loader = $('#' + uid);
+            }
+            rowData.node = node;
+            loader.removeClass('loading-icon');
+            if (node) {
+                loader.attr('nodeId', node.getId()).addClass('star-icon').attr('title', 'Remove from favorite...');
+            } else {
+                loader.addClass('star-grey-icon').attr('title', 'Add to favorite...');
+            }
+        };
 
+        //noinspection FallthroughInSwitchStatementJS
         switch (rowData.inner_type) {
             case 'artist':
                 this._fbm.bindBand(rowData.name, function (node) {
-                    if (async) {
-                        // select element if it was async call, because formatter just return html of element.
-                        loader = $('#' + uid);
-                    }
-                    rowData.node = node;
-                    loader.removeClass('loading-icon');
-                    if (node) {
-                        loader.text(node.getId());
-                    }
-                    console.log('bound!', node, uid, "async:", async);
+                    boundNode(rowData, node);
                 });
                 break;
+            case 'release-group':
             case 'release':
+                //noinspection JSDuplicatedDeclaration
                 var parentNode = this.tree.getParentWhile(rowData, function (node) {
                     return node && node.inner_type == 'artist';
                 });
                 if (!parentNode.node) {
                     break;
                 }
-                console.log('check favorite for release');
                 this._fbm.bindAlbum(parentNode.node, rowData.name, function (node) {
-                    if (async) {
-                        loader = $('#' + uid);
-                    }
-                    console.log('bound!', node, uid, async);
-                    rowData.node = node;
-                    loader.removeClass('loading-icon');
-                    if (node) {
-                        loader.text(node.getId());
-                    }
+                    boundNode(rowData, node);
                 });
                 break;
             case 'recording':
+                //noinspection JSDuplicatedDeclaration
+                var parentNode = this.tree.getParentWhile(rowData, function (node) {
+                    return node && node.inner_type == 'release';
+                });
+                if (!parentNode.node) {
+                    break;
+                }
+                this._fbm.bindTrack(parentNode.node, rowData.name, function (node) {
+                    boundNode(rowData, node);
+                });
                 break;
         }
 
@@ -330,32 +337,32 @@ function compareReleases(r1, r2) {
     return r1.name == r2.name ? 0 : r1.name > r2.name ? 1 : -1;
 }
 
-function beforeLoad(row, param) {
-    console.log('before load catalogue', row, param);
-    if (row && row['inner_type']) {
-        switch(row['inner_type']) {
+function beforeLoad(parentRow, param) {
+    console.log('before load catalogue', parentRow, param);
+    if (parentRow && parentRow['inner_type']) {
+        switch(parentRow['inner_type']) {
             case 'artist-child':
-                param['artist'] = row['artistId'];
+                param['artist'] = parentRow['artistId'];
                 param.id = undefined;
-                $.data(this, 'treegrid').options.url = baseUrl + '/' + row['url'];
+                $.data(this, 'treegrid').options.url = baseUrl + '/' + parentRow['url'];
                 break;
             case 'release':
                 param['inc'] = 'recordings';
-                var releaseId = row['superId'];
+                var releaseId = parentRow['superId'];
                 param.id = undefined;
                 $.data(this, 'treegrid').options.url = baseUrl + '/release/' + releaseId;
                 break;
             case 'release-group':
-                param['release-group'] = row['superId'];
+                param['release-group'] = parentRow['superId'];
                 param.id = undefined;
                 $.data(this, 'treegrid').options.url = baseUrl + '/release';
                 break;
             default:
                 return false;
         }
-        if (row['limit']) {
-            param.limit = row['limit'];
-            param.offset = row['offset'];
+        if (parentRow['limit']) {
+            param.limit = parentRow['limit'];
+            param.offset = parentRow['offset'];
         } else {
             param.limit = param.rows;
         }

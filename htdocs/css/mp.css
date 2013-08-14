@@ -50,10 +50,25 @@ div {
     height: 16px;
     overflow: auto;
     background: url('themes/icons/replay.png') no-repeat;
-}.pause-icon {
+}
+.pause-icon {
     cursor: pointer;
     width: 16px;
     height: 16px;
     overflow: auto;
     background: url('themes/icons/pause.png') no-repeat;
+}
+.star-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/star.png') no-repeat;
+}
+.star-grey-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    overflow: auto;
+    background: url('themes/icons/star_grey.png') no-repeat;
 }
