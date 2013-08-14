@@ -168,10 +168,11 @@ function Catalogue(fbm) {
                 return pages;
             }
         }
-        filterArtists(data, parentId);
-        filterRecording(data, parentId);
-        filterRelease(data, parentId);
-        filterReleaseGroup(data, parentId);
+        prepareArtists(data, parentId);
+        prepareRecordings(data, parentId);
+        prepareReleases(data, parentId);
+        filtrateReleases(data, parentRow);
+        prepareReleaseGroup(data, parentId);
 
         console.log('loaded', data);
         var result = $.xml2json(data);
@@ -237,6 +238,14 @@ function Catalogue(fbm) {
     };
 }
 
+function filtrateReleases(data, parentRow) {
+    if (!$(data).find('release').length) {
+        return;
+    }
+//    var date = parentRow;
+    console.log("filtrateReleases", data, parentRow);
+}
+
 function replaceNameWithTitle(element) {
     replaceAttrWithNode(element, 'name', 'title');
 }
@@ -246,7 +255,7 @@ function replaceAttrWithNode(element, attrName, nodeName) {
     $(element).find(nodeName).remove();
 }
 
-function filterArtists(data, parentId) {
+function prepareArtists(data, parentId) {
     var artists = $(data).find('artist')
         .attr('state', 'closed')
         .attr('inner_type', 'artist');
@@ -269,7 +278,7 @@ function filterArtists(data, parentId) {
         });
 }
 
-function filterRecording(data, parentId) {
+function prepareRecordings(data, parentId) {
     var recordingCount = 0;
     $(data).find('medium').each (function (i, medium) {
         $(medium).find('recording').each(function (i, e) {
@@ -284,7 +293,7 @@ function filterRecording(data, parentId) {
     });
 }
 
-function filterRelease(data, parentId) {
+function prepareReleases(data, parentId) {
     $(data).find('release').each(function (i, e) {
         replaceNameWithTitle(e);
         $(e).attr('_parentId', parentId)
@@ -297,7 +306,7 @@ function filterRelease(data, parentId) {
     });
 }
 
-function filterReleaseGroup(data, parentId) {
+function prepareReleaseGroup(data, parentId) {
     // appendEtc(data, 'release-group-list', 'release-group');
 
     $(data).find('release-group').each(function (i, e) {
